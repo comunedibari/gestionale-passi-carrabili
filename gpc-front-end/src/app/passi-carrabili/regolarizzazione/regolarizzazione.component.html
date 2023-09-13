@@ -1,0 +1,98 @@
+<div class="p-grid p-nogutter p-pt-2 p-pr-3 p-pl-3 p-pb-3">
+    <h4 class="intestazione-componente">Regolarizzazione</h4>
+  </div>
+  
+  <app-spinner-dialog *ngIf="showSpinner"></app-spinner-dialog> 
+  <div [hidden]="showSpinner" class="p-m-3">
+    <table-prime-ng
+      [dataSource]="this.dataSource" 
+      [columnSchema]="this.columnSchema" 
+      [actions]="this.actions"
+      [initSortColumn]="initSortColumn" 
+      [directionSortColumn]="directionSortColumn"
+      (onEvent)="this.onTableEvent($event)"
+      [inserisciFeature]="inserisciFeature"
+      [titleTable]="titleTable"
+      [exportName]="exportName"
+      [globalFilters]="this.globalFilters">
+    </table-prime-ng>
+  </div>
+
+
+  <p-dialog header="Inserimento richiesta di regolarizzazione:" [(visible)]="showInserisciSegnalazioneDialog" (onHide)="closeInserisciSegnalazioneDialog()" styleClass="dialog-850" [draggable]="false" [resizable]="false" [modal]="true">
+    <form [formGroup]="inserisciPraticaForm">
+        <div class="p-fluid p-formgrid p-grid p-inputtext-lg p-m-2"> 
+
+            <div class="p-field p-col-12 p-pb-1 p-m-0">
+                <span style="float: right;">(*): campi obbligatori</span>
+            </div>   
+
+            <div class="p-field p-col-6 p-pb-4 p-m-0">
+                <label for="txtinputNome" class="p-text-bold">Nome (*)</label>
+                <input type="text" id="txtinputNome" name="txtinputNome" pInputText formControlName="nome">
+            </div>
+
+            <div class="p-field p-col-6 p-pb-4 p-m-0">
+                <label for="txtinputCognome" class="p-text-bold">Cognome (*)</label>
+                <input type="text" id="txtinputCognome" name="txtinputCognome" pInputText formControlName="cognome">
+            </div>
+
+            <div class="p-field p-col-6 p-pb-4 p-m-0">
+                <label for="txtinputEmail" class="p-text-bold">Email/PEC</label>
+                <input type="email" id="txtinputEmail" name="txtinputEmail" pInputText formControlName="email">  
+                <p-message *ngIf="isNotValid('email')" severity="error" text="Formato email non valido."></p-message>
+            </div>
+
+            <div class="p-field p-col-6 p-pb-4 p-m-0">
+                <label for="txtinputNumtel" class="p-text-bold">Recapito telefonico</label>
+                <input id="txtinputNumtel" name="txtinputNumtel" pInputText formControlName="recapito_telefonico">  
+                <p-message *ngIf="isNotValid('recapito_telefonico')" severity="error" text="Formato recapito telefonico non valido."></p-message>
+            </div>
+
+            <div class="p-field p-col-6 p-m-0">
+                <label for="txtinputIndirizzoSegnale" class="p-text-bold">Indirizzo del segnale indicatore (*)</label>
+                <span [pTooltip]="this.inserisciPraticaForm.get('indirizzo_segnale_indicatore').value?.indirizzo" style="display: block;">
+                    <p-autoComplete formControlName="indirizzo_segnale_indicatore" [suggestions]="civilarioResults" (completeMethod)="searchCivilario($event)" placeholder="indirizzo, civico/esponente" 
+                    field="indirizzo" appendTo="body"></p-autoComplete>
+                </span>
+            </div>
+
+            <div class="p-field p-col-6 p-m-0 relative-container">
+                <label for="txtinputRelazioneServizio" class="p-text-bold">Upload relazione di servizio (*)</label>
+                <p-fileUpload #fp mode="basic" customUpload="true" (uploadHandler)="uploadFiles()" [accept]="acceptedExtensions" 
+                    maxFileSize="20000000" [auto]="true" class="upload-button-basic" invalidFileLimitMessageSummary="Numero massimo di file caricabili superato, "
+                    invalidFileLimitMessageDetail="il limite massimo è {0} file." invalidFileTypeMessageSummary="{0}: formato file non valido. " 
+                    invalidFileTypeMessageDetail="Formato file richiesto: {0}." invalidFileSizeMessageSummary="{0}: Dimensione fine non valida, " 
+                    invalidFileSizeMessageDetail="grandezza massima consentita: {0}."></p-fileUpload>
+                <input id="txtinputRelazioneServizio" name="txtinputRelazioneServizio" pInputText formControlName="relazione_servizio" 
+                    [pTooltip]="inserisciPraticaForm.get('relazione_servizio').value" [readonly]="true">  
+            </div>
+
+        </div> 
+    </form>
+    <p-footer>
+      <div class="p-d-flex p-col-12 p-jc-end">
+        <button pButton label="Annulla" class="btn-custom-style"
+          (click)="closeInserisciSegnalazioneDialog()"></button>
+        <button pButton label="Conferma" class="btn-custom-style"
+          (click)="inserisciSegnalazioneRegolarizzazione()" [disabled]="!inserisciPraticaForm.valid || !this.inserisciPraticaForm.get('relazione_servizio').value"></button>
+      </div>  
+    </p-footer>
+</p-dialog>
+
+<p-dialog header="Numero protocollo:" [(visible)]="showProtocolloDialog" (onHide)="closeProtocolloDialog()" styleClass="dialog-400" [draggable]="false" [resizable]="false" [modal]="true" [closable]="false">
+    <div class="p-grid p-m-2"> 
+        <div class="p-col-12">
+            <input *ngIf="!isProtocollata" type="text" pInputText [(ngModel)]="this.numProtocollo" class="stretch" [readonly]="true">
+            <input *ngIf="isProtocollata" type="text" pInputText [(ngModel)]="this.nuova_segnalazione.numero_protocollo" class="stretch" [readonly]="true">
+            <label *ngIf="isProtocollata" for="txtProtocollo" class="p-text-bold p-pt-2" style="display: block;">Protocollazione avvenuta con successo</label>
+        </div>
+    </div> 
+    <p-footer>
+        <div class="p-d-flex p-col-12 p-jc-end">
+        <button *ngIf="this.numProtocollo == '--|--'" pButton label="Protocolla" class="btn-custom-style"
+		    (click)="this[actionRiprotocollazione]()"></button> 
+            <button pButton label="Chiudi" class="btn-custom-style" (click)="showProtocolloDialog = false;this.closeInserisciSegnalazioneDialog();"></button>
+        </div>  
+    </p-footer>
+</p-dialog>

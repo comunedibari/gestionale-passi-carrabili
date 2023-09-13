@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "497412396218",
+    "firebase_url": "https://bari-citta-connessa.firebaseio.com",
+    "project_id": "bari-citta-connessa",
+    "storage_bucket": "bari-citta-connessa.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:497412396218:android:b9ee49da2d7fefe9",
+        "android_client_info": {
+          "package_name": "it.almaviva.baricittaconnessa"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "497412396218-b1nv3v1i75jd6sk2f2ef0l2vm68ijbmp.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBJAvAlwJeBjacUlVUhNX4ks7wx3oRQs2s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "497412396218-b1nv3v1i75jd6sk2f2ef0l2vm68ijbmp.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

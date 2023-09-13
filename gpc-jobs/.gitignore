@@ -1,0 +1,6 @@
+node_modules
+*-datadir
+dist
+dummy
+
+package-lock.json

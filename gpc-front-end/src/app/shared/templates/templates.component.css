@@ -1,0 +1,17 @@
+.double-button {
+    width: 130px;
+    height: 45px;
+}
+
+::ng-deep .card-template .p-card .p-card-footer {
+    padding: 0 !important;
+}
+
+::ng-deep .card-template .p-card .p-card-content {
+    padding: 0 !important;
+}
+
+::ng-deep .card-template .p-card .p-card-title {
+    height: 65px;
+    font-size: 1.3rem;
+}

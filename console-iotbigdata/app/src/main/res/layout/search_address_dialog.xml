@@ -1,0 +1,142 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/permission_message"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/margin_standard">
+
+        <ImageView
+            android:id="@+id/close"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_close"
+            app:layout_constraintBottom_toBottomOf="@id/title"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/title" />
+
+        <TextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/titilliumweb_bold"
+            android:text="Cerca indirizzo"
+            android:textColor="@color/colorBlack"
+            android:textSize="24sp"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/address_textinput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            android:layout_marginTop="8dp"
+            app:layout_constraintHorizontal_weight="4"
+            app:layout_constraintEnd_toStartOf="@id/civico_textinput"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/title">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/address_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/titilliumweb_regular"
+                android:hint="Indirizzo"
+                android:inputType="text"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:textSize="@dimen/text_subheading" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/civico_textinput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="8dp"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintEnd_toStartOf="@id/esponente_textinput"
+            app:layout_constraintStart_toEndOf="@id/address_textinput"
+            app:layout_constraintTop_toTopOf="@id/address_textinput"
+            app:layout_constraintBottom_toBottomOf="@id/address_textinput">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/civico_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/titilliumweb_regular"
+                android:hint="Civico"
+                android:inputType="text"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:textSize="@dimen/text_subheading" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <com.google.android.material.textfield.TextInputLayout
+            android:id="@+id/esponente_textinput"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="16dp"
+            app:layout_constraintHorizontal_weight="1"
+            app:layout_constraintEnd_toStartOf="@id/find_address_button"
+            app:layout_constraintStart_toEndOf="@id/civico_textinput"
+            app:layout_constraintTop_toTopOf="@id/address_textinput"
+            app:layout_constraintBottom_toBottomOf="@id/address_textinput">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/esponente_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/titilliumweb_regular"
+                android:hint="Esponente"
+                android:inputType="text"
+                android:textColor="@android:color/black"
+                android:textColorHint="@android:color/black"
+                android:textSize="@dimen/text_subheading" />
+        </com.google.android.material.textfield.TextInputLayout>
+
+        <Button
+            android:id="@+id/find_address_button"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:fontFamily="@font/titilliumweb_regular"
+            android:background="@drawable/selector_effect_button_red"
+            android:textColor="@color/colorWhite"
+            android:text="Cerca"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/address_textinput"
+            app:layout_constraintBottom_toBottomOf="@id/address_textinput"/>
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/search_address_list"
+            android:visibility="gone"
+            android:elevation="10dp"
+            android:layout_width="match_parent"
+            android:fontFamily="@font/titilliumweb_regular"
+            android:layout_height="0dp"
+            android:background="@android:color/transparent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/address_textinput"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <include
+            android:id="@+id/empty_state_layout"
+            android:layout_width="0dp"
+            android:layout_height="0dp"
+            layout="@layout/search_empty_state_layout"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/address_textinput"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</layout>

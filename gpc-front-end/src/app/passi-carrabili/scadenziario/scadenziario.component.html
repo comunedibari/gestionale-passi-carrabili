@@ -1,0 +1,14 @@
+<app-spinner-dialog *ngIf="showSpinner"></app-spinner-dialog>
+
+<table-prime-ng
+    [dataSource]="this.dataSource" 
+    [columnSchema]="this.columnSchema" 
+    [actions]="this.actions"
+    [initSortColumn]="initSortColumn" 
+    [directionSortColumn]="directionSortColumn"
+    (onEvent)="this.onTableEvent($event)"
+    [titleTable]="titleTable"
+    [exportName]="exportName"
+    [globalFilters]="globalFilters">
+</table-prime-ng>
+

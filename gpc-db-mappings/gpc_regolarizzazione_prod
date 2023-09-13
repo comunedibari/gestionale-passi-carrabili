@@ -1,0 +1,169 @@
+{
+	"mappings": {
+		"properties": {
+			"cognome": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"data_scadenza_regolarizzazione": {
+				"type": "date"
+			},
+			"email": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"id_doc": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"indirizzo_segnale_indicatore": {
+				"properties": {
+					"indirizzo": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"localita": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"location": {
+						"properties": {
+							"lat": {
+								"type": "float"
+							},
+							"lon": {
+								"type": "float"
+							}
+						}
+					},
+					"municipio_id": {
+						"type": "long"
+					}
+				}
+			},
+			"info_passaggio_stato": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"last_modification": {
+				"properties": {
+					"data_operazione": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"username": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"utente": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					}
+				}
+			},
+			"nome": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"notifiche_attive": {
+				"type": "boolean"
+			},
+			"numero_protocollo": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"recapito_telefonico": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"regolarizzazione_notificata": {
+				"type": "boolean"
+			},
+			"relazione_servizio": {
+				"properties": {
+					"blob": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"name": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					}
+				}
+			},
+			"stato_pratica": {
+				"type": "long"
+			}
+		}
+	}
+}

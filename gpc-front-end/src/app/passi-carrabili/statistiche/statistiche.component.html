@@ -1,0 +1,9 @@
+<div class="p-grid p-nogutter p-pt-2 p-pr-3 p-pl-3 p-pb-3">
+    <h4 class="intestazione-componente">Statistiche</h4>
+</div>
+
+<app-spinner-dialog *ngIf="showSpinner"></app-spinner-dialog>
+
+<div *ngIf="kibanaDashboard" class="p-m-3">
+    <iframe class="iframe-size" [src]="kibanaDashboard | safeHtml"></iframe>
+</div>

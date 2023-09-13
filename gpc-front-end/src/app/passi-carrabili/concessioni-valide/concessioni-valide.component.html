@@ -1,0 +1,81 @@
+<div class="p-grid p-nogutter p-pt-2 p-pr-3 p-pl-3 p-pb-3 relative-container">
+    <h4 class="intestazione-componente">Concessioni valide</h4>
+
+    <button pButton pRipple type="button" icon="pi pi-map-marker" pTooltip="VISUALIZZA SU MAPPA"
+      class="p-button-rounded p-button-text btn-custom-style marker-map-class" (click)="openMapDialog()"></button>
+</div>
+
+<app-spinner-dialog *ngIf="showSpinner"></app-spinner-dialog>
+<div [hidden]="showSpinner" class="p-m-3">
+    <table-prime-ng
+      [dataSource]="this.dataSource" 
+      [columnSchema]="this.columnSchema" 
+      [actions]="this.actions"
+      [initSortColumn]="initSortColumn" 
+      [directionSortColumn]="directionSortColumn"
+      (onEvent)="this.onTableEvent($event)"
+      [titleTable]="titleTable"
+      [exportName]="exportName"
+      [globalFilters]="globalFilters">
+    </table-prime-ng>
+</div> 
+
+<p-dialog header="Processi post concessione" [(visible)]="showProcessiPostConcessioneDialog" styleClass="dialog-650" [draggable]="false" [resizable]="false" [modal]="true">
+  <div class="p-grid p-nogutter p-ai-stretch vertical-container post-concessione-box"> 
+    <div class="p-grid p-nogutter p-jc-center p-ai-center stretch">
+
+      <div class="container-div">
+        <div class="p-mb-2 icon-div" (click)="rinunciaConcessione(this.pratica)">                               
+          <i class="pi pi-ban"></i>
+        </div>
+        <div class="p-mb-2 label-button-div">
+            <label class="label-button">Rinuncia</label>
+        </div>
+      </div>
+
+      <div class="container-div">
+        <div class="p-mb-2 icon-div" (click)="this.isPermanente ? rinnovoConcessione(this.pratica): prorogaConcessione(this.pratica)">                               
+          <i class="pi pi-calendar-plus"></i>
+        </div>
+        <div class="p-mb-2 label-button-div">
+            <label class="label-button">{{this.isPermanente ? 'Rinnovo' : 'Proroga'}}</label>
+        </div>
+      </div>
+
+      <div class="container-div">
+        <div class="p-mb-2 icon-div" (click)="trasferimentoTitolarita(this.pratica)">                               
+          <i class="pi pi-id-card"></i>
+        </div>
+        <div class="p-mb-2 label-button-div">
+            <label class="label-button">Trasferimento Titolarità</label>
+        </div>
+      </div>
+
+      <div class="container-div">
+        <div class="p-mb-2 icon-div" (click)="regolarizzazioneFurto(this.pratica)">                               
+          <i class="pi pi-exclamation-triangle"></i>
+        </div>
+        <div class="p-mb-2 label-button-div">
+            <label class="label-button">Furto/Deterioramento</label>
+        </div>
+      </div>
+
+    </div>
+  </div> 
+</p-dialog>
+
+<p-dialog header="Dichiarazioni modifiche dei luoghi (ai sensi del DPR 445/2000):" [(visible)]="showDichiarazioniModificheStatoLuoghiDialog" (onHide)="closeDichiarazioniModificheStatoLuoghiDialog()" styleClass="dialog-850" [draggable]="false" [resizable]="false" [modal]="true">
+  <div class="p-grid p-m-2"> 
+      <div class="p-col-12">
+          <div *ngFor="let condizioni of condizioniTrasferimentoTitolaritaSchema" class="p-field-checkbox">
+            <p-checkbox name="condizioniGroup" [value]="condizioni.value" [label]="condizioni.label" [(ngModel)]="selectedCondizioniTrasferimentoTitolarita"></p-checkbox>
+          </div>
+      </div>
+  </div> 
+  <p-footer>
+    <div class="p-d-flex p-col-12 p-jc-end">
+      <button pButton label="Annulla" class="btn-custom-style" (click)="closeDichiarazioniModificheStatoLuoghiDialog()"></button>
+      <button pButton label="Conferma" class="btn-custom-style" (click)="avviaTrasferimentoTitolarita(this.pratica)"></button>
+    </div>  
+  </p-footer>
+</p-dialog>

@@ -1,0 +1,9 @@
+.btn-home{
+    right: 0px;
+    top: 5px;
+    position: absolute;
+}
+
+.flex-position {
+    position: relative;
+}

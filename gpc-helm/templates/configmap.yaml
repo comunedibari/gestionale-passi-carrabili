@@ -1,0 +1,48 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name:  {{ include "gpc.fullname" . }}
+  labels:
+    {{- include "gpc.labels" . | nindent 4 }}
+data:
+  ES_HOST: {{ quote .Values.esHost }}
+  ES_LOG: {{ quote .Values.esLog }}
+  CIVILARIO_USER: {{ quote .Values.civilarioUser }}
+  CIVILARIO_PSW: {{ quote .Values.civilarioPsw }}
+  CIVILARIO_HOST: {{ quote .Values.civilarioHost }}
+  SMTP_HOST: {{ quote .Values.smtpHost }}
+  SMTP_HOST_PEC: {{ quote .Values.smtpHostPec }}
+  SMTP_PORT: {{ quote .Values.smtpPort }}
+  SMTP_SECURE: {{ quote .Values.smtpSecure }}
+  SMTP_FROM: {{ quote .Values.smtpFrom }}
+  SMTP_USER: {{ quote .Values.smtpUser }}
+  SMTP_PSW: {{ quote .Values.smtpPsw }}
+  SMTP_TLS_UNAUTH: {{ quote .Values.smtpTlsUnauth }}
+  SMTP_TLS_MIN_VERSION: {{ quote .Values.smtpTlsMinVersion }}
+  SMTP_TLS_MAX_VERSION: {{ quote .Values.smtpTls_MaxVersion }}
+  LINKS_CREDENTIALS_US: {{ quote .Values.linksCredentialsUs }}
+  LINKS_CREDENTIALS_PSW: {{ quote .Values.linksCredentialsPsw }}
+  TZ: {{ quote .Values.tz }}
+  LINK_DASHBOARD_KIBANA: {{ quote .Values.linkDashboardKibana }}
+  SMTP_FROM_PEC_M1: {{ quote .Values.smtpFromPecM1 }}
+  SMTP_USER_PEC_M1: {{ quote .Values.smtpUserPecM1 }}
+  SMTP_PSW_PEC_M1: {{ quote .Values.smtpPswPecM1 }}
+  SMTP_FROM_PEC_M2: {{ quote .Values.smtpFromPecM2 }}
+  SMTP_USER_PEC_M2: {{ quote .Values.smtpUserPecM2 }}
+  SMTP_PSW_PEC_M2: {{ quote .Values.smtpPswPecM2 }}
+  SMTP_FROM_PEC_M3: {{ quote .Values.smtpFromPecM3 }}
+  SMTP_USER_PEC_M3: {{ quote .Values.smtpUserPecM3 }}
+  SMTP_PSW_PEC_M3: {{ quote .Values.smtpPswPecM3 }}
+  SMTP_FROM_PEC_M4: {{ quote .Values.smtpFromPecM4 }}
+  SMTP_USER_PEC_M4: {{ quote .Values.smtpUserPecM4 }}
+  SMTP_PSW_PEC_M4: {{ quote .Values.smtpPswPecM4 }}
+  SMTP_FROM_PEC_M5: {{ quote .Values.smtpFromPecM5 }}
+  SMTP_USER_PEC_M5: {{ quote .Values.smtpUserPecM5 }}
+  SMTP_PSW_PEC_M5: {{ quote .Values.smtpPswPecM5 }}
+  LINK_DASHBOARD_KIBANA_M1: {{ quote .Values.linkDashboardKibanaM1 }}
+  LINK_DASHBOARD_KIBANA_M2: {{ quote .Values.linkDashboardKibanaM2 }}
+  LINK_DASHBOARD_KIBANA_M3: {{ quote .Values.linkDashboardKibanaM3 }}
+  LINK_DASHBOARD_KIBANA_M4: {{ quote .Values.linkDashboardKibanaM4 }}
+  LINK_DASHBOARD_KIBANA_M5: {{ quote .Values.linkDashboardKibanaM5 }}
+  MAX_DIM_ALLEGATI_PROTOCOLLO_KB: {{ quote .Values.maxDimAllegatiProtocolloKb }}
+  FLAG_CONTROLLO_ALLEGATI: {{ quote .Values.flagControlloAllegati }}

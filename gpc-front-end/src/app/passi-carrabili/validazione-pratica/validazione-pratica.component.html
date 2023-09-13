@@ -1,0 +1,126 @@
+<div class="p-grid p-nogutter p-pt-2 p-pr-3 p-pl-3 p-pb-3">
+    <h4 class="intestazione-componente">Validazione pratiche</h4>
+</div>
+
+<app-spinner-dialog *ngIf="showSpinner"></app-spinner-dialog>
+<div [hidden]="showSpinner" class="p-m-3">
+    <table-prime-ng
+      [dataSource]="this.dataSource" 
+      [columnSchema]="this.columnSchema" 
+      [actions]="this.actions"
+      [initSortColumn]="initSortColumn" 
+      [directionSortColumn]="directionSortColumn"
+      (onEvent)="this.onTableEvent($event)"
+      [titleTable]="titleTable"
+      [exportName]="exportName"
+      [globalFilters]="globalFilters">
+    </table-prime-ng>
+</div> 
+
+<p-dialog header="Invio richiesta pareri:" [(visible)]="showPareriDialog" (onHide)="closePareriDialog()" styleClass="dialog-600" [draggable]="false" [resizable]="false" [modal]="true">
+  <div class="p-grid p-m-2"> 
+      <div class="p-col-12">
+          <div *ngFor="let attori of attoriPareriSchema" class="p-field-checkbox">
+            <p-checkbox name="pareriGroup" [value]="attori.value" [label]="attori.label" [(ngModel)]="selectedAttoriPareri"></p-checkbox>
+          </div>       
+        <div class="p-mt-1" *ngIf="isFlagEsenzioneModificato">
+          <hr/>
+          <label class="p-text-bold">Modifica dichiarazione esenzione a seguito di integrazione:</label>
+          <p-checkbox class="p-mt-2" name="checkBoxEsenzione" id="checkBoxEsenzione" [binary]="true" [(ngModel)]="isEsente"
+            label="{{isEsente ? 'Annulla dichiarazione esenzione marca da bollo' : 'Dichiara esenzione marca da bollo' }}" (onChange)="variazioneDichiarazioneEsenzione('pareri')"></p-checkbox>
+        </div>    
+      </div>
+  </div> 
+  <p-footer>
+    <div class="p-d-flex p-col-12 p-jc-end">
+      <button pButton label="Annulla" class="btn-custom-style"
+        (click)="closePareriDialog()"></button>
+      <button pButton label="Conferma" class="btn-custom-style"
+        (click)="inviaRichiestaPareri(this.pratica)" [disabled]="this.selectedAttoriPareri && !this.selectedAttoriPareri.length"></button>
+    </div>  
+  </p-footer>
+</p-dialog>
+
+<p-dialog header="{{isDiniego ? 'Rigetto pratica:' : 'Necessaria integrazione:' }}" [(visible)]="showIntegrazioneDialog" (onHide)="closeIntegrazioneDialog()" styleClass="dialog-650" [draggable]="false" [resizable]="false" [modal]="true">
+  <div class="p-grid p-m-2"> 
+      <div class="p-col-12">
+        <div class="p-field" *ngIf="isFaseIntegrazioneMassimaRaggiunta">
+          <button pButton icon="pi pi-exclamation-triangle" class="p-button-rounded p-button-warning p-button-text"></button>
+          <label class="p-text-bold">Attenzione: la pratica ha già subito il numero massimo di integrazioni</label>
+        </div>
+        <div class="p-field" *ngIf="isFaseDiniego">
+          <button pButton icon="pi pi-exclamation-triangle" class="p-button-rounded p-button-warning p-button-text"></button>
+          <label class="p-text-bold">Attenzione: la pratica ha già subito una fase di diniego</label>
+        </div>
+        <div class="p-field">
+          <label class="p-text-bold label">Note (*)</label>
+          <textarea pInputTextarea [rows]="5" [(ngModel)]="this.noteIstruttoreMunicipio" class="text-area-no-resize stretch"></textarea>
+          <p-checkbox *ngIf="isFlagEsenzioneModificato || (!isDiniego && isDichiarazioneBolloEditable)" class="p-mt-1" name="checkBoxEsenzione" id="checkBoxEsenzione" [binary]="true" [(ngModel)]="isEsente"
+            label="{{isEsente ? 'Annulla dichiarazione esenzione marca da bollo' : 'Dichiara esenzione marca da bollo' }}" (onChange)="variazioneDichiarazioneEsenzione()"></p-checkbox>
+        </div>
+        <div class="p-field" *ngIf="!isFaseDiniego">
+          <label class="p-text-bold">Upload documento</label>
+          <app-upload-file [pratica]="pratica" [mode]="'single'" (idDocUploaded)="getIdDocIntegrazioneUploaded($event)" (fileInCheckout)="fileInCheckout($event)"></app-upload-file>
+        </div>
+      </div>
+  </div> 
+  <p-footer>
+    <div class="p-d-flex p-col-12 p-jc-end">
+      <button pButton label="Annulla" class="btn-custom-style"
+        (click)="closeIntegrazioneDialog('Annulla')"></button>
+      <button pButton label="Conferma" class="btn-custom-style"
+        (click)="this.isDiniego ? invioRichiestaDiniego() : invioRichiestaIntegrazione()" [disabled]="!this.noteIstruttoreMunicipio.trim() || checkFileInCheckout"></button>
+    </div>  
+  </p-footer>
+</p-dialog>
+
+<p-dialog header="Numero protocollo:" [(visible)]="showProtocolloDialog" (onHide)="closeProtocolloDialog()" styleClass="dialog-400" [draggable]="false" [resizable]="false" [modal]="true" [closable]="false">
+  <div class="p-grid p-m-2"> 
+      <div class="p-col-12">
+        <input *ngIf="!isProtocollata" type="text" pInputText [(ngModel)]="this.numProtocollo" class="stretch" [readonly]="true">
+        <input *ngIf="isProtocollata" type="text" pInputText [(ngModel)]="this.pratica.numero_protocollo_comunicazione" class="stretch" [readonly]="true">
+        <label *ngIf="isProtocollata" for="txtProtocollo" class="p-text-bold p-pt-2" style="display: block;">Protocollazione avvenuta con successo</label>
+      </div>
+  </div> 
+  <p-footer>
+      <div class="p-d-flex p-col-12 p-jc-end">
+      <button *ngIf="this.numProtocollo == '--|--'" pButton label="Protocolla" class="btn-custom-style"
+        (click)="this[actionRiprotocollazione](this.pratica)"></button> 
+      <button pButton label="Chiudi" class="btn-custom-style" (click)="showProtocolloDialog = false"></button>
+      </div>  
+  </p-footer>
+</p-dialog>
+
+<p-dialog header="Validazione pratica:" [(visible)]="showValidaPraticaSemplificataDialog" (onHide)="closeValidaPraticaSemplificataDialog()" styleClass="dialog-650" [draggable]="false" [resizable]="false" [modal]="true">
+  <div class="p-grid p-m-2"> 
+    <div class="p-col-12">
+      <label>Confermi di approvare la richiesta {{this.tipologiaProcessoLabel}} per la pratica num. {{this.pratica?.numero_protocollo}}?</label>
+    </div>
+  </div> 
+  <p-footer>
+    <div class="p-d-flex p-col-12 p-jc-end">
+      <button pButton label="Approva" class="btn-custom-style btn-dialog-validazione-pratica"
+        (click)="!this.isDecadenza ? approvaSemplificata() : approvaPraticaSemplificata(this.pratica)"></button>
+      <button pButton label="Integrazione" class="btn-custom-style btn-dialog-validazione-pratica"
+        (click)="!this.isDecadenza ? avvioRichiestaIntegrazione(false) : integrazioneDocumentiDecadenza()"></button>
+      <button *ngIf="!this.isDecadenza" pButton label="Rigetta" class="btn-custom-style btn-dialog-validazione-pratica"
+        (click)="avvioRichiestaIntegrazione(true)"></button>
+    </div>  
+  </p-footer>
+</p-dialog>
+
+<p-dialog header="Motivazione dichiarazione esenzione CUP:" [(visible)]="showEsenzioneCUPDialog" (onHide)="closeEsenzioneCUPDialog()" styleClass="dialog-600" [draggable]="false" [resizable]="false" [modal]="true">
+  <div class="p-grid p-m-2"> 
+      <div class="p-col-12">
+        <textarea pInputTextarea [rows]="5" [(ngModel)]="this.motivo_esenzione_cup" class="text-area-no-resize stretch"></textarea>       
+      </div>
+  </div> 
+  <p-footer>
+    <div class="p-d-flex p-col-12 p-jc-end">
+      <button pButton label="Annulla" class="btn-custom-style"
+        (click)="closeEsenzioneCUPDialog()"></button>
+      <button pButton label="Conferma" class="btn-custom-style"
+        (click)="confermaEsenzioneCUP()" [disabled]="!this.motivo_esenzione_cup.trim()"></button>
+    </div>  
+  </p-footer>
+</p-dialog>

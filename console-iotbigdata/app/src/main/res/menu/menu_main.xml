@@ -1,0 +1,25 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.zebra.rfidreader.demo.home.MainActivity">
+
+    <item android:id="@+id/action_search"
+        android:icon="@drawable/ic_search_fill"
+        android:title="@string/action_search"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_qrcode_scan"
+        android:icon="@drawable/ic_qr_code_scanner"
+        android:title="@string/action_scan"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_user"
+        android:icon="@drawable/ic_user"
+        android:title="@string/user"
+        app:showAsAction="ifRoom" />
+
+    <item android:id="@+id/action_settings"
+        android:title="@string/action_settings"
+        android:icon="@drawable/ic_pair_devices"
+        app:showAsAction="ifRoom" />
+</menu>

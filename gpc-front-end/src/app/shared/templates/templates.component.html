@@ -1,0 +1,22 @@
+<div class="p-grid p-nogutter p-pt-2 p-pr-3 p-pl-3 p-pb-3">
+    <h4 class="intestazione-componente">Template documenti</h4>
+</div>
+
+<app-spinner-dialog *ngIf="showSpinner"></app-spinner-dialog>
+<div *ngIf="dataSource && dataSource.length" class="p-grid p-nogutter p-jc-center p-m-2">
+    <ng-container *ngFor="let template of dataSource">
+        <p-card [header]="template.label" subheader="Ultimo aggiornamento: {{template.last_modification.data_operazione | formatDate}}" [style]="{width: '360px', height: '220px'}" class="card-template" styleClass="p-card-shadow p-shadow-12 p-m-2">
+            <p>Caricato da: <b>{{template.last_modification.utente}}</b></p>
+            <ng-template pTemplate="footer">
+                <div class="p-d-flex p-jc-center">
+                    <button pButton label="Download" icon="pi pi-download" pTooltip="Download del template" 
+                        class="btn-custom-style double-button p-mr-1" (click)="downloadTemplate(template)"></button>
+                    <button pButton label="Upload" icon="pi pi-upload" class="btn-custom-style double-button p-ml-1" pTooltip="Aggiorna il template"
+                        (click)="fileTemplate.click()"></button>
+                    <input #fileTemplate type="file" style="display: none;" (change)="uploadTemplate($event, template)" accept=".docx">                        
+                </div>       
+            </ng-template>
+        </p-card>
+    </ng-container> 
+</div>
+

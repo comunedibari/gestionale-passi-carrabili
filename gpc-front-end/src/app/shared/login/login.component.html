@@ -1,0 +1,72 @@
+<div class="p-grid p-nogutter p-pt-2 p-pr-3 p-pl-3 p-pb-3">
+    <h4 class="intestazione-componente">Accedi al servizio</h4>
+</div>
+<div class="p-grid p-nogutter p-ai-stretch vertical-container container-routing"> 
+    <div class="p-grid p-nogutter p-ai-center p-jc-between stretch">
+        <div class="p-col"></div>
+        <div class="p-col-10 p-sm-8 p-md-7 p-lg-4 p-shadow-24 p-p-4">
+            <div class="p-d-flex p-flex-column">
+                    <div class="card">
+                        <label class="field-label">Credenziali</label>
+                        <div class="p-fluid p-formgrid p-grid">
+                            <div class="p-field p-col-12">
+                                <input id="username" type="text" pInputText placeholder="Username" [(ngModel)]="username"> 
+                            </div>
+                            <div class="p-field p-col-12">
+                                <input id="password" type="password" pInputText placeholder="Password" [(ngModel)]="password"> 
+                            </div>
+                            <div class="p-field p-col-5 p-m-auto">
+                                <button pButton class="btn-custom-style" type="button" label="Accedi" (click)="login()"></button> 
+                            </div> 
+                        </div>     
+                    </div>
+                    <div class="card p-mt-4">
+                        <label for="recuperaPassword" class="label">Password dimenticata?  
+                            <a class="pointer link" (click)="recuperaPasswordDialog()">                      
+                                Clicca qui
+                            </a>
+                        </label> 
+                    </div>
+                    <!-- <div class="card">
+                        <div class="p-field-checkbox">
+                            <p-checkbox binary="true" [(ngModel)]="privacyCheckBox" inputId="privacy"></p-checkbox>
+                            <label for="redirectCondizioniUso" class="label">Ho letto
+                                <a class="pointer link" (click)="redirectPrivacyPage()">                      
+                                l'informativa sulla Privacy
+                                </a>
+                                e ne accetto le condizioni
+                            </label>
+                        </div>
+                        <div class="p-field-checkbox">
+                            <p-checkbox binary="true" [(ngModel)]="condizioniUsoCheckBox" inputId="condizioniUso"></p-checkbox>
+                            <label for="redirectCondizioniUso" class="label">Ho letto
+                                <a class="pointer link" (click)="redirectCondizioniUsoPage()">                      
+                                l'informativa sulle Condizioni d'uso
+                                </a>
+                                e ne accetto le condizioni
+                            </label>
+                        </div>
+                    </div> -->
+                </div>  
+        </div>  
+        <div class="p-col"></div>
+    </div>
+</div>
+
+<p-dialog header="Recupero password:" [(visible)]="recuperaPasswordModal" [modal]="true"[style]="{width: '400px'}"
+    [draggable]="false" [resizable]="false">
+
+    <div class="card">
+        <label class="field-label">Username</label>
+        <div class="p-field">
+            <input class="stretch" id="username" type="text" pInputText placeholder="Username" [(ngModel)]="username"> 
+        </div>
+    </div>
+
+    <ng-template pTemplate="footer">
+      <button pButton class="btn-custom-style" type="button" label="Conferma" (click)="recuperaPassword()" [disabled]="!username"></button> 
+    </ng-template>
+</p-dialog>
+
+<app-spinner-dialog *ngIf="recuperaPasswordSpinner"></app-spinner-dialog> 
+  

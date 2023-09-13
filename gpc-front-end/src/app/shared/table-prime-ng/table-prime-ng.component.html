@@ -1,0 +1,119 @@
+<!--PRIMENG TABLE-->
+<div class="card">
+
+    <p-toolbar *ngIf="showToolbar">
+        <ng-template pTemplate="left">
+            <h3 class='p-m-0'>{{titleTable}}</h3>
+        </ng-template>
+        <ng-template pTemplate="right">
+            <span *ngIf="selectedRows && selectedRows.length" class="p-mr-3">{{selectedRows.length + (selectedRows.length == 1 ? ' elemento selezionato' : ' elementi selezionati')}}</span>
+            <!-- <button type="button" pButton pRipple icon="pi pi-file-o" (click)="this.table.exportCSV()" 
+                class="p-button-info p-mr-2 btn-export-size" pTooltip="ESPORTA CSV" [disabled]="!_dataSource || (_dataSource && _dataSource.length == 0)"></button>
+            <button type="button" pButton pRipple icon="pi pi-filter" (click)="this.table.exportCSV({selectionOnly:true})" 
+                class="p-button-info p-mr-2 btn-export-size" pTooltip="ESPORTA CSV SELEZIONATI" [disabled]="!_dataSource || (_dataSource && _dataSource.length == 0)"></button> -->
+            <button type="button" pButton pRipple icon="pi pi-file-excel" (click)="exportExcel()"
+                class="p-button-success p-mr-2 btn-export-size" pTooltip="ESPORTAZIONE IN EXCEL" [disabled]="!_dataSource || (_dataSource && _dataSource.length == 0)"></button>
+            <button type="button" pButton pRipple icon="pi pi-file-pdf" (click)="exportPdf()"
+                class="p-button-danger p-mr-2 btn-export-size" pTooltip="ESPORTAZIONE IN PDF" [disabled]="!_dataSource || (_dataSource && _dataSource.length == 0)"></button>
+            <button *ngIf="inserisciFeature" pButton label="Aggiungi" icon="pi pi-plus" class="btn-inserisci btn-custom-style"
+                (click)="this.emitAction($event, selectedRows, inserisciFeature)"></button> 
+        </ng-template>
+    </p-toolbar>
+
+    <p-table #dt [columns]="selectedColumns" [value]="_dataSource" styleClass="p-datatable-gridlines p-datatable-striped"
+        [paginator]="true" [rows]="rowsPerPageOptions[0]" [showCurrentPageReport]="true" [(selection)]="selectedRows" sortField="{{initSortColumn}}" sortOrder="{{directionSortColumn}}"
+        currentPageReportTemplate="Visualizzati da {first} a {last} record di {totalRecords} record totali" [resizableColumns]="false" columnResizeMode="fit"
+        [rowsPerPageOptions]="rowsPerPageOptions" [filterDelay]="0" [globalFilterFields]="_globalFilters"
+        [scrollable]="false" scrollHeight="500px"  scrollWidth='500px' [reorderableColumns]="true" [autoLayout]="isAutoLayout"
+        [rowHover]="true" compareSelectionBy="equals" csvSeparator=";" [exportFilename]="exportName ? exportName : 'data'"> 
+
+        <ng-template *ngIf="showCaption" pTemplate="caption">
+            <div class="p-d-flex p-jc-between">
+                <div>
+                    <span class="p-mr-2">Filtro globale:</span>
+                    <span class="p-input-icon-left">
+                        <i class="pi pi-search"></i>
+                        <input pInputText type="text" (input)="onFilterGlobal($event)"
+                            placeholder="Cerca testo..." [pTooltip]="getTooltipGlobalFilters()"/>
+                    </span>
+                </div>
+                <div>
+                    <span class="p-mr-2">Scelta colonne:</span>
+                    <span>
+                        <p-multiSelect [options]="_columnSchema" [(ngModel)]="selectedColumns" optionLabel="header"
+                            selectedItemsLabel="{0} colonne scelte" class="multiselect-scelta-colonne"
+                            placeholder="Scegli colonne" optionDisabled="inactive">
+                        </p-multiSelect>
+                    </span>
+                </div>
+            </div>
+        </ng-template>
+
+        <ng-template pTemplate="header" let-columns>
+            <tr>
+                <th *ngIf="showCaption" style="width: 40px;">
+                    <!-- <div class="p-d-flex p-jc-center">
+                        <p-tableHeaderCheckbox></p-tableHeaderCheckbox>
+                    </div> -->
+                </th>
+                <th *ngFor="let col of columns" pReorderableColumn [pSortableColumn]="col.field"> 
+                    <div class="p-d-flex p-ai-center">
+                        <span class="spanEllipsis" [pTooltip]="col.header">{{col.header}}</span>
+
+                        <ng-container [ngSwitch]="col.type">
+                            <p-columnFilter *ngSwitchCase="'dropdown'" [field]="col.field" matchMode="in" display="menu" [showMatchModes]="false"
+                                [showOperator]="false" [showAddButton]="false" [showClearButton]="true" [showApplyButton]="false">
+                                <ng-template pTemplate="filter" let-value let-filter="filterCallback">
+                                    <p-multiSelect [(ngModel)]="dropDownFilters['selected_' + col.field]" [options]="dropDownFilters[col.field]" placeholder="Tutti" 
+                                        (onChange)="filter($event.value);" [optionLabel]="label">
+                                    </p-multiSelect>
+                                </ng-template>
+                            </p-columnFilter>
+
+                            <p-columnFilter *ngSwitchDefault [type]="col.type" [field]="col.field" display="menu">
+                            </p-columnFilter>
+                        </ng-container>
+
+                        <p-sortIcon [field]="col.field"></p-sortIcon>
+                    </div>
+                </th>
+                <th *ngIf="thereIsActions"><span class="spanEllipsis" pTooltip="Azioni">Azioni</span></th>
+            </tr>
+        </ng-template>
+        <ng-template pTemplate="body" let-row let-columns="columns">
+            <tr [pSelectableRow]="row">
+                <td *ngIf="showCaption">
+                    <div class="p-d-flex p-jc-center">
+                        <p-tableCheckbox [value]="row"></p-tableCheckbox>
+                    </div>
+                </td>
+                 <td *ngFor="let col of columns" [ngSwitch]="col.pipe">
+                    <span class="spanEllipsis" *ngSwitchCase="'date'"
+                        pTooltip="{{col.show(row) | formatDate}}">{{col.show(row) | formatDate}}</span>
+                    <span class="spanEllipsis" *ngSwitchCase="'onlyDate'"
+                        pTooltip="{{col.show(row) | formatDate: true}}">{{col.show(row) | formatDate: true}}</span>
+                    <span class="spanEllipsis" *ngSwitchDefault
+                        pTooltip="{{col.show(row)}}">{{col.show(row)}}</span>
+                </td>
+                <td *ngIf="thereIsActions">
+                    <ng-container *ngFor="let action of this._actions">
+                        <button *ngIf="!action.hidden(row)"
+                            pButton
+                            pTooltip="{{action.tooltip}}"
+                            icon="{{action.icon}}"
+                            class="btn-custom-style p-button-rounded p-m-1"
+                            (click)="this.emitAction($event, row, action.key)"
+                            [disabled]="action.disabled(row)">
+                        </button>
+                    </ng-container>
+                </td>
+            </tr>
+        </ng-template>
+
+        <ng-template pTemplate="emptymessage">
+            <tr>
+                <td [attr.colspan]="this._columnSchema.length + 2">Nessun elemento trovato.</td>
+            </tr>
+        </ng-template>
+    </p-table>
+</div>

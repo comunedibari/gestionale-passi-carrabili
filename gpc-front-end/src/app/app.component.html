@@ -1,0 +1,24 @@
+<div class="p-grid p-nogutter">
+  <div class="p-col-12">
+    <app-header (isLogged)="isLogged($event)" (clickMenuButton)="openMenu()"></app-header>
+  </div>
+</div>
+<div class="p-grid p-nogutter" [style.minHeight]="minHeight">
+  <div class="p-col-12">
+    <router-outlet></router-outlet>
+  </div>
+</div>
+<div class="p-grid p-nogutter">
+  <div class="p-col-12">
+    <app-footer></app-footer>
+  </div>
+</div>
+
+<p-toast position="top-right"></p-toast>
+<p-confirmDialog></p-confirmDialog>
+
+<p-sidebar class="menu-sidebar" *ngIf="isAuthenticate" [(visible)]="showMenuSidebar" [showCloseIcon]="false">
+  <app-menu (clickItem)="onClickItem()"></app-menu>
+</p-sidebar>
+
+<p-scrollTop [threshold]="200"></p-scrollTop>

@@ -1,0 +1,609 @@
+{
+	"mappings": {
+		"properties": {
+			"id_doc": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"last_modification": {
+				"properties": {
+					"data_operazione": {
+						"type": "date",
+						"format": "YYYY-MM-DD || YYYY-MM-DD HH:mm || YYYY-MM-DD HH:mm:ss"
+					},
+					"username": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"utente": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					}
+				}
+			},
+			"result": {
+				"properties": {
+					"anagrafica": {
+						"properties": {
+							"codice_fiscale": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"cognome": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"data_nascita": {
+								"type": "date"
+							},
+							"email": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"luogo_nascita": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"luogo_residenza": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"nome": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"recapito_telefonico": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"sesso": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"tipologia_persona": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							}
+						}
+					},
+					"data_inserimento": {
+						"type": "date"
+					},
+					"dati_istanza": {
+						"properties": {
+							"anni": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"concessione": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"data_scadenza_concessione": {
+								"type": "date"
+							},
+							"durata_giorni_concessione": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"giorni": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"indirizzo_segnale_indicatore": {
+								"properties": {
+									"indirizzo": {
+										"type": "text",
+										"fields": {
+											"keyword": {
+												"type": "keyword",
+												"ignore_above": 256
+											}
+										}
+									},
+									"localita": {
+										"type": "text",
+										"fields": {
+											"keyword": {
+												"type": "keyword",
+												"ignore_above": 256
+											}
+										}
+									},
+									"location": {
+										"properties": {
+											"lat": {
+												"type": "float"
+											},
+											"lon": {
+												"type": "float"
+											}
+										}
+									},
+									"municipio_id": {
+										"type": "long"
+									}
+								}
+							},
+							"mesi": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"motivazione_richiesta": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"ruolo_richiedente": {
+								"type": "long"
+							},
+							"tipologia_processo": {
+								"type": "long"
+							},
+							"utilizzo_locali": {
+								"type": "long"
+							}
+						}
+					},
+					"determina": {
+						"properties": {
+							"data_emissione": {
+								"type": "date"
+							},
+							"id": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"id_blob": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							}
+						}
+					},
+					"dichiarazioni_aggiuntive": {
+						"properties": {
+							"accettazione_suolo_pubblico": {
+								"type": "boolean"
+							},
+							"capienza_min_veicoli": {
+								"type": "long"
+							},
+							"conoscenza_spese_carico": {
+								"type": "boolean"
+							},
+							"distanza_intersezione": {
+								"type": "long"
+							},
+							"larghezza": {
+								"type": "long"
+							},
+							"locale_area": {
+								"type": "long"
+							},
+							"profondita": {
+								"type": "long"
+							},
+							"titolo_autorizzativo": {
+								"properties": {
+									"tipologia": {
+										"type": "text",
+										"fields": {
+											"keyword": {
+												"type": "keyword",
+												"ignore_above": 256
+											}
+										}
+									}
+								}
+							},
+							"vincolo_parcheggio": {
+								"type": "boolean"
+							}
+						}
+					},
+					"diniego": {
+						"type": "boolean"
+					},
+					"dovuto": {
+						"properties": {
+							"cauzione_infruttifera": {
+								"type": "long"
+							},
+							"costo_segnale_indicatore": {
+								"type": "long"
+							},
+							"iud": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"iuv": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							}
+						}
+					},
+					"id_doc": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"integrazione_counter": {
+						"type": "long"
+					},
+					"last_modification": {
+						"properties": {
+							"data_operazione": {
+								"type": "date",
+								"format": "YYYY-MM-DD || YYYY-MM-DD HH:mm || YYYY-MM-DD HH:mm:ss"
+							},
+							"username": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"utente": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							}
+						}
+					},
+					"numero_protocollo": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"numero_protocollo_comunicazione": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"parere_polizia": {
+						"properties": {
+							"note": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							}
+						}
+					},
+					"proprietario_pratica": {
+						"properties": {
+							"username": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"utente": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							}
+						}
+					},
+					"stato_pratica": {
+						"type": "long"
+					},
+					"tagMemoryBank": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"tag_rfid": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					}
+				}
+			},
+			"segnalazioni": {
+				"properties": {
+					"blob": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"cognome": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"dataInserimento": {
+						"type": "date",
+						"format": "YYYY-MM-DD || YYYY-MM-DD HH:mm || YYYY-MM-DD HH:mm:ss"
+					},
+					"email": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"idTag": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"indirizzo_segnale_indicatore": {
+						"properties": {
+							"indirizzo": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"localita": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"location": {
+								"properties": {
+									"lat": {
+										"type": "float"
+									},
+									"lon": {
+										"type": "float"
+									}
+								}
+							},
+							"municipio_id": {
+								"type": "long"
+							}
+						}
+					},
+					"info_chiusura_segnalazione": {
+						"properties": {
+							"data_operazione": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"username": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							},
+							"utente": {
+								"type": "text",
+								"fields": {
+									"keyword": {
+										"type": "keyword",
+										"ignore_above": 256
+									}
+								}
+							}
+						}
+					},
+					"mobileLocation": {
+						"properties": {
+							"lat": {
+								"type": "float"
+							},
+							"lon": {
+								"type": "float"
+							}
+						}
+					},
+					"nome": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"note": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"note_conclusive": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"telefono": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					}
+				}
+			},
+			"stato_segnalazione": {
+				"type": "long"
+			}
+		}
+	}
+}

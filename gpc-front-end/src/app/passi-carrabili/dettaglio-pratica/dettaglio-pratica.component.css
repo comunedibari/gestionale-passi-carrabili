@@ -1,0 +1,42 @@
+.icon-trasferimento {
+    position: absolute;
+    right: 15px;
+    bottom: 27px;
+    font-size: 1.4rem;
+    color: rgba(0, 0, 0, 0.4);
+}
+
+.arrow-map-class {
+    position: absolute;
+    right: 5px;
+    top: 6px;
+}
+
+.warning-label {
+    font-size: 18px;
+    margin: 0 0 0 10px;
+    display: inline-block;
+    height: 38px;
+    line-height: 38px;
+}
+
+.div-durata-concessione {
+    display: flex;
+    border: 1px solid #ced4da;
+}
+
+.div-durata-concessione input, 
+.div-durata-concessione .p-inputtext:enabled:hover:read-only{
+    border-left: 1px solid #ced4da;
+    border-right: none;
+    border-top: none;
+    border-bottom: none;
+}
+
+.icona-riferimento-origine {
+    position: absolute;
+    top: 40px;
+    right: 20px;
+    font-weight: bold;
+    font-size: 20px;
+}

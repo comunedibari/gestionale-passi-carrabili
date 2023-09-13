@@ -1,0 +1,14 @@
+.arrow-map-class {
+    position: absolute;
+    right: 5px;
+    top: 6px;
+}
+
+.img-size {
+    height: 283px;
+    width: 100%;
+}
+
+.img-size.noStretch{
+    object-fit: contain;
+}

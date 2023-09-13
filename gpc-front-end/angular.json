@@ -1,0 +1,205 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "gpc-front-end": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "allowedCommonJsDependencies": [
+              "raf",
+              "@babel/runtime-corejs3"
+            ],
+            "outputPath": "dist",
+            "index": "src/index.html",
+            "main": "src/main.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.app.json",
+            "aot": true,
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.css",
+              "./node_modules/primeicons/primeicons.css",
+              "./node_modules/primeng/resources/themes/saga-blue/theme.css",
+              "./node_modules/primeng/resources/primeng.min.css",
+              "./node_modules/primeflex/primeflex.css",
+              "./node_modules/font-awesome/css/font-awesome.css",
+              "./node_modules/leaflet/dist/leaflet.css",
+              "./node_modules/leaflet.markercluster/dist/MarkerCluster.css",
+              "./node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css",
+              "./node_modules/leaflet-styleeditor/dist/css/Leaflet.StyleEditor.min.css",
+              "./node_modules/leaflet-draw/dist/leaflet.draw.css",
+              "./node_modules/leaflet.fullscreen/Control.FullScreen.css"
+            ],
+            "scripts": [
+              "./node_modules/leaflet/dist/leaflet-src.js",
+              "./node_modules/leaflet.tilelayer.colorfilter/src/leaflet-tilelayer-colorfilter.min.js",
+              "./node_modules/leaflet.markercluster/dist/leaflet.markercluster-src.js",
+              "./node_modules/heatmap.js/build/heatmap.min.js",
+              "./node_modules/leaflet-heatmap/leaflet-heatmap.js",
+              "./node_modules/leaflet.path.drag/src/Path.Drag.js",
+              "./node_modules/leaflet-editable/src/Leaflet.Editable.js",
+              "./node_modules/leaflet-wfst/dist/leaflet-wfst.src.js",
+              "./node_modules/leaflet-styleeditor/dist/javascript/Leaflet.StyleEditor.min.js",
+              "./node_modules/leaflet-draw/dist/leaflet.draw-src.js",
+              "./node_modules/leaflet.fullscreen/Control.FullScreen.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "10mb",
+                  "maximumError": "10mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            },
+            "sviluppo": {
+              "fileReplacements": [
+                {
+                  "replace": "src/environments/environment.ts",
+                  "with": "src/environments/environment.svil.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "namedChunks": false,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true,
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "10mb",
+                  "maximumError": "10mb"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "6kb",
+                  "maximumError": "10kb"
+                }
+              ]
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "gpc-front-end:build",
+            "port": 8091,
+            "host": "127.0.0.1"
+          },
+          "configurations": {
+            "svil": {
+              "browserTarget": "gpc-front-end:build:svil"
+            },
+            "production": {
+              "browserTarget": "gpc-front-end:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "gpc-front-end:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "src/test.ts",
+            "polyfills": "src/polyfills.ts",
+            "tsConfig": "tsconfig.spec.json",
+            "karmaConfig": "karma.conf.js",
+            "assets": [
+              "src/favicon.ico",
+              "src/assets"
+            ],
+            "styles": [
+              "src/styles.css",
+              "./node_modules/primeicons/primeicons.css",
+              "./node_modules/primeng/resources/themes/saga-blue/theme.css",
+              "./node_modules/primeng/resources/primeng.min.css",
+              "./node_modules/primeflex/primeflex.css",
+              "./node_modules/font-awesome/css/font-awesome.css",
+              "./node_modules/leaflet/dist/leaflet.css",
+              "./node_modules/leaflet.markercluster/dist/MarkerCluster.css",
+              "./node_modules/leaflet.markercluster/dist/MarkerCluster.Default.css",
+              "./node_modules/leaflet-styleeditor/dist/css/Leaflet.StyleEditor.min.css",
+              "./node_modules/leaflet-draw/dist/leaflet.draw.css",
+              "./node_modules/leaflet.fullscreen/Control.FullScreen.css"
+            ],
+            "scripts": [
+              "./node_modules/leaflet/dist/leaflet-src.js",
+              "./node_modules/leaflet.tilelayer.colorfilter/src/leaflet-tilelayer-colorfilter.min.js",
+              "./node_modules/leaflet.markercluster/dist/leaflet.markercluster-src.js",
+              "./node_modules/heatmap.js/build/heatmap.min.js",
+              "./node_modules/leaflet-heatmap/leaflet-heatmap.js",
+              "./node_modules/leaflet.path.drag/src/Path.Drag.js",
+              "./node_modules/leaflet-editable/src/Leaflet.Editable.js",
+              "./node_modules/leaflet-wfst/dist/leaflet-wfst.src.js",
+              "./node_modules/leaflet-styleeditor/dist/javascript/Leaflet.StyleEditor.min.js",
+              "./node_modules/leaflet-draw/dist/leaflet.draw-src.js",
+              "./node_modules/leaflet.fullscreen/Control.FullScreen.js"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "tsconfig.app.json",
+              "tsconfig.spec.json",
+              "e2e/tsconfig.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        },
+        "e2e": {
+          "builder": "@angular-devkit/build-angular:protractor",
+          "options": {
+            "protractorConfig": "e2e/protractor.conf.js",
+            "devServerTarget": "gpc-front-end:serve"
+          },
+          "configurations": {
+            "production": {
+              "devServerTarget": "gpc-front-end:serve:production"
+            }
+          }
+        }
+      }
+    }},
+  "defaultProject": "gpc-front-end"
+}

@@ -1,0 +1,15 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: {{ include "gpc.fullname" . }}-be
+  labels:
+    {{- include "gpc.labelsBackEnd" . | nindent 4 }}
+spec:
+  type: {{ .Values.service.backEnd.type }}
+  ports:
+    - port: {{ .Values.service.backEnd.port }}
+      targetPort: http
+      protocol: TCP
+      name: http
+  selector:
+    {{- include "gpc.selectorLabelsBackEnd" . | nindent 4 }}

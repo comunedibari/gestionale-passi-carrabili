@@ -1,0 +1,255 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_marginStart="16dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="16dp">
+
+    <TextView
+        android:id="@+id/text_codicefiscale"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Codice fiscale"
+        android:textColor="@android:color/black"
+        android:fontFamily="@font/titilliumweb_bold"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        android:textSize="@dimen/text_normal"/>
+    <TextView
+        android:id="@+id/text_codicefiscale_info_pass"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:ellipsize="end"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/titilliumweb_regular"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_codicefiscale"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        android:textSize="@dimen/text_big" />
+
+    <TextView
+        android:id="@+id/text_nome"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="Nome"
+        android:textColor="@android:color/black"
+        android:fontFamily="@font/titilliumweb_bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_codicefiscale_info_pass"
+        android:textSize="@dimen/text_normal" />
+    <TextView
+        android:id="@+id/text_nome_info_pass"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:ellipsize="end"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/titilliumweb_regular"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/text_nome"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        android:textSize="@dimen/text_big" />
+
+    <TextView
+        android:id="@+id/text_cognome"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_nome_info_pass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="Cognome"
+        android:textColor="@android:color/black"
+        android:fontFamily="@font/titilliumweb_bold"
+        android:textSize="@dimen/text_normal" />
+    <TextView
+        android:id="@+id/text_cognome_info_pass"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:ellipsize="end"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/titilliumweb_regular"
+        app:layout_constraintTop_toBottomOf="@id/text_cognome"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="@dimen/text_big" />
+
+    <TextView
+        android:id="@+id/text_ragione_sociale"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_cognome_info_pass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="Ragione Sociale"
+        android:textColor="@android:color/black"
+        android:fontFamily="@font/titilliumweb_bold"
+        android:textSize="@dimen/text_normal" />
+
+    <TextView
+        android:id="@+id/text_ragione_sociale_info_pass"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:ellipsize="end"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/titilliumweb_regular"
+        app:layout_constraintTop_toBottomOf="@id/text_ragione_sociale"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="@dimen/text_big" />
+
+    <TextView
+        android:id="@+id/text_partita_iva"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_ragione_sociale_info_pass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="14dp"
+        android:text="Partita Iva"
+        android:textColor="@android:color/black"
+        android:fontFamily="@font/titilliumweb_bold"
+        android:textSize="@dimen/text_normal" />
+
+    <TextView
+        android:id="@+id/text_partita_iva_info_pass"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:ellipsize="end"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/titilliumweb_regular"
+        app:layout_constraintTop_toBottomOf="@id/text_partita_iva"
+        app:layout_constraintEnd_toStartOf="@+id/guideline2"
+        app:layout_constraintStart_toStartOf="parent"
+        android:textSize="@dimen/text_big" />
+
+    <TextView
+        android:id="@+id/text_datanascita"
+        app:layout_constraintStart_toEndOf="@id/guideline2"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Data di nascita"
+        android:textColor="@android:color/black"
+        android:fontFamily="@font/titilliumweb_bold"
+        android:textSize="@dimen/text_normal"/>
+    <TextView
+        android:id="@+id/text_datanascita_info_pass"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:ellipsize="end"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/titilliumweb_regular"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="@id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/text_datanascita"
+        android:textSize="@dimen/text_big" />
+
+    <TextView
+        android:id="@+id/text_luogonascita"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Luogo di nascita"
+        android:textColor="@android:color/black"
+        android:fontFamily="@font/titilliumweb_bold"
+        app:layout_constraintLeft_toLeftOf="@id/guideline2"
+        android:layout_marginTop="14dp"
+        app:layout_constraintTop_toBottomOf="@id/text_datanascita_info_pass"
+        android:textSize="@dimen/text_normal" />
+    <TextView
+        android:id="@+id/text_luogonascita_info_pass"
+        app:layout_constraintLeft_toLeftOf="@+id/guideline3"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:ellipsize="end"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/titilliumweb_regular"
+        app:layout_constraintStart_toStartOf="@id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/text_luogonascita"
+        android:textSize="@dimen/text_big" />
+
+    <TextView
+        android:id="@+id/text_email"
+        app:layout_constraintLeft_toLeftOf="@id/guideline2"
+        app:layout_constraintTop_toBottomOf="@id/text_luogonascita_info_pass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Email"
+        android:layout_marginTop="14dp"
+        android:textColor="@android:color/black"
+        android:fontFamily="@font/titilliumweb_bold"
+        android:textSize="@dimen/text_normal"/>
+    <TextView
+        android:id="@+id/text_email_info_pass"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="-"
+        android:ellipsize="end"
+        android:layout_marginEnd="8dp"
+        android:fontFamily="@font/titilliumweb_regular"
+        app:layout_constraintTop_toBottomOf="@+id/text_email"
+        app:layout_constraintStart_toStartOf="@id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:textSize="@dimen/text_big" />
+
+    <TextView
+        android:id="@+id/text_numtel"
+        app:layout_constraintStart_toStartOf="@id/guideline2"
+        app:layout_constraintTop_toBottomOf="@+id/text_email_info_pass"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Numero telefono"
+        android:layout_marginTop="14dp"
+        android:textColor="@android:color/black"
+        android:fontFamily="@font/titilliumweb_bold"
+        android:textSize="@dimen/text_normal" />
+    <TextView
+        android:id="@+id/text_numtel_info_pass"
+        app:layout_constraintTop_toBottomOf="@+id/text_numtel"
+        app:layout_constraintStart_toStartOf="@id/guideline2"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:ellipsize="end"
+        android:layout_marginEnd="8dp"
+        android:text="-"
+        android:fontFamily="@font/titilliumweb_regular"
+        android:textSize="@dimen/text_big" />
+
+    <Button
+        android:id="@+id/buttonAsset"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="18dp"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:text="Info passo carrabile" />
+
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline"
+        app:layout_constraintGuide_percent="0.18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline2"
+        app:layout_constraintGuide_percent="0.5"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+    <androidx.constraintlayout.widget.Guideline
+        android:id="@+id/guideline3"
+        app:layout_constraintGuide_percent="0.68"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

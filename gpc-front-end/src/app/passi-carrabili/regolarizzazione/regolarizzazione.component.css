@@ -1,0 +1,7 @@
+:host ::ng-deep .upload-button-basic .p-fileupload .p-button {
+    width: 34px;
+    border-radius: 50%;
+    position: absolute;
+    top: -12px;
+    right: 8px;
+}

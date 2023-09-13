@@ -1,0 +1,641 @@
+<app-spinner-dialog *ngIf="showSpinner"></app-spinner-dialog>
+
+<form [formGroup]="dettaglioPraticaForm">
+    <div class="p-fluid p-formgrid p-grid p-inputtext-lg p-m-2" formGroupName="anagrafica">
+
+            <div class="p-col-12">
+                <legend class="legend">Anagrafica firmatario</legend> <!--  - ID: {{this.dataForm.id_doc}} -->
+            </div>
+
+            <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputNome" class="p-text-bold">Nome</label>
+                <input type="text" id="txtinputNome" name="txtinputNome" pInputText
+                    formControlName="nome" [readonly]="true">
+            </div>
+
+             <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputCognome" class="p-text-bold">Cognome</label>
+                <input type="text" id="txtinputCognome" name="txtinputCognome" pInputText
+                    formControlName="cognome" [readonly]="true">
+            </div>
+
+            <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputSesso" class="p-text-bold">Sesso</label>
+                <p-selectButton name="txtinputSesso" [options]="sessoUsers" optionLabel="label" optionValue="value"
+                    formControlName="sesso" styleClass="button-select readonly"></p-selectButton>
+            </div>
+
+            <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputDatadinascita" class="p-text-bold">Data di nascita</label>
+                <p-calendar name='txtinputDatadinascita' dateFormat="dd/mm/yy" formControlName="data_nascita" icon="pi pi-calendar" [showIcon]="true" styleClass="data-calendar readonly"></p-calendar>
+            </div>
+
+            <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputLuogoNascita" class="p-text-bold">Luogo di nascita</label>
+                <input type="text" id="txtinputLuogoNascita" name="txtinputLuogoNascita" pInputText
+                    formControlName="luogo_nascita" [readonly]="true">
+            </div>
+
+            <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputLuogoResidenza" class="p-text-bold">Indirizzo di residenza</label>
+                <input type="text" id="txtinputLuogoResidenza" name="txtinputLuogoResidenza" pInputText
+                    formControlName="luogo_residenza" [readonly]="true">
+            </div>
+
+            <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputCodicefiscale" class="p-text-bold">Codice fiscale / Partita IVA</label>
+                <input id="txtinputCodicefiscale" name="txtinputCodicefiscale" pInputText 
+                    formControlName="codice_fiscale" [readonly]="true">  
+            </div>
+
+            <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputNumtel" class="p-text-bold">Recapito telefonico</label>
+                <input id="txtinputNumtel" name="txtinputNumtel" pInputText
+                    formControlName="recapito_telefonico" [readonly]="true">
+            </div>
+
+            <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputEmail" class="p-text-bold">Email/PEC</label>
+                <input type="email" id="txtinputEmail" name="txtinputEmail" pInputText 
+                    formControlName="email" [readonly]="true">  
+            </div>
+
+            <div *ngIf="isPersonaGiuridica" class="p-col-12">
+                <legend class="legend">Anagrafica destinatario</legend>
+            </div>
+
+            <div *ngIf="isPersonaGiuridica" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputRagioneSociale" class="p-text-bold">Ragione sociale</label>
+                <input type="text" id="txtinputRagioneSociale" name="txtinputRagioneSociale" pInputText
+                    formControlName="ragione_sociale" [readonly]="true">
+            </div>
+
+            <div *ngIf="isPersonaGiuridica" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputCodicefiscalePIVA" class="p-text-bold">Codice Fiscale / Partita IVA</label>
+                <input id="txtinputCodicefiscalePIVA" name="txtinputCodicefiscalePIVA" pInputText 
+                    formControlName="codice_fiscale_piva" pTooltip="Codice fiscale del condominio o Partita IVA dell'azienda" [readonly]="true">           
+            </div>
+
+            <div *ngIf="isPersonaGiuridica" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputSedeLegale" class="p-text-bold">Indirizzo sede legale</label>
+                <input type="text" id="txtinputSedeLegale" name="txtinputSedeLegale" pInputText 
+                    formControlName="indirizzo_sede_legale" [readonly]="true">
+            </div>
+    </div>
+
+    <div class="p-fluid p-formgrid p-grid p-inputtext-lg p-m-2" formGroupName="dati_istanza">
+        <div class="p-col-12">
+            <legend class="legend">Dati dell'istanza</legend>
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputConcessione" class="p-text-bold">Tipologia concessione</label>
+            <p-selectButton name="txtinputConcessione" [options]="tipologiaPraticaSchema" optionLabel="label" optionValue="value"
+                formControlName="concessione" styleClass="button-select readonly"></p-selectButton>
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('dati_istanza.anni').value || dettaglioPraticaForm.get('dati_istanza.mesi').value || dettaglioPraticaForm.get('dati_istanza.giorni').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputDurataConcessione" class="p-text-bold">Durata concessione [Anni - Mesi - Giorni]</label>
+            <div class="div-durata-concessione">
+                <input type="number" id="txtinputDurataConcessioneAnni" name="txtinputDurataConcessioneAnni" pInputText 
+                    formControlName="anni" [readonly]="true"  [class.readonly]="true" style="border-left: none">
+                <input type="number" id="txtinputDurataConcessioneMesi" name="txtinputDurataConcessioneMesi" pInputText 
+                    formControlName="mesi" [readonly]="true"  [class.readonly]="true">
+                <input type="number" id="txtinputDurataConcessioneGiorni" name="txtinputDurataConcessioneGiorni" pInputText 
+                    formControlName="giorni" [readonly]="true"  [class.readonly]="true">
+            </div>         
+        </div>
+
+        <div *ngIf="!dettaglioPraticaForm.get('dati_istanza.anni').value && !dettaglioPraticaForm.get('dati_istanza.mesi').value && !dettaglioPraticaForm.get('dati_istanza.giorni').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputDurataConcessione" class="p-text-bold">Durata giorni concessione</label>
+            <input type="number" id="txtinputDurataConcessione" name="txtinputDurataConcessione" pInputText
+                formControlName="durata_giorni_concessione" [readonly]="true">
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('dati_istanza.data_scadenza_concessione').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputDataScadenzaConcessione" class="p-text-bold">Data di scadenza concessione</label>
+            <p-calendar name='txtinputDataScadenzaConcessione' dateFormat="dd/mm/yy" formControlName="data_scadenza_concessione" icon="pi pi-calendar" [showIcon]="true" styleClass="data-calendar readonly"></p-calendar>
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputIndirizzoSegnale" class="p-text-bold">Indirizzo del segnale indicatore</label>
+            <input type="text" id="txtinputIndirizzoSegnale" name="txtinputIndirizzoSegnale" pInputText 
+                 formControlName="indirizzo_segnale_indicatore" [readonly]="true" [pTooltip]="dettaglioPraticaForm.get('dati_istanza.indirizzo_segnale_indicatore').value">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputMotivazione" class="p-text-bold">Motivazione richiesta</label>
+            <input type="text" id="txtinputMotivazione" name="txtinputMotivazione" pInputText
+                formControlName="motivazione_richiesta" [readonly]="true">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputRuolo" class="p-text-bold">Ruolo richiedente</label>
+            <input type="text" id="txtinputRuolo" name="txtinputRuolo" pInputText
+                formControlName="ruolo_richiedente" [readonly]="true" [pTooltip]="getTooltipProprietarioImmobile(dettaglioPraticaForm.get('dati_istanza.ruolo_richiedente').value)">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputUtilizzo" class="p-text-bold">Utilizzo dei locali</label>
+            <input type="text" id="txtinputUtilizzo" name="txtinputUtilizzo" pInputText
+                formControlName="utilizzo_locali" [readonly]="true" [pTooltip]="getTooltipTipologiaFabbricato(dettaglioPraticaForm.get('dati_istanza.utilizzo_locali').value)">
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('dati_istanza.specifica_utilizzo_locali').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputAltro" class="p-text-bold">Definisci utilizzo locali</label>
+            <input type="text" id="txtinputAltro" name="txtinputAltro" pInputText
+                formControlName="specifica_utilizzo_locali" [readonly]="true">
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('dati_istanza.tipologia_processo').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0 relative-container">
+            <label for="txtinputTipologia" class="p-text-bold">Tipologia processo</label>
+            <i *ngIf="isTrasferimentoTitolarita" class="icon-trasferimento pi pi-info-circle" [pTooltip]="typeTrasferimentoTitolarita"></i>
+            <input type="text" id="txtinputTipologia" name="txtinputTipologia" pInputText
+                formControlName="tipologia_processo" [readonly]="true">
+        </div>
+    </div>
+
+    <div *ngIf="this.dataForm.dati_istanza" class="p-fluid p-formgrid p-grid p-inputtext-lg p-m-2">
+        <div class="p-col-12 relative-container">
+            <legend class="legend">Visualizza su mappa</legend>
+            <button *ngIf="!hidePositionOnMap" pButton pRipple type="button" icon="pi pi-angle-up" 
+                class="p-button-rounded p-button-text btn-custom-style arrow-map-class" (click)="hidePositionOnMap = true"></button>
+            <button *ngIf="hidePositionOnMap" pButton pRipple type="button" icon="pi pi-angle-down" 
+                class="p-button-rounded p-button-text btn-custom-style arrow-map-class" (click)="hidePositionOnMap = false"></button>
+        </div>
+
+        <div *ngIf="!hidePositionOnMap && this.dataForm.dati_istanza.indirizzo_segnale_indicatore.location.lat && this.dataForm.dati_istanza.indirizzo_segnale_indicatore.location.lon" class="p-field p-col-12 p-mt-2">
+            <app-mappa [elements]="this.currElement"></app-mappa>
+        </div>
+
+        <div *ngIf="!hidePositionOnMap && !this.dataForm.dati_istanza.indirizzo_segnale_indicatore.location.lat && !this.dataForm.dati_istanza.indirizzo_segnale_indicatore.location.lon" class="p-field p-col-12">     
+            <button pButton pRipple type="button" icon="pi pi-bell" class="p-button-rounded p-button-warning p-button-outlined"></button>
+            <p class="warning-label">Nessuna Latitudine/Longitudine presente!</p>
+        </div>
+ 
+    </div>
+
+    <div class="p-fluid p-formgrid p-grid p-inputtext-lg p-m-2" formGroupName="dichiarazioni_aggiuntive">
+        <div class="p-col-12">
+            <legend class="legend">Dichiarazioni aggiuntive</legend>
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0 p-d-flex p-ai-center">
+            <p-checkbox class="p-mb-1" name="checkBoxSuoloPubblico" id="checkBoxSuoloPubblico" label="Accettazione regolamento suolo pubblico" pTooltip="Dichiaro di essere a conoscenza del regolamento comunale per l'occupazione di suolo pubblico che disciplina l'apertura di passi carrabili"
+                [binary]="true" [formControl]="dettaglioPraticaForm.controls['dichiarazioni_aggiuntive'].get('accettazione_suolo_pubblico')" [readonly]="true"></p-checkbox>
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0 p-d-flex p-ai-center">
+            <p-checkbox class="p-mb-1" name="checkBoxSpeseCarico" id="checkBoxSpeseCarico" label="Conoscenza spese a carico" pTooltip="Dichiaro di essere a conoscenza che la realizzazione del passo carrabile è a propria cura e spese"
+                [binary]="true" [formControl]="dettaglioPraticaForm.controls['dichiarazioni_aggiuntive'].get('conoscenza_spese_carico')" [readonly]="true"></p-checkbox>
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0 p-d-flex p-ai-center">
+            <span pTooltip="Se selezionato il passo carrabile dà accesso a locale/area vincolata a parcheggio">
+                <p-toggleButton class="p-mb-0" name="checkBoxVincoloParcheggio" id="checkBoxVincoloParcheggio" [onIcon]="'pi pi-check'" offIcon="pi pi-times"
+                    formControlName="vincolo_parcheggio" styleClass="toggle-button readonly"></p-toggleButton>
+                <label for="checkBoxVincoloParcheggio" class="p-checkbox-label p-mb-0">Vincolo al parcheggio</label>
+            </span>
+        </div>
+
+        <div class="p-col-12 p-grid p-nogutter">
+            <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0 p-d-flex p-ai-center">
+                <p-checkbox class="p-mb-1" name="checkBoxEsenzione" id="checkBoxEsenzione" label="Dichiaro di essere esente dal pagamento della marca da bollo" pTooltip="Esenzione pagamento marca da bollo"
+                    [binary]="true" [formControl]="dettaglioPraticaForm.controls['dichiarazioni_aggiuntive'].get('flag_esenzione')" [readonly]="true"></p-checkbox>
+            </div>
+
+            <div *ngIf="dettaglioPraticaForm.get('dichiarazioni_aggiuntive.flag_esenzione').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputEsenzione" class="p-text-bold">Motivazione esenzione pagamento marca da bollo</label>
+                <input type="text" id="txtinputEsenzione" name="txtinputEsenzione" pTooltip="Descrivere la motivazione dell'esenzione ed indicare eventualmente il riferimento normativo"
+                    pInputText formControlName="motivazione_esenzione" [readonly]="true">
+            </div>
+        </div>
+
+        <div class="p-col-12 p-grid p-nogutter">
+            <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0 p-d-flex p-ai-center">
+                <p-checkbox class="p-mb-1" name="checkBoxEsenzioneCUP" id="checkBoxEsenzioneCUP" label="Esente dal pagamento del CUP" pTooltip="Esente dal pagamento del CUP"
+                    [binary]="true" [formControl]="dettaglioPraticaForm.controls['dichiarazioni_aggiuntive'].get('flag_esenzione_cup')" [readonly]="true"></p-checkbox>
+            </div>
+
+            <div *ngIf="dettaglioPraticaForm.get('dichiarazioni_aggiuntive.flag_esenzione_cup').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputEsenzioneCUP" class="p-text-bold">Motivazione esenzione pagamento CUP</label>
+                <input type="text" id="txtinputEsenzioneCUP" name="txtinputEsenzioneCUP" pTooltip="Descrivere la motivazione dell'esenzione dal pagamento del CUP"
+                    pInputText formControlName="motivazione_esenzione_cup" [readonly]="true">
+            </div>
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputLocaleArea" class="p-text-bold">Locale/area [mq]</label>
+            <input type="number" id="txtinputLocaleArea" name="txtinputLocaleArea" pInputText pTooltip="Il passo carrabile dà accesso a locale/area di mq (almeno 25mq)"
+                formControlName="locale_area" [readonly]="true">
+        </div>
+
+       <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputCapienzaVeicoli" class="p-text-bold">Capienza min. veicoli</label>
+            <input type="number" id="txtinputCapienzaVeicoli" name="txtinputCapienzaVeicoli" pInputText pTooltip="Capienza minima di numero veicoli"
+                formControlName="capienza_min_veicoli" [readonly]="true">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputDistanzaIntersezione" class="p-text-bold">Distanza dall'intersezione [m]</label>
+            <input type="number" id="txtinputDistanzaIntersezione" name="txtinputDistanzaIntersezione" pInputText pTooltip="Il passo carrabile è distante metri (almeno 12 m) dall'intersezione stradale più vicina"
+                formControlName="distanza_intersezione" [readonly]="true">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputLarghezza" class="p-text-bold">Larghezza [m]</label>
+            <input type="number" id="txtinputLarghezza" name="txtinputLarghezza" pInputText pTooltip="Il passo carrabile ha una larghezza pari a metri"
+                formControlName="larghezza" [readonly]="true">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputProfondita" class="p-text-bold">Profondità [m]</label>
+            <input type="number" id="txtinputProfondita" name="txtinputProfondita" pInputText pTooltip="Il passo carrabile ha una profondità pari a metri"
+                formControlName="profondita" [readonly]="true">
+        </div>
+
+        <div formGroupName="titolo_autorizzativo" *ngIf="dettaglioPraticaForm.get('dichiarazioni_aggiuntive.titolo_autorizzativo.tipologia').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputTitoloAutorizzativo" class="p-text-bold">Titolo autorizzativo</label>
+            <input type="text" id="txtinputTitoloAutorizzativo" name="txtinputTitoloAutorizzativo" pInputText
+                formControlName="tipologia" [readonly]="true" [pTooltip]="getTooltipTitoloAutorizzativo(dettaglioPraticaForm.get('dichiarazioni_aggiuntive.titolo_autorizzativo.tipologia').value)">
+        </div>
+
+        <div formGroupName="titolo_autorizzativo" *ngIf="dettaglioPraticaForm.get('dichiarazioni_aggiuntive.titolo_autorizzativo.specifica_tipologia').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputTitoloAutorizzativoAltro" class="p-text-bold">Definisci titolo autorizzativo</label>
+            <input type="text" id="txtinputTitoloAutorizzativoAltro" name="txtinputTitoloAutorizzativoAltro" pInputText 
+                formControlName="specifica_tipologia" [readonly]="true">
+        </div>
+
+        <div formGroupName="titolo_autorizzativo" *ngIf="dettaglioPraticaForm.get('dichiarazioni_aggiuntive.titolo_autorizzativo.riferimento').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputRiferimentoTitoloAutorizzativo" class="p-text-bold">Riferimento titolo autorizzativo</label>
+            <input type="text" id="txtinputRiferimentoTitoloAutorizzativo" name="txtinputRiferimentoTitoloAutorizzativo" pInputText 
+                formControlName="riferimento" [readonly]="true">
+        </div>
+    </div> 
+
+    <div class="p-fluid p-formgrid p-grid p-inputtext-lg p-m-2" formGroupName="informazioni_aggiuntive">
+        <div class="p-col-12">
+            <legend class="legend">Informazioni aggiuntive</legend>
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('informazioni_aggiuntive.numero_protocollo').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputProtocollo" class="p-text-bold">Num. protocollo</label>
+            <input type="text" id="txtinputProtocollo" name="txtinputProtocollo" pInputText
+                formControlName="numero_protocollo" [readonly]="true">
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('informazioni_aggiuntive.stato_pratica').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputStatoPratica" class="p-text-bold">Stato pratica</label>
+            <input type="text" id="txtinputStatoPratica" name="txtinputStatoPratica" pInputText
+                formControlName="stato_pratica" [readonly]="true">
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('informazioni_aggiuntive.data_inserimento').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputDataInserimento" class="p-text-bold">Data di inserimento pratica</label>
+            <p-calendar name='txtinputDataInserimento' dateFormat="dd/mm/yy" formControlName="data_inserimento" icon="pi pi-calendar" [showIcon]="true" styleClass="data-calendar readonly"></p-calendar>
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('informazioni_aggiuntive.data_scadenza_procedimento').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputDataScadenza" class="p-text-bold">Data di scadenza tempi procedimentali</label>
+            <p-calendar name='txtinputDataScadenza' dateFormat="dd/mm/yy" formControlName="data_scadenza_procedimento" icon="pi pi-calendar" [showIcon]="true" styleClass="data-calendar readonly"></p-calendar>
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('informazioni_aggiuntive.proprietario_pratica').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputProprietario" class="p-text-bold">Istruttore</label>
+            <input type="text" id="txtinputProprietario" name="txtinputProprietario" pInputText
+                formControlName="proprietario_pratica" [readonly]="true">
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('informazioni_aggiuntive.id_determina').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputDetermina" class="p-text-bold">Numero determina</label>
+            <input type="text" id="txtinputDetermina" name="txtinputDetermina" pInputText
+                formControlName="id_determina" [readonly]="true">
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('informazioni_aggiuntive.determina_data_emissione').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputDataEmissioneDetermina" class="p-text-bold">Data emissione determina</label>
+            <p-calendar name='txtinputDataEmissioneDetermina' dateFormat="dd/mm/yy" formControlName="determina_data_emissione" icon="pi pi-calendar" [showIcon]="true" styleClass="data-calendar readonly"></p-calendar>
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('informazioni_aggiuntive.id_determina_rettifica').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputDeterminaRettifica" class="p-text-bold">Numero determina rettifica</label>
+            <input type="text" id="txtinputDeterminaRettifica" name="txtinputDeterminaRettifica" pInputText
+                formControlName="id_determina_rettifica" [readonly]="true">
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('informazioni_aggiuntive.determina_rettifica_data_emissione').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputDataEmissioneDeterminaRettifica" class="p-text-bold">Data emissione determina rettifica</label>
+            <p-calendar name='txtinputDataEmissioneDeterminaRettifica' dateFormat="dd/mm/yy" formControlName="determina_rettifica_data_emissione" icon="pi pi-calendar" [showIcon]="true" styleClass="data-calendar readonly"></p-calendar>
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('informazioni_aggiuntive.data_scadenza_pagamento').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputScadenzaPagamento" class="p-text-bold">Data di scadenza di pagamento</label>
+            <p-calendar name='txtinputScadenzaPagamento' dateFormat="dd/mm/yy" formControlName="data_scadenza_pagamento" icon="pi pi-calendar" [showIcon]="true" styleClass="data-calendar readonly"></p-calendar>
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('informazioni_aggiuntive.data_scadenza_restituzione').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputScadenzaRestituzione" class="p-text-bold">Data di scadenza di restituzione</label>
+            <p-calendar name='txtinputScadenzaRestituzione' dateFormat="dd/mm/yy" formControlName="data_scadenza_restituzione" icon="pi pi-calendar" [showIcon]="true" styleClass="data-calendar readonly"></p-calendar>
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('informazioni_aggiuntive.iud').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputIUD" class="p-text-bold">IUD</label>
+            <input type="text" id="txtinputIUD" name="txtinputIUD" pInputText
+                formControlName="iud" [readonly]="true">
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('informazioni_aggiuntive.iuv').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputIUV" class="p-text-bold">IUV</label>
+            <input type="text" id="txtinputIUV" name="txtinputIUV" pInputText
+                formControlName="iuv" [readonly]="true">
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('informazioni_aggiuntive.cauzione_infruttifera').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputCauzioneInfruttifera" class="p-text-bold">Cauzione infruttifera (€)</label>
+            <input type="text" id="txtinputCauzioneInfruttifera" name="txtinputCauzioneInfruttifera" pInputText
+                formControlName="cauzione_infruttifera" [readonly]="true">
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('informazioni_aggiuntive.costo_segnale_indicatore').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputCostoSegnaleIndicatore" class="p-text-bold">Costo segnale indicatore (€)</label>
+            <input type="text" id="txtinputCostoSegnaleIndicatore" name="txtinputCostoSegnaleIndicatore" pInputText
+                formControlName="costo_segnale_indicatore" [readonly]="true">
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('informazioni_aggiuntive.tag_rfid').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputRFID" class="p-text-bold">Tag RFID</label>
+            <input type="text" id="txtinputRFID" name="txtinputRFID" pInputText
+                formControlName="tag_rfid" [readonly]="true">
+        </div>
+    </div>
+
+    <div *ngIf="this.dataForm.marca_bollo_pratica" class="p-fluid p-formgrid p-grid p-inputtext-lg p-m-2" formGroupName="marca_bollo_pratica">
+        <div class="p-col-12">
+            <legend class="legend">Dettagli pagamento marca da bollo pratica</legend>
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputBolloPraticaIUV" class="p-text-bold">IUV</label>
+            <input type="text" id="txtinputBolloPraticaIUV" name="txtinputBolloPraticaIUV" pInputText formControlName="iuv" [readonly]="true">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputBolloPraticaImprontaFile" class="p-text-bold">Impronta file</label>
+            <input type="text" id="txtinputBolloPraticaImprontaFile" name="txtinputBolloPraticaImprontaFile" pInputText formControlName="impronta_file" [readonly]="true">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputBolloPraticaImportoPagato" class="p-text-bold">Importo pagato (€)</label>
+            <input type="text" id="txtinputBolloPraticaImportoPagato" name="txtinputBolloPraticaImportoPagato" pInputText formControlName="importo_pagato" [readonly]="true">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputBolloPraticaCausalePagamento" class="p-text-bold">Causale pagamento</label>
+            <input type="text" id="txtinputBolloPraticaCausalePagamento" name="txtinputBolloPraticaCausalePagamento" pInputText 
+                [pTooltip]="dettaglioPraticaForm.get('marca_bollo_pratica.causale_pagamento').value" formControlName="causale_pagamento" [readonly]="true">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputBolloPraticaIdRichiesta" class="p-text-bold">ID richiesta</label>
+            <input type="text" id="txtinputBolloPraticaIdRichiesta" name="txtinputBolloPraticaIdRichiesta" pInputText formControlName="id_richiesta" [readonly]="true">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputBolloPraticaDataOperazione" class="p-text-bold">Data operazione</label>
+            <p-calendar name='txtinputBolloPraticaDataOperazione' dateFormat="dd/mm/yy" formControlName="data_operazione" icon="pi pi-calendar" [showIcon]="true" styleClass="data-calendar readonly"></p-calendar>
+        </div>
+
+    </div>
+
+    <div *ngIf="this.dataForm.marca_bollo_determina" class="p-fluid p-formgrid p-grid p-inputtext-lg p-m-2" formGroupName="marca_bollo_determina">
+        <div class="p-col-12">
+            <legend class="legend">Dettagli pagamento marca da bollo determina</legend>
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputBolloDeterminaIUV" class="p-text-bold">IUV</label>
+            <input type="text" id="txtinputBolloDeterminaIUV" name="txtinputBolloDeterminaIUV" pInputText formControlName="iuv" [readonly]="true">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputBolloDeterminaImprontaFile" class="p-text-bold">Impronta file</label>
+            <input type="text" id="txtinputBolloDeterminaImprontaFile" name="txtinputBolloDeterminaImprontaFile" pInputText formControlName="impronta_file" [readonly]="true">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputBolloDeterminaImportoPagato" class="p-text-bold">Importo pagato (€)</label>
+            <input type="text" id="txtinputBolloDeterminaImportoPagato" name="txtinputBolloDeterminaImportoPagato" pInputText formControlName="importo_pagato" [readonly]="true">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputBolloDeterminaCausalePagamento" class="p-text-bold">Causale pagamento</label>
+            <input type="text" id="txtinputBolloDeterminaCausalePagamento" name="txtinputBolloDeterminaCausalePagamento" pInputText 
+                [pTooltip]="dettaglioPraticaForm.get('marca_bollo_determina.causale_pagamento').value" formControlName="causale_pagamento" [readonly]="true">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputBolloDeterminaIdRichiesta" class="p-text-bold">ID richiesta</label>
+            <input type="text" id="txtinputBolloDeterminaIdRichiesta" name="txtinputBolloDeterminaIdRichiesta" pInputText formControlName="id_richiesta" [readonly]="true">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputBolloDeterminaDataOperazione" class="p-text-bold">Data operazione</label>
+            <p-calendar name='txtinputBolloDeterminaDataOperazione' dateFormat="dd/mm/yy" formControlName="data_operazione" icon="pi pi-calendar" [showIcon]="true" styleClass="data-calendar readonly"></p-calendar>
+        </div>
+
+    </div>
+    
+    <div *ngIf="this.dataForm.parere_municipio" class="p-fluid p-formgrid p-grid p-inputtext-lg p-m-2" formGroupName="parere_municipio">
+        <div class="p-col-12">
+            <legend *ngIf="this.dataForm.data_scadenza_integrazione || this.dataForm.data_scadenza_diniego" class="legend">Informazioni richiesta integrazione</legend>
+            <legend *ngIf="!this.dataForm.data_scadenza_integrazione && !this.dataForm.data_scadenza_diniego && (this.dataForm.data_scadenza_inizio_lavori || this.dataForm.data_scadenza_fine_lavori)" class="legend">Informazioni richiesta lavori</legend>
+            <legend *ngIf="!this.dataForm.data_scadenza_integrazione && !this.dataForm.data_scadenza_diniego && this.dataForm.data_scadenza_notifica_decadenza" class="legend">Informazioni decadenza</legend>
+            <legend *ngIf="!this.dataForm.data_scadenza_integrazione && !this.dataForm.data_scadenza_diniego && !this.dataForm.data_scadenza_inizio_lavori && !this.dataForm.data_scadenza_fine_lavori && !this.dataForm.data_scadenza_notifica_decadenza" class="legend">Parere municipio</legend>     
+        </div>
+
+        <div *ngIf="this.dettaglioPraticaForm.get('parere_municipio.note').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-8 p-pb-3 p-m-0">
+            <label class="p-text-bold">Note</label>
+            <textarea pInputTextarea [rows]="2" formControlName="note" class="text-area-no-resize stretch" [readonly]="true"></textarea>
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('parere_municipio.data_scadenza_integrazione').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputDataScadenzaIntegrazione" class="p-text-bold">Data di scadenza integrazione</label>
+            <p-calendar name='txtinputDataScadenzaIntegrazione' dateFormat="dd/mm/yy" formControlName="data_scadenza_integrazione" icon="pi pi-calendar" [showIcon]="true" styleClass="data-calendar readonly"></p-calendar>
+        </div>
+        
+        <div *ngIf="dettaglioPraticaForm.get('parere_municipio.data_scadenza_diniego').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputDataScadenzaDiniego" class="p-text-bold">Data di scadenza diniego</label>
+            <p-calendar name='txtinputDataScadenzaDiniego' dateFormat="dd/mm/yy" formControlName="data_scadenza_diniego" icon="pi pi-calendar" [showIcon]="true" styleClass="data-calendar readonly"></p-calendar>
+        </div> 
+
+        <div *ngIf="this.dettaglioPraticaForm.get('parere_municipio.lavori_richiesti').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-8 p-pb-3 p-m-0">
+            <label class="p-text-bold">Lavori richiesti</label>
+            <textarea pInputTextarea [rows]="2" formControlName="lavori_richiesti" class="text-area-no-resize stretch" [readonly]="true"></textarea>
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('parere_municipio.data_scadenza_inizio_lavori').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputDataScadenzaInizioLavori" class="p-text-bold">Data di scadenza inizio lavori</label>
+            <p-calendar name='txtinputDataScadenzaInizioLavori' dateFormat="dd/mm/yy" formControlName="data_scadenza_inizio_lavori" icon="pi pi-calendar" [showIcon]="true" styleClass="data-calendar readonly"></p-calendar>
+        </div> 
+
+        <div *ngIf="dettaglioPraticaForm.get('parere_municipio.data_scadenza_fine_lavori').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputDataScadenzaFineLavori" class="p-text-bold">Data di scadenza fine lavori</label>
+            <p-calendar name='txtinputDataScadenzaFineLavori' dateFormat="dd/mm/yy" formControlName="data_scadenza_fine_lavori" icon="pi pi-calendar" [showIcon]="true" styleClass="data-calendar readonly"></p-calendar>
+        </div> 
+
+        <div *ngIf="this.dettaglioPraticaForm.get('parere_municipio.note_decadenza').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-8 p-pb-3 p-m-0">
+            <label class="p-text-bold">Note decadenza</label>
+            <textarea pInputTextarea [rows]="2" formControlName="note_decadenza" class="text-area-no-resize stretch" [readonly]="true"></textarea>
+        </div>
+
+        <div *ngIf="dettaglioPraticaForm.get('parere_municipio.data_scadenza_notifica_decadenza').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputDataScadenzaNotificaDecadenza" class="p-text-bold">Data di esecuzione decadenza</label>
+            <p-calendar name='txtinputDataScadenzaNotificaDecadenza' dateFormat="dd/mm/yy" formControlName="data_scadenza_notifica_decadenza" icon="pi pi-calendar" [showIcon]="true" styleClass="data-calendar readonly"></p-calendar>
+        </div> 
+    </div>
+
+    <div *ngIf="this.dataForm.informazioni_rettifica && this.dettaglioPraticaForm.get('informazioni_rettifica.note').value" class="p-fluid p-formgrid p-grid p-inputtext-lg p-m-2" formGroupName="informazioni_rettifica">
+        <div class="p-col-12">
+            <legend class="legend">Informazioni per rettifica pratica</legend>
+        </div>
+
+        <div class="p-field p-col-12 p-pb-3 p-m-0">
+            <label class="p-text-bold">Note</label>
+            <textarea pInputTextarea [rows]="2" formControlName="note" class="text-area-no-resize stretch" [readonly]="true"></textarea>
+        </div>
+    </div>
+
+    <div *ngIf="this.dataForm.parere_polizia && this.dataForm.parere_polizia?.note != ''" class="p-fluid p-formgrid p-grid p-inputtext-lg p-m-2" formGroupName="parere_polizia">
+        <div class="p-col-12">
+            <legend class="legend">Parere polizia locale</legend>
+        </div>
+
+        <div class="p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <div class="p-field p-col-12 p-pb-3 p-pl-0 p-pr-0 p-m-0">
+                <label for="inputCompetenzaPolizia" class="p-text-bold">Competenza</label>
+                <p-selectButton name="inputCompetenzaPolizia" [options]="competenza" optionLabel="label" optionValue="value"
+                    formControlName="competenza" styleClass="button-select readonly"></p-selectButton>
+            </div>
+
+            <div class="p-field p-col-12 p-pl-0 p-pr-0 p-m-0">
+                <label for="inputParerePolizia" class="p-text-bold">Parere</label>
+                <p-selectButton name="inputParerePolizia" [options]="parere" optionLabel="label" optionValue="value"
+                    formControlName="parere" styleClass="button-select readonly"></p-selectButton>
+            </div>
+        </div>
+        <div class="p-col-12 p-sm-6 p-md-6 p-lg-8 p-pb-3 p-m-0">
+            <div class="p-field p-col-12 p-pl-0 p-pr-0 p-m-0">
+                <label class="p-text-bold">Note</label>
+                <textarea pInputTextarea [rows]="5" formControlName="note" class="text-area-no-resize stretch" [readonly]="true"></textarea>
+            </div>
+        </div>
+    </div>
+
+
+    <div *ngIf="this.dataForm.parere_utd && this.dataForm.parere_utd?.note != ''" class="p-fluid p-formgrid p-grid p-inputtext-lg p-m-2" formGroupName="parere_utd">
+        <div class="p-col-12">
+            <legend class="legend">Parere UTD</legend>
+        </div>
+
+        <div class="p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <div class="p-field p-col-12 p-pb-3 p-pl-0 p-pr-0 p-m-0">
+                <label for="inputCompetenzaUtd" class="p-text-bold">Competenza</label>
+                <p-selectButton name="inputCompetenzaUtd" [options]="competenza" optionLabel="label" optionValue="value"
+                    formControlName="competenza" styleClass="button-select readonly"></p-selectButton>
+            </div>
+
+            <div class="p-field p-col-12 p-pl-0 p-pr-0 p-m-0">
+                <label for="inputParereUtd" class="p-text-bold">Parere</label>
+                <p-selectButton name="inputParereUtd" [options]="parere" optionLabel="label" optionValue="value"
+                    formControlName="parere" styleClass="button-select readonly"></p-selectButton>
+            </div>
+        </div>
+        <div class="p-col-12 p-sm-6 p-md-6 p-lg-8 p-pb-3 p-m-0">
+            <div class="p-field p-col-12 p-pl-0 p-pr-0 p-m-0">
+                <label class="p-text-bold">Note</label>
+                <textarea pInputTextarea [rows]="5" formControlName="note" class="text-area-no-resize stretch" [readonly]="true"></textarea>
+            </div>
+        </div> 
+    </div>
+
+
+    <div *ngIf="this.dataForm.parere_urbanistica && this.dataForm.parere_urbanistica?.note != ''" class="p-fluid p-formgrid p-grid p-inputtext-lg p-m-2" formGroupName="parere_urbanistica">
+        <div class="p-col-12">
+            <legend class="legend">Parere ripartizione urbanistica</legend>
+        </div>
+
+        <div class="p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <div class="p-field p-col-12 p-pb-3 p-pl-0 p-pr-0 p-m-0">
+                <label for="inputCompetenzaUrbanistica" class="p-text-bold">Competenza</label>
+                <p-selectButton name="inputCompetenzaUrbanistica" [options]="competenza" optionLabel="label" optionValue="value"
+                    formControlName="competenza" styleClass="button-select readonly"></p-selectButton>
+            </div>
+
+            <div class="p-field p-col-12 p-pl-0 p-pr-0 p-m-0">
+                <label for="inputParereUrbanistica" class="p-text-bold">Parere</label>
+                <p-selectButton name="inputParereUrbanistica" [options]="parere" optionLabel="label" optionValue="value"
+                    formControlName="parere" styleClass="button-select readonly"></p-selectButton>
+            </div>
+        </div>
+        <div class="p-col-12 p-sm-6 p-md-6 p-lg-8 p-pb-3 p-m-0">
+            <div class="p-field p-col-12 p-pl-0 p-pr-0 p-m-0">
+                <label class="p-text-bold">Note</label>
+                <textarea pInputTextarea [rows]="5" formControlName="note" class="text-area-no-resize stretch" [readonly]="true"></textarea>
+            </div>
+        </div>    
+    </div>
+
+    <div *ngIf="this.dataForm.dati_istanza.link_pratica_origine" class="p-fluid p-formgrid p-grid p-inputtext-lg p-m-2" formGroupName="link_pratica_origine">
+        <div class="p-col-12">
+            <legend class="legend">Riferimenti alla pratica originaria</legend>
+        </div>
+
+        <div *ngIf="this.dettaglioPraticaForm.get('link_pratica_origine.numero_protocollo').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0 relative-container">
+            <label class="p-text-bold">Num. protocollo</label>
+            <i class="pi pi-search icona-riferimento-origine" pTooltip="Apri dettaglio pratica d'origine" (click)="dettaglioPraticaOrigine()"></i>
+            <input class="pointer" type="text" id="txtinputNumProtocolloOrigine" name="txtinputNumProtocolloOrigine" pInputText formControlName="numero_protocollo" 
+                pTooltip="Apri dettaglio pratica d'origine" [readonly]="true" (click)="dettaglioPraticaOrigine()">
+        </div>
+
+        <div *ngIf="this.dettaglioPraticaForm.get('link_pratica_origine.id_determina').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label class="p-text-bold">Numero determina</label>
+            <input type="text" id="txtinputNumProvvedimentoOrigine" name="txtinputNumProvvedimentoOrigine" pInputText formControlName="id_determina" [readonly]="true">
+        </div>
+
+        <div *ngIf="this.dettaglioPraticaForm.get('link_pratica_origine.tag_rfid').value" class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label class="p-text-bold">Tag RFID</label>
+            <input type="text" id="txtinputTagRFIDOrigine" name="txtinputTagRFIDOrigine" pInputText formControlName="tag_rfid" [readonly]="true">
+        </div>
+    </div>
+
+    <div *ngIf="showDocsAndStorico" class="p-fluid p-formgrid p-grid p-inputtext-lg p-m-2">
+        <div class="p-col-12">
+            <legend class="legend">Area documentale</legend>
+        </div>
+        <div class="p-col-12 p-mb-3">
+            <app-upload-file [pratica]="this.dataForm" [mode]="'multiple'" [readonly]="true"></app-upload-file>
+        </div>
+    </div>
+
+    <div *ngIf="showDocsAndStorico && showStorico" class="p-fluid p-formgrid p-grid p-inputtext-lg p-m-2" >
+
+        <div class="p-col-12">
+            <legend class="legend">Storico pratica</legend>
+        </div>
+
+        <div class="p-field p-col-12">
+            <table-prime-ng
+                [dataSource]="this.dataSource" 
+                [columnSchema]="this.columnSchema" 
+                [actions]="this.actions"
+                [initSortColumn]="initSortColumn" 
+                [directionSortColumn]="directionSortColumn"
+                (onEvent)="this.onTableEvent($event)"              
+                [showToolbar] = false
+                [showCaption]=false>
+            </table-prime-ng>
+        </div>
+
+    </div>
+         
+</form>

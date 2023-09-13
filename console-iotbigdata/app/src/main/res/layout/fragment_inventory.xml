@@ -1,0 +1,169 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:visibility="visible"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+    <LinearLayout
+        android:id="@+id/inventoryDataLayout"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="13"
+        android:background="@color/dark_grey"
+        android:baselineAligned="false">
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/style_very_small_font"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/default_left_padding"
+                android:layout_marginTop="5dp"
+                android:gravity="right"
+                android:text="@string/inv_filter_title" />
+
+            <Spinner
+                android:id="@+id/inventoryOptions"
+                style="@style/style_default_spinner"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="0dp" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_weight="33"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/style_very_small_font"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="@string/inv_unique_title" />
+
+            <TextView
+                android:id="@+id/inventoryUniqueText"
+                style="@style/style_large_font"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="9999" />
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="@dimen/default_right_margin"
+            android:layout_weight="33"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/style_very_small_font"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="5dp"
+                android:gravity="center"
+                android:text="@string/inv_count_title" />
+
+            <TextView
+                android:id="@+id/inventoryCountText"
+                style="@style/style_large_font"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:text="9999999" />
+        </LinearLayout>
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/inventoryList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="74" />
+
+    <TextView android:id="@+id/batchModeInventoryList"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="74"
+        style="@style/style_medium_font"
+        android:textColor="@color/dark_grey"
+        android:padding="@dimen/default_padding"
+        android:text="@string/batch_mode_inventory_title"
+        android:gravity="center"
+        android:visibility="gone"/>
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="13"
+        android:baselineAligned="false"
+        android:orientation="horizontal">
+
+        <Button
+            android:id="@+id/inventoryButton"
+            style="@style/style_button_font"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentBottom="true"
+            android:layout_gravity="bottom"
+            android:onClick="inventoryStartOrStop"
+            android:text="@string/start_title" />
+    </RelativeLayout>
+
+    </LinearLayout>
+
+    <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:visibility="gone"
+        tools:context=".ui.fragment.LoadRevelationFragment">
+
+        <LinearLayout
+            android:id="@+id/layout_scan_revelation"
+            android:orientation="vertical"
+            android:layout_width="match_parent"
+            android:gravity="center"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:id="@+id/image_logo_revelation"
+                android:layout_width="80dp"
+                android:layout_height="80dp"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_rfid" />
+
+            <TextView
+                android:id="@+id/text_revelation_content"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp"
+                android:textColor="@color/colorBlack"
+                android:textSize="26sp"
+                android:layout_margin="60dp"
+                android:gravity="center"
+                android:text="Avvicinare il dispositivo di puntamento per la rilevazione ..." />
+            <ProgressBar
+                android:layout_marginTop="16dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content" />
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+</LinearLayout>
+

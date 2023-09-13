@@ -1,0 +1,130 @@
+<p-fileUpload #fp *ngIf="isMultipleFile" customUpload="true" (uploadHandler)="uploadFiles()" multiple="multiple" [showCancelButton]="false"
+  [accept]="acceptedExtensions" maxFileSize="20000000" (onSelect)="checkDuplicateFiles($event)" 
+  (onRemove)="removeSingleFile($event)" [disabled]="this.readonly" invalidFileLimitMessageSummary="Numero massimo di file caricabili superato, "
+  invalidFileLimitMessageDetail="il limite massimo è {0} file." invalidFileTypeMessageSummary="{0}: formato file non valido. " 
+  invalidFileTypeMessageDetail="Formato file richiesto: {0}." invalidFileSizeMessageSummary="{0}: Dimensione fine non valida, " 
+  invalidFileSizeMessageDetail="grandezza massima consentita: {0}.">
+
+        <ng-template pTemplate="toolbar">
+          <div class="upload-file-toolbar">
+              <span class="spanEllipsis">
+                {{!this.readonly ? 'Seleziona file da caricare:' : 'Documentazione pratica:'}}
+                <i *ngIf="!this.readonly" class="pi pi-question-circle icon-question" [pTooltip]="tooltipDocs"></i>
+              </span>      
+          </div>  
+          <button *ngIf="isNewInstance && !this.readonly" pButton label="Invia richiesta" icon="pi pi-send" class="btn-custom-style p-ml-2"
+            (click)="inviaRichiesta()" [disabled]="(checkPresenzaDocsObbligatori && !uploadedFiles.length) || this.fp.files.length || loading"> <!-- || (checkPresenzaDocsObbligatori && !checkIntegrazioneFiles) -->
+          </button>  
+          <button *ngIf="(isIntegrationInstance || isIntegrazioneDecadenza) && !this.readonly" pButton label="Invia integrazione" icon="pi pi-send" class="btn-custom-style p-ml-2"
+            (click)="inviaRichiesta()" [disabled]="(isIntegrationInstance && !uploadedFiles.length) || loading || !checkIntegrazioneFiles">
+          </button>    
+          <button *ngIf="isAttesaPagamento && !this.readonly" pButton label="Invia ricevute" icon="pi pi-send" class="btn-custom-style p-ml-2"
+            (click)="inviaRichiesta()" [disabled]="(checkPresenzaDocsObbligatori && !uploadedFiles.length) || loading">
+          </button>            
+        </ng-template>
+
+        <ng-template let-file pTemplate="file" let-i="index">
+          <div class="p-grid p-m-2">
+            <div class="p-col-1"><img src="../../../assets/icona-documento.png" [width]="fp.previewWidth"/></div>
+            <div class="p-col-4 spanEllipsis">{{file.name}}</div>
+            <div class="p-col-3">
+              <p-dropdown class="dropdown-type-doc" [options]="documenti" [(ngModel)]="tipologiaDocumentoSelezionato[i]" optionLabel="label" optionDisabled="disabled" 
+              (onChange)="onChangeDropDown($event)" placeholder="Seleziona tipologia documento">
+                <ng-template let-doc pTemplate="item">
+                  <div>
+                      <div pTooltip="{{doc.description}}">{{doc.custom_label || doc.label}} {{isFileObbligatorio(doc) ? '(*)' : ''}}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+            </div>
+            <div class="p-col-3">              
+              <input *ngIf="tipologiaDocumentoSelezionato[i]?.id.startsWith('altro_')" type="text" pInputText [(ngModel)]="tipologiaDocumentoSelezionato[i].custom_label" (change)="customLabelChange(i)" (keyup)="checkSpecialCharactersFieldName(i)" pTooltip="Definire la tipologia del documento"> 
+            </div>
+            <div class="p-col-1">
+              <button pTooltip="RIMUOVI" class="btn-custom-style p-button-rounded btn-function-style p-m-1" type="button" icon="pi pi-times" pButton (click)="fp.remove($event,i);onRemoveFile(i);" [disabled]="fp.uploading"></button>
+            </div>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="content">
+          <ng-container *ngIf="uploadedFiles.length && !loading">
+            <hr *ngIf="fp.files && fp.files.length">
+            <div class="p-grid p-m-2" *ngFor="let element of uploadedFiles; let i = index;">
+              <div class="p-col-fixed" style="width: 66px;">
+                <img class="center-img" src="../../../assets/icona-documento.png" [width]="fp.previewWidth"/>
+              </div>
+              <div class="p-col" style="max-width: 700px;">
+                <span class="spanEllipsis center-span" pTooltip="{{element.name}} - rev. {{element.rev}}">{{element.name}} - rev. {{element.rev}}</span>
+              </div>
+              <div class="p-col-3">
+                <input *ngIf="!element.tipologia_documento?.id.startsWith('altro_')"class="spanEllipsis stretch" [readonly]="true" type="text" pInputText [(ngModel)]="element.tipologia_documento.label" [pTooltip]="element.tipologia_documento.description"> 
+                <input *ngIf="element.tipologia_documento?.id.startsWith('altro_')" class="spanEllipsis stretch" [readonly]="true" type="text" pInputText [(ngModel)]="element.tipologia_documento.custom_label"> 
+              </div>  
+              <div class="p-col-2">                
+                <span class="spanEllipsis center-span" pTooltip="N. Protocollo: {{element.numero_protocollo | emptyValue}}">{{element.numero_protocollo | emptyValue}}</span>
+              </div>
+              <div class="p-col-1">                
+                <span class="spanEllipsis center-span" pTooltip="Data caricamento: {{element?.last_modification?.data_operazione | formatDate:false }}">{{element?.last_modification?.data_operazione | formatDate:true }}</span>
+              </div>
+              <div class="p-col-fixed" style="width: 62px;">
+                <!-- <button *ngIf="!this.readonly" pTooltip="RIMUOVI" class="btn-custom-style p-button-rounded btn-function-style p-m-1" type="button" icon="pi pi-times" pButton (click)="removeDoc(i,element);"></button> -->
+                <button pTooltip="DOWNLOAD" class="btn-custom-style p-button-rounded btn-function-style p-m-1" type="button" icon="pi pi-download" pButton (click)="downloadDoc(element)"></button>
+              </div>
+            </div>
+          </ng-container>
+          
+      </ng-template>
+</p-fileUpload>
+
+<p-fileUpload #fp *ngIf="isSingleFile" customUpload="true" (uploadHandler)="uploadFiles()" [showCancelButton]="false"
+  [accept]="acceptedExtensions" maxFileSize="20000000" [fileLimit]="1" invalidFileTypeMessageSummary="{0}: formato file non valido. " 
+  invalidFileTypeMessageDetail="Formato file richiesto: {0}." invalidFileSizeMessageSummary="{0}: Dimensione fine non valida, " 
+  invalidFileSizeMessageDetail="grandezza massima consentita: {0}." (onSelect)="selectedFile($event)" (onRemove)="selectedFile($event)">
+
+        <ng-template pTemplate="toolbar">
+          <div class="upload-single-file-toolbar">
+              <span>Seleziona file:</span>      
+          </div>     
+          <button *ngIf="isAttesaPagamento && !this.readonly" pButton label="Invia ricevuta" icon="pi pi-send" class="btn-custom-style p-ml-2"
+            (click)="inviaRichiesta()" [disabled]="!uploadedFiles.length || loading">
+          </button>            
+        </ng-template>
+
+        <ng-template let-file pTemplate="file" let-i="index">
+          <div class="p-grid p-m-2">
+            <div class="p-col-4 spanEllipsis" pTooltip="{{file.name}}">{{file.name}}</div>
+            <div class="p-col-6">
+              <p-dropdown class="dropdown-type-doc" [options]="documenti" [(ngModel)]="tipologiaDocumentoSelezionato[i]" optionLabel="label" optionDisabled="disabled" 
+              (onChange)="onChangeDropDown($event)" placeholder="Seleziona tipologia documento">
+                <ng-template let-doc pTemplate="item">
+                  <div>
+                      <div pTooltip="{{doc.description}}">{{doc.custom_label || doc.label}} {{doc.opzionale ? '' : '(*)'}}</div>
+                  </div>
+                </ng-template>
+              </p-dropdown>
+            </div>
+            <div class="p-col-2">
+              <button pTooltip="RIMUOVI" class="btn-custom-style p-button-rounded btn-function-style p-m-1" type="button" icon="pi pi-times" pButton (click)="fp.remove($event,i);onRemoveFile(i);" [disabled]="fp.uploading"></button>
+            </div>
+          </div>
+        </ng-template>
+
+        <ng-template pTemplate="content">
+          <ng-container *ngIf="uploadedFiles.length && !loading">
+            <hr *ngIf="fp.files && fp.files.length">
+            <div class="p-grid" *ngFor="let element of uploadedFiles; let i = index;">
+              <div class="p-col-5 spanEllipsis" pTooltip="{{element.name}} - rev. {{element.rev}}">{{element.name}} - rev. {{element.rev}}</div>    
+              <div class="p-col-5">
+                <input class="spanEllipsis stretch" [readonly]="true" type="text" pInputText [(ngModel)]="element.tipologia_documento.label" [pTooltip]="element.tipologia_documento.description"> 
+              </div>  
+              <div class="p-col-2">
+                <!-- <button *ngIf="!this.readonly" pTooltip="RIMUOVI" class="btn-custom-style p-button-rounded btn-function-style p-m-1" type="button" icon="pi pi-times" pButton (click)="removeDoc(i,element);"></button> -->
+                <button pTooltip="DOWNLOAD" class="btn-custom-style p-button-rounded btn-function-style p-m-1" type="button" icon="pi pi-download" pButton (click)="downloadDoc(element)"></button>
+              </div>
+            </div>
+          </ng-container>
+          
+      </ng-template>
+</p-fileUpload>
+
+<app-spinner-dialog *ngIf="loading"></app-spinner-dialog>

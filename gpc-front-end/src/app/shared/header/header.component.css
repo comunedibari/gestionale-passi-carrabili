@@ -1,0 +1,170 @@
+.pre-header {
+  background-color: #333333;
+  color: white;
+  height: 40px;
+}
+
+.header-menu{
+    height: 38px;
+    background-color: #444444;
+}
+
+.pre-header a {
+  display: inline-flex;
+  text-decoration: none;
+}
+
+.pre-header a img {
+  height: 36px;
+  margin: 2px auto;
+}
+
+.social-label {
+  font-size: 1.2rem;
+  color: white;
+  height: 40px;
+  line-height: 40px;
+  margin-left: 10px;
+}
+
+.div-social-icon {
+  width: 34px;
+  height: 34px;
+  background-color: white;
+  border-radius: 100%;
+  margin: 3px 5px;
+  padding: 8px 8px;
+}
+
+.div-social-icon-fb {
+  padding: 8px 10px;
+}
+
+.div-social-icon a {
+  text-decoration: none;
+}
+
+.social-icon {
+  font-size: 1.3rem;
+  color: #333333;
+}
+
+.header-content,
+.logo {
+  height: 128px;
+}
+
+.header-content {
+  background-color: #e20a16;
+}
+
+.title-span,
+.sub-title-span,
+.municipi-title-span {
+  color: white;
+}
+
+.title-span {
+  font-size: 1.8em;
+}
+
+.sub-title-span {
+  font-size: 1.4em;
+}
+
+.municipi-title-span {
+  font-size: 1.0em;
+}
+
+:host ::ng-deep .btn-disconnetti .p-button-icon {
+  font-size: 1.5rem;
+  font-weight: bold;
+}
+
+.btn-disconnetti{
+    background-color: #e20a16 !important;
+    color: white  !important;
+    border-color: #e20a16  !important;
+}
+
+.btn-menu{
+    background-color: #444444;
+    border-color: #444444;
+    height: 38px;
+    color: white;
+}
+
+.btn-menu:hover{
+    background-color: white !important;
+    border-color: white !important;
+    color: #444444;
+}
+
+.logo-profilo {
+    width: 30px;
+    height: 30px;
+    margin: 4px auto;
+  }
+
+.Admin {
+  background: url("../../../assets/profilo-admin.png") 50% 50% no-repeat;
+  background-size: cover;
+}
+
+.AmministratorePassiCarrabili {
+  background: url("../../../assets/profilo-administrator.png") 50% 50% no-repeat;
+  background-size: cover;
+}
+
+.OperatoreSportello {
+  background: url("../../../assets/profilo-operatore-bo1.png") 50% 50% no-repeat;
+  background-size: cover;
+}
+
+.DirettoreMunicipio, 
+.IstruttoreMunicipio {
+  background: url("../../../assets/profilo-operatore-bo2.png") 50% 50% no-repeat;
+  background-size: cover;
+}
+
+.PoliziaLocale,
+.PoliziaLocaleControlliSulTerritorio {
+  background: url("../../../assets/profilo-operatore-bo3-polizia.png") 50% 50%
+    no-repeat;
+  background-size: cover;
+}
+
+.UfficioTecnicoDecentrato,
+.RipartizioneUrbanistica {
+  background: url("../../../assets/profilo-operatore-bo3-ripartizione.png") 50%
+    50% no-repeat;
+  background-size: cover;
+}
+
+.RipartizioneTributi,
+.RipartizioneRagioneria,
+.Concessionario {
+  background: url("../../../assets/profilo-operatore-bo4.png") 50% 50% no-repeat;
+  background-size: cover;
+}
+
+.info-user {
+  color: white;
+  line-height: 38px;
+  height: 38px;
+}
+
+.mobile-view{
+    display: none;
+}
+
+/* :host ::ng-deep .breadcrum-header{
+  height: 38px;
+  line-height: 24px;
+} */
+
+.icon-header-class {
+  font-size: 1.8rem;
+  color: white;
+  margin: 5px 0px;
+}

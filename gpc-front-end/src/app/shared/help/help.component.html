@@ -1,0 +1,12 @@
+<table-prime-ng
+    [dataSource]="this.dataSource" 
+    [columnSchema]="this.columnSchema" 
+    [actions]="this.actions"
+    [initSortColumn]="initSortColumn" 
+    [directionSortColumn]="directionSortColumn"
+    (onEvent)="this.onTableEvent($event)"
+    [titleTable]="titleTable"
+    [exportName]="exportName"
+    [globalFilters]="globalFilters"
+    [rowsPerPageOptions]="rowsPerPageOptions">
+</table-prime-ng>

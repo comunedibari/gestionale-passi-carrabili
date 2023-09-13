@@ -1,0 +1,5337 @@
+openapi: 3.0.1
+info:
+  title: Swagger GPC & Console IoT
+  description: Documentazione API Gestionale Passi Carrabili e Console IoT
+  version: "1.0"
+servers:
+- url: https://gestionale-passi-carrabili.comune.bari.it/api
+tags:
+- name: Autenticazione
+  description: API accesso alla web app
+- name: Passi Carrabili
+  description: API passi carrabili
+- name: Utility
+  description: API utility
+- name: User
+  description: API gestione utenti
+- name: Shared
+  description: API condivise con sistemi esterni
+paths:
+  /auth/login:
+    post:
+      tags:
+      - Autenticazione
+      description: Permette l'autenticazione dell'utente al sistema
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: any
+                password:
+                  type: string
+                  example: any
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "true"
+                  token:
+                    type: object
+                    example: <<jwt_token>>
+                  groups:
+                    type: object
+                    example: json contenente i permessi per le funzioni del gestionale
+                      in base al profilo utente connesso
+                  username:
+                    type: object
+                    example: any
+                  userlogged:
+                    type: object
+                    example: json contenente i dati dell'utente connesso
+        404:
+          description: Username o Password Errata / L'utente non è attivo o è stato
+            cancellato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  token:
+                    type: object
+                    example: null
+                  message:
+                    type: object
+                    example: Username o Password Errata
+      x-codegen-request-body-name: body
+  /auth/logout:
+    post:
+      tags:
+      - Autenticazione
+      description: Permette la disconnessione dell'utente dal sistema
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: any
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  token:
+                    type: object
+                    example: null
+                  message:
+                    type: object
+                    example: Logout utente registrato.
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Internal Server Error
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: Failed to authenticate token.
+      x-codegen-request-body-name: body
+  /auth/recuperoPassword:
+    post:
+      tags:
+      - Autenticazione
+      description: Effettua il reset della password nel caso in cui sia stata dimenticata
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: any
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: Nuova password inviata all'indirizzo mail associato all'account
+        404:
+          description: Username errato / Errore durante la modifica della password
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Username errato
+      x-codegen-request-body-name: body
+  /auth/getToken:
+    post:
+      tags:
+      - Autenticazione
+      description: Permette di ottenere il token jwt di accesso alle API del gestionale
+        (per cooperazione con egov)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                username:
+                  type: string
+                  example: any
+                password:
+                  type: string
+                  example: any
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "true"
+                  token:
+                    type: object
+                    example: <<jwt_token>>
+                  username:
+                    type: object
+                    example: any
+                  message:
+                    type: object
+                    example: Connessione avvenuta con successo
+        404:
+          description: Username o Password Errata
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  token:
+                    type: object
+                    example: null
+                  message:
+                    type: object
+                    example: Username o Password Errata
+      x-codegen-request-body-name: body
+  /passicarrabili/inserimentoBozzaPratica:
+    post:
+      tags:
+      - Passi Carrabili
+      description: Effettua l'inserimento della pratica nel sistema in stato bozza
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: json contenente i dati dell'istanza
+        content:
+          application/json: {}
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  istanza:
+                    type: object
+                    example: json contenente l'istanza inserita a sistema
+                  message:
+                    type: object
+                    example: messaggio di avvenuto inserimento
+                  responseEmail:
+                    type: object
+                    example: comunicazione di avvenuto o meno invio della mail
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        409:
+          description: Esiste già una pratica nel sistema per il civico selezionato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: Esiste già una pratica nel sistema per il civico selezionato
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+      x-codegen-request-body-name: body
+  /passicarrabili/inserimentoPratica:
+    post:
+      tags:
+      - Passi Carrabili
+      description: Effettua l'inserimento della pratica nel sistema in stato inserita
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                istanza:
+                  type: object
+                  example: json contenente i dati dell'istanza
+                emailInviata:
+                  type: object
+                  example: boolean, true se api chiamata da GPC, false se api chiamata
+                    da egov
+                isPregresso:
+                  type: object
+                  example: boolean, true se pratica proveniente dallo storico
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  istanza:
+                    type: object
+                    example: json contenente l'istanza inserita a sistema
+                  message:
+                    type: object
+                    example: messaggio di avvenuto inserimento
+                  responseEmail:
+                    type: object
+                    example: comunicazione di avvenuto o meno invio della mail
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        409:
+          description: Esiste già una pratica nel sistema per il civico selezionato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: Esiste già una pratica nel sistema per il civico selezionato
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+      x-codegen-request-body-name: body
+  /passicarrabili/aggiornaPratica:
+    post:
+      tags:
+      - Passi Carrabili
+      description: Effettua l'aggiornamento dei dati della pratica nei diversi step
+        del flusso di istruttoria
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                istanza:
+                  type: object
+                  example: json contenente i dati dell'istanza
+                emailInviata:
+                  type: object
+                  example: boolean, true se api chiamata da GPC, false se api chiamata
+                    da egov
+                statoIntegrazione:
+                  type: object
+                  example: stato pratica relativo all'integrazione
+                storicizza_pratica:
+                  type: object
+                  example: boolean, true se bisogna preservare il log dell'aggiornamento
+                    dell'istanza nel sistema
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  istanza:
+                    type: object
+                    example: json contenente l'istanza inserita a sistema
+                  message:
+                    type: object
+                    example: messaggio di avvenuto aggiornamento
+                  responseEmail:
+                    type: object
+                    example: comunicazione di avvenuto o meno invio della mail
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+      x-codegen-request-body-name: body
+  /passicarrabili/eliminaPratica/{id_doc}:
+    delete:
+      tags:
+      - Passi Carrabili
+      description: Elimina la pratica dal sistema
+      parameters:
+      - name: id_doc
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: Eliminazione della pratica avvenuta con successo
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: La pratica è stata eliminata
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: Errore durante la cancellazione della pratica
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /passicarrabili/praticheCittadino:
+    post:
+      tags:
+      - Passi Carrabili
+      description: Effettua la ricerca delle pratiche utilizzando i filtri inseriti
+        nel body
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                codice_fiscale:
+                  type: object
+                  example: any
+                nome:
+                  type: object
+                  example: any
+                cognome:
+                  type: object
+                  example: any
+                numero_protocollo:
+                  type: object
+                  example: any
+                id_determina:
+                  type: object
+                  example: any
+                tag_rfid:
+                  type: object
+                  example: any
+                ragione_sociale:
+                  type: object
+                  example: any
+                indirizzo:
+                  type: object
+                  example: any
+                indirizzo_segnale_indicatore:
+                  type: object
+                  example: any
+                stato_pratica:
+                  type: object
+                  example: any
+                tipologia_processo:
+                  type: object
+                  example: any
+                municipio_id:
+                  type: object
+                  example: any
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: array contenente le pratiche che rispettano i filtri
+                      impostati
+                  count:
+                    type: object
+                    example: numero di pratiche trovate con i filtri impostati
+                  notFound:
+                    type: object
+                    example: boolean, true se non sono stati dati
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+      x-codegen-request-body-name: body
+  /passicarrabili/storicoPratica/{idpratica}:
+    get:
+      tags:
+      - Passi Carrabili
+      description: Restituisce lo storico della pratica, cioè le operazioni dell'istruttoria
+        ed i relativi dettagli
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: idpratica
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: array contenente lo storico delle operazioni della pratica
+                      selezionata
+                  notFound:
+                    type: object
+                    example: boolean, true se non sono stati dati
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+  /passicarrabili/cercaPratica/{id}:
+    get:
+      tags:
+      - Passi Carrabili
+      description: Effettua la ricerca della pratica selezionata
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  json:
+                    type: object
+                    example: json contenente l'istanza cercata
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+  /passicarrabili/documentiPratica/{idpratica}:
+    get:
+      tags:
+      - Passi Carrabili
+      description: Restituisce la lista dei documenti relativi alla pratica selezionata
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: idpratica
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: array contenente i documenti associati alla pratica selezionata
+                  notFound:
+                    type: object
+                    example: boolean, true se non sono stati dati
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+  /passicarrabili/getDocumento/{id_doc}:
+    get:
+      tags:
+      - Passi Carrabili
+      description: Restituisce il documento selezionato per id
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id_doc
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  json:
+                    type: object
+                    example: json contenente il documento cercato
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Documento non presente nel DB
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+  /passicarrabili/uploadDocument:
+    post:
+      tags:
+      - Passi Carrabili
+      description: Effettua il caricamento di un documento nel sistema
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: object
+                  example: any
+                name:
+                  type: object
+                  example: any
+                mimeType:
+                  type: object
+                  example: any
+                blob:
+                  type: object
+                  example: any
+                tipologia_documento:
+                  type: object
+                  example: any
+                rev:
+                  type: object
+                  example: any
+                id_doc:
+                  type: object
+                  example: any
+                numero_protocollo:
+                  type: object
+                  example: ""
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: Documento inserito correttamente.
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        413:
+          description: Errore dimensione documento
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Errore durante l'inserimento del documento - dimensione
+                      massima file consentita 19mb
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore durante l'inserimento
+                      del documento
+      x-codegen-request-body-name: body
+  /passicarrabili/assegnaProtocolloDocumento:
+    post:
+      tags:
+      - Passi Carrabili
+      description: Effettua l'assegnazione del numero di protocollo al documento
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: object
+                  example: any
+                name:
+                  type: object
+                  example: any
+                mimeType:
+                  type: object
+                  example: any
+                blob:
+                  type: object
+                  example: any
+                tipologia_documento:
+                  type: object
+                  example: any
+                rev:
+                  type: object
+                  example: any
+                id_doc:
+                  type: object
+                  example: any
+                numero_protocollo:
+                  type: object
+                  example: 123|2023
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: Protocollo associato correttamente.
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore durante la cancellazione
+                      del documento
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+      x-codegen-request-body-name: body
+  /passicarrabili/deleteDocument/{id}:
+    delete:
+      tags:
+      - Passi Carrabili
+      description: Elimina il documento dal sistema
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: Il documento è stato eliminato
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore durante la cancellazione
+                      del documento
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /passicarrabili/cercaPratichePerStatoPratica/{statoPratica}/{municipio_id}/{group_id}:
+    get:
+      tags:
+      - Passi Carrabili
+      description: Permette di ricercare una pratica per lo stato, il municipio di
+        appartenenza ed il ruolo utente connesso al sistema
+      parameters:
+      - name: statoPratica
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: municipio_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: group_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: array contenente le pratiche che rispettano i filtri
+                      impostati
+                  notFound:
+                    type: object
+                    example: boolean, true se non sono stati dati
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /passicarrabili/cercaIstruttoriMunicipio/{municipio_id}:
+    get:
+      tags:
+      - Passi Carrabili
+      description: Permette di ottenere la lista degli istruttori appartenenti ad
+        uno specifico municipio
+      parameters:
+      - name: municipio_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: array contenente gli istruttori che rispettano i filtri
+                      impostati
+                  notFound:
+                    type: object
+                    example: boolean, true se non sono stati dati
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /passicarrabili/archiviaPraticaOriginaria:
+    post:
+      tags:
+      - Passi Carrabili
+      description: Effettua l'archiviazione della pratica originaria nell'iter di
+        un processo di post concessione
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: json contenente i dati dell'istanza
+        content:
+          application/json: {}
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  istanza:
+                    type: object
+                    example: json contenente l'istanza inserita a sistema
+                  message:
+                    type: object
+                    example: messaggio di avvenuto aggiornamento
+                  responseEmail:
+                    type: object
+                    example: comunicazione di avvenuto o meno invio della mail
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+      x-codegen-request-body-name: body
+  /passicarrabili/revocaPraticaOriginaria:
+    post:
+      tags:
+      - Passi Carrabili
+      description: Effettua la revoca della pratica originaria durante il processo
+        di revoca
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: json contenente i dati dell'istanza
+        content:
+          application/json: {}
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  istanza:
+                    type: object
+                    example: json contenente l'istanza inserita a sistema
+                  message:
+                    type: object
+                    example: messaggio di avvenuto aggiornamento
+                  responseEmail:
+                    type: object
+                    example: comunicazione di avvenuto o meno invio della mail
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+      x-codegen-request-body-name: body
+  /passicarrabili/cercaSegnalazioniRegolarizzazione/{municipio_id}:
+    get:
+      tags:
+      - Passi Carrabili
+      description: Restituisce la lista delle segnalazioni presenti a sistema relative
+        al singolo municipio
+      parameters:
+      - name: municipio_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: array contenente le pratiche da regolarizzare
+                  notFound:
+                    type: object
+                    example: boolean, true se non sono stati dati
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Errore di sistema
+  /passicarrabili/inserimentoSegnalazioniRegolarizzazione:
+    post:
+      tags:
+      - Passi Carrabili
+      description: Effettua l'inserimento di una segnalazione di regolarizzazione
+        nel sistema
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_doc:
+                  type: object
+                  example: null
+                nome:
+                  type: object
+                  example: any
+                cognome:
+                  type: object
+                  example: any
+                recapito_telefonico:
+                  type: object
+                  example: any
+                email:
+                  type: object
+                  example: any
+                indirizzo_segnale_indicatore:
+                  type: object
+                  example: json contenente i dati relativi all'indirizzo restituito
+                    dal servizio di toponomastica
+                regolarizzazione_notificata:
+                  type: object
+                  example: "false"
+                notifiche_attive:
+                  type: object
+                  example: "true"
+                relazione_servizio:
+                  type: object
+                  example: '{ blob: '''', name: '''' }'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  istanza:
+                    type: object
+                    example: json contenente l'istanza inserita a sistema
+                  message:
+                    type: object
+                    example: messaggio di avvenuto inserimento
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+      x-codegen-request-body-name: body
+  /passicarrabili/getRelazioneServizioRegolarizzazione/{id_doc}:
+    get:
+      tags:
+      - Passi Carrabili
+      description: Permette il download del template della relazione di servizio di
+        regolarizzazione
+      parameters:
+      - name: id_doc
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  json:
+                    type: object
+                    example: json contenente il documento cercato
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Documento non presente nel DB
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /passicarrabili/notificaRegolarizzazioneInviata/{id_doc}:
+    get:
+      tags:
+      - Passi Carrabili
+      description: Effettua l'aggiornamento della pratica di regolarizzazione con
+        l'informazione dell'avvenuta notifica esternamente al gestionale
+      parameters:
+      - name: id_doc
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data_scadenza_regolarizzazione:
+                    type: object
+                    example: data in dormato iso
+                  message:
+                    type: object
+                    example: Invio notifica di regolarizzazione avvenuto con successo
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore durante la registrazione
+                      della notifica di regolarizzazione
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /passicarrabili/disattivaNotificaScadenziarioRegolarizzazione/{id_doc}:
+    get:
+      tags:
+      - Passi Carrabili
+      description: Permette di disattivare il servizio di scadenziario per la pratica
+        selezionata
+      parameters:
+      - name: id_doc
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: Disattivazione notifiche scadenziario avvenuta con successo
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore durante la disattivazione
+                      delle notifiche dello scadenziario
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /passicarrabili/cercaNotificheScadenziario/{municipio_id}/{group_id}:
+    get:
+      tags:
+      - Passi Carrabili
+      description: Restituisce la lista delle notifiche dello scadenziario relative
+        alle pratiche in scadenza
+      parameters:
+      - name: municipio_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: group_id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: array contenente le pratiche che rispettano i filtri
+                      impostati
+                  notFound:
+                    type: object
+                    example: boolean, true se non sono stati dati
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Errore di sistema
+  /passicarrabili/eliminaPraticaDaScadenziario/{id}:
+    get:
+      tags:
+      - Passi Carrabili
+      description: Permette l'archiviazione della pratica selezionata con la funzionalità
+        dello scadenziario
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: La pratica è stata archiviata
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Errore durante la cancellazione della notifica dallo
+                      scadenziario
+  /passicarrabili/pregressoPratiche:
+    get:
+      tags:
+      - Passi Carrabili
+      description: Restituisce la lista delle pratiche 'storiche' importate dai file
+        Excel del Comune di Bari
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: array contenente le pratiche dello storico
+                  notFound:
+                    type: object
+                    example: boolean, true se non sono stati dati
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /passicarrabili/setPraticaControllataPregresso:
+    post:
+      tags:
+      - Passi Carrabili
+      description: Effettua l'associazione della pratica importata dallo storico alla
+        pratica nuova inserita nel sistema
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: json contenente i dati dell'istanza
+        content:
+          application/json: {}
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: Aggiornamento controllo effettuato
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore durante l'aggiornamento
+                      dello stato della pratica
+        503:
+          description: Utente non autorizzato ad eliminare le pratiche dal sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+      x-codegen-request-body-name: body
+  /passicarrabili/ripristinaPraticaPregresso:
+    post:
+      tags:
+      - Passi Carrabili
+      description: Elimina la pratica importata dallo storico ed in attesa della bonifica
+        e la rende reimportabile dallo storico
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: json contenente i dati dell'istanza
+        content:
+          application/json: {}
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: Ripristino pratica storico effettuato
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore durante l'aggiornamento
+                      dello stato della pratica
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+      x-codegen-request-body-name: body
+  /passicarrabili/getPraticheSenzaTagRFID/{municipio_id}:
+    get:
+      tags:
+      - Passi Carrabili
+      description: Restituisce la lista delle pratiche di concessione valide senza
+        un tag rfid associato
+      parameters:
+      - name: municipio_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: array contenente le pratiche senza tag rfid associato
+                  notFound:
+                    type: object
+                    example: boolean, true se non sono stati dati
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /passicarrabili/praticheAvviabiliPostConcessione:
+    post:
+      tags:
+      - Passi Carrabili
+      description: Lista delle concessioni valide per cui è avviabile il processo
+        di post concessione utilizzando il portale egov.
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                tipologia_processo:
+                  type: object
+                  example: any
+                codice_fiscale:
+                  type: object
+                  example: any
+                codice_fiscale_piva:
+                  type: object
+                  example: any
+                numero_protocollo:
+                  type: object
+                  example: any
+                id_determina:
+                  type: object
+                  example: any
+                tag_rfid:
+                  type: object
+                  example: any
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: array contenente le pratiche avviabili post concessione
+                      per la tipologia di processo selezionato
+                  notFound:
+                    type: object
+                    example: boolean, true se non sono stati dati
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+      x-codegen-request-body-name: body
+  /passicarrabili/caricaDashboardKibana/{municipio_id}:
+    get:
+      tags:
+      - Passi Carrabili
+      description: Caricamento della dashboard di statistiche sulla base del municipio
+        di appartenenza
+      parameters:
+      - name: municipio_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: link della dashboard di kibana
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /passicarrabili/bonificaPratiche/{municipio_id}:
+    get:
+      tags:
+      - Passi Carrabili
+      description: Restituisce la lista delle pratiche da bonificare sulla base del
+        municipio di appartenenza
+      parameters:
+      - name: municipio_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: array contenente le pratiche da bonificare
+                  notFound:
+                    type: object
+                    example: boolean, true se non sono stati dati
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /passicarrabili/getSegnalazioni/{municipio_id}:
+    get:
+      tags:
+      - Passi Carrabili
+      description: Restituisce la lista delle segnalazioni presenti a sistema sulla
+        base del municipio di appartenenza
+      parameters:
+      - name: municipio_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: array contenente le segnalazioni
+                  notFound:
+                    type: object
+                    example: boolean, true se non sono stati dati
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /passicarrabili/getSegnalazione/{id_doc}:
+    get:
+      tags:
+      - Passi Carrabili
+      description: Restituisce i dati relativi alla segnalazione selezionata
+      parameters:
+      - name: id_doc
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  segnalazione:
+                    type: object
+                    example: json contenente la segnalazione presente a sistema
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /passicarrabili/aggiornaSegnalazione:
+    post:
+      tags:
+      - Passi Carrabili
+      description: Permette l'aggiornamento della segnalazione selezionata con i nuovi
+        dati
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: json contenente i dati della segnalazione
+        content:
+          application/json: {}
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  segnalazione:
+                    type: object
+                    example: json contenente la segnalazione inserita a sistema
+                  message:
+                    type: object
+                    example: La segnalazione è passata alla fase successiva
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+      x-codegen-request-body-name: body
+  /passicarrabili/getPraticheInRevoca:
+    post:
+      tags:
+      - Passi Carrabili
+      description: Lista delle pratiche per cui è stata avviata la revoca
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                stato_pratica:
+                  type: object
+                  example: any
+                codice_fiscale:
+                  type: object
+                  example: any
+                codice_fiscale_piva:
+                  type: object
+                  example: any
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: array contenente le pratiche per cui è stata avviata
+                      la revoca lato back office
+                  notFound:
+                    type: object
+                    example: boolean, true se non sono stati dati
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+      x-codegen-request-body-name: body
+  /passicarrabili/getPraticheInAttesaPagamentoBollo:
+    post:
+      tags:
+      - Passi Carrabili
+      description: Lista delle pratiche per cui è necessario pagare la marca da bollo
+        mediante egov
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                codice_fiscale:
+                  type: object
+                  example: any
+                codice_fiscale_piva:
+                  type: object
+                  example: any
+                id_determina:
+                  type: object
+                  example: any
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: array contenente le pratiche in attesa di pagamento del
+                      bollo
+                  notFound:
+                    type: object
+                    example: boolean, true se non sono stati dati
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+      x-codegen-request-body-name: body
+  /passicarrabili/checkTagRFID/{tag_rfid}:
+    get:
+      tags:
+      - Passi Carrabili
+      description: Effettua il controllo di univocità del tag rfid inserito
+      parameters:
+      - name: tag_rfid
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: array contenente le pratiche con il tag rfid indicato
+                  notFound:
+                    type: object
+                    example: boolean, true se non sono stati dati
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /passicarrabili/validazionePratica:
+    post:
+      tags:
+      - Passi Carrabili
+      description: Permette i controlli di validazione pre inserimento della pratica
+        nel sistema
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                istanza:
+                  type: object
+                  example: any
+                dimensione_totale_allegati_protocollo_kb:
+                  type: object
+                  example: any
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: Validazione avvenuta con successo
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        409:
+          description: Esiste già una pratica nel sistema per il civico selezionato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: Esiste già una pratica nel sistema per il civico selezionato
+        413:
+          description: Payload Too Large
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  err:
+                    type: object
+                    example: Payload Too Large
+                  message:
+                    type: object
+                    example: 'Dimensione allegati maggiore a quella consentita [MAX:
+                      29296.9kb]'
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+      x-codegen-request-body-name: body
+  /passicarrabili/checkAvvioProcessiPostConcessioneMultipli:
+    post:
+      tags:
+      - Passi Carrabili
+      description: Permette il controllo di eventuali processi post concessione già
+        avviati
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                istanza:
+                  type: object
+                  example: any
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: Processo post concessione avviabile
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        409:
+          description: Esiste già un processo post concessione avviato per la pratica
+            selezionata
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: Esiste già un processo post concessione avviato per la
+                      pratica selezionata
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+      x-codegen-request-body-name: body
+  /passicarrabili/countPratichePerStato/{municipio_id}/{group_id}:
+    get:
+      tags:
+      - Passi Carrabili
+      description: Effettua il conteggio delle pratiche sulla base dello stato, del
+        municipio di apparteneneza e del ruolo utente
+      parameters:
+      - name: municipio_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: group_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: array contenente json con la coppia stato_pratica e count
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+  /passicarrabili/countPratichePerFunzionalita/{municipio_id}:
+    get:
+      tags:
+      - Passi Carrabili
+      description: Effettua il conteggio delle pratiche per funzionalità e municipio
+        di appartenenza
+      parameters:
+      - name: municipio_id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: array contenente json con la coppia stato_pratica e count
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+  /utility/generaDetermina:
+    post:
+      tags:
+      - Utility
+      description: Generazione del template di determina con valori pre compilati
+        attinti dall'istanza presente nel sistema
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: json contenente i dati dell'istanza
+        content:
+          application/json: {}
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-disposition:
+              description: attachment; filename=fileName.docx
+              schema:
+                type: object
+          content: {}
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+            application/vnd.openxmlformats-officedocument.wordprocessingml.document:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+            application/vnd.openxmlformats-officedocument.wordprocessingml.document:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+            application/vnd.openxmlformats-officedocument.wordprocessingml.document:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+      x-codegen-request-body-name: body
+  /utility/generaRelazioneServizio:
+    post:
+      tags:
+      - Utility
+      description: Generazione del template della relazione di servizio della polizia
+        con valori pre compilati attinti dall'istanza presente nel sistema
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: json contenente i dati dell'istanza
+        content:
+          application/json: {}
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-disposition:
+              description: attachment; filename=fileName.docx
+              schema:
+                type: object
+          content: {}
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+            application/vnd.openxmlformats-officedocument.wordprocessingml.document:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+            application/vnd.openxmlformats-officedocument.wordprocessingml.document:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+            application/vnd.openxmlformats-officedocument.wordprocessingml.document:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+      x-codegen-request-body-name: body
+  /utility/generaIstruttoriaUTD:
+    post:
+      tags:
+      - Utility
+      description: Generazione del template dell'istruttoria dell'utd con valori pre
+        compilati attinti dall'istanza presente nel sistema
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: json contenente i dati dell'istanza
+        content:
+          application/json: {}
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-disposition:
+              description: attachment; filename=fileName.docx
+              schema:
+                type: object
+          content: {}
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+            application/vnd.openxmlformats-officedocument.wordprocessingml.document:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+            application/vnd.openxmlformats-officedocument.wordprocessingml.document:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+            application/vnd.openxmlformats-officedocument.wordprocessingml.document:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+      x-codegen-request-body-name: body
+  /utility/generaIstruttoriaUrbanistica:
+    post:
+      tags:
+      - Utility
+      description: Generazione del template dell'istruttoria dell'urbanistica con
+        valori pre compilati attinti dall'istanza presente nel sistema
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: json contenente i dati dell'istanza
+        content:
+          application/json: {}
+        required: true
+      responses:
+        200:
+          description: OK
+          headers:
+            Content-disposition:
+              description: attachment; filename=fileName.docx
+              schema:
+                type: object
+          content: {}
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+            application/vnd.openxmlformats-officedocument.wordprocessingml.document:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+            application/vnd.openxmlformats-officedocument.wordprocessingml.document:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+            application/vnd.openxmlformats-officedocument.wordprocessingml.document:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+      x-codegen-request-body-name: body
+  /utility/getTemplateDocumenti:
+    get:
+      tags:
+      - Utility
+      description: Restituisce la lista dei template presenti nel sistema
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: array contenente i template presenti a sistema
+                  notFound:
+                    type: object
+                    example: boolean, true se non sono stati dati
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /utility/getTemplateDocumento/{id}:
+    get:
+      tags:
+      - Utility
+      description: Permette di ottenere il template selezionato, presente a sistema,
+        per effettuare il download
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  json:
+                    type: object
+                    example: json contenente il documento cercato
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /utility/uploadTemplateDocumento:
+    post:
+      tags:
+      - Utility
+      description: Effettua l'upload nel sistema del nuovo template in sostituzione
+        del documento selezionato
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id:
+                  type: object
+                  example: any
+                label:
+                  type: object
+                  example: any
+                blob:
+                  type: object
+                  example: any
+                last_modification:
+                  type: object
+                  example: '{ ''username'': ''admin'', ''utente'': ''Admin  Admin'',
+                    ''data_operazione'': '''' }'
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  template:
+                    type: object
+                    example: json contenente il template appena inserito
+                  message:
+                    type: object
+                    example: Template documento aggiornato.
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+      x-codegen-request-body-name: body
+  /utility/getRagioneSocialeDestinatariSync:
+    post:
+      tags:
+      - Utility
+      description: Permette di ottenere la ragione sociale dei destinatari, indicati
+        nel body della richiesta, per il servizio di protocollo
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              description: array di json group_id e municipio_id
+        required: true
+      responses:
+        200:
+          description: array contenente i dati richiesti
+          content: {}
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Errore di sistema
+      x-codegen-request-body-name: body
+  /utility/getUOID/{id}:
+    get:
+      tags:
+      - Utility
+      description: Permette di ottenere l'identificativo UO del ruolo utente connesso
+        a sistema che necessita di protocollare
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  json:
+                    type: object
+                    example: json contenente l'UOID
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Errore di sistema
+  /utility/getConfigurations:
+    get:
+      tags:
+      - Utility
+      description: Restituisce la lista dei parametri di configurazione salvati a
+        sistema
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: array contenente i parametri di configurazione del sistema
+                  notFound:
+                    type: object
+                    example: boolean, true se non sono stati dati
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /utility/getConfiguration/{id}:
+    get:
+      tags:
+      - Utility
+      description: Permette di ottenere la configurazione dello specifico dominio
+        che si vuole visualizzare
+      parameters:
+      - name: id
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  json:
+                    type: object
+                    example: json contenente il parametro di configurazione cercato
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /utility/updateConfiguration:
+    post:
+      tags:
+      - Utility
+      description: Permette l'aggiornamento dei parametri di configurazione del sistema
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: json contenente i parametri di configurazione da aggiornare
+        content:
+          application/json: {}
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: Configurazione aggiornata correttamente.
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+      x-codegen-request-body-name: body
+  /user/getUsers:
+    get:
+      tags:
+      - User
+      description: Restituisce la lista degli utenti presenti nel gestionale
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: array contenente gli utenti censiti a sistema
+                  notFound:
+                    type: object
+                    example: boolean, true se non sono stati dati
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /user/getUsersConcessionario:
+    get:
+      tags:
+      - User
+      description: Restituisce la lista degli utenti di tipo concessionario presenti
+        nel gestionale
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: array contenente gli utenti concessionario censiti a
+                      sistema
+                  notFound:
+                    type: object
+                    example: boolean, true se non sono stati dati
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /user/disableUsersConcessionario/{username}:
+    get:
+      tags:
+      - User
+      description: Disabilita gli utenti concessionario presenti nel gestionale, prima
+        di inserirne uno nuovo
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: L'utente concessionario è stato disabilitato
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        409:
+          description: Username già in uso nel sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: Username già in uso nel sistema
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore durante la disabilitazione
+                      dell'utente concessionario
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /user/inserisciUtente:
+    post:
+      tags:
+      - User
+      description: Inserimento nuovo utente nel gestionale
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                newuser:
+                  type: object
+                  example: any
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  obj:
+                    type: object
+                    example: json contenente i dati del nuovo utente inserito
+                  message:
+                    type: object
+                    example: Utente inserito correttamente
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        409:
+          description: Codice fiscale già censito nel sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: Codice fiscale già censito nel sistema / Username già
+                      in uso nel sistema
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore durante l'inserimento
+                      dell'utente
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+      x-codegen-request-body-name: body
+  /user/modificaDatiUtente:
+    post:
+      tags:
+      - User
+      description: Effettua la modifica dei dati dell'utente selezionato
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                nome:
+                  type: object
+                  example: any
+                cognome:
+                  type: object
+                  example: any
+                sesso:
+                  type: object
+                  example: any
+                datadinascita:
+                  type: object
+                  example: any
+                luogodinascita:
+                  type: object
+                  example: any
+                codicefiscale:
+                  type: object
+                  example: any
+                email:
+                  type: object
+                  example: any
+                numtel:
+                  type: object
+                  example: any
+                group_id:
+                  type: object
+                  example: any
+                enabled:
+                  type: object
+                  example: boolean
+                provinciadinascita:
+                  type: object
+                  example: any
+                municipio_id:
+                  type: object
+                  example: any
+                indirizzo:
+                  type: object
+                  example: any
+                uoid:
+                  type: object
+                  example: any
+                denominazione:
+                  type: object
+                  example: any
+                ragioneSociale:
+                  type: object
+                  example: any
+                deleted:
+                  type: object
+                  example: boolean
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: Dati dell'utente aggiornati correttamente
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore durante l'aggiornamento
+                      dei dati
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+      x-codegen-request-body-name: body
+  /user/cambiaPasswordUtente:
+    post:
+      tags:
+      - User
+      description: Permette di cambiare la password dell'utente loggato al sistema
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                user:
+                  type: object
+                  example: json contenente i dati dell'utente con la nuova password
+                oldPassword:
+                  type: object
+                  example: any
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: Password aggiornata correttamente / La vecchia password
+                      inserita è errata
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Utente non trovato
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore durante l'aggiornamento
+                      della password
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+      x-codegen-request-body-name: body
+  /user/getUser/{username}:
+    get:
+      tags:
+      - User
+      description: Restituisce i dati dell'utente selezionato
+      parameters:
+      - name: username
+        in: path
+        required: true
+        schema:
+          type: string
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  json:
+                    type: object
+                    example: json contenente i dati dell'utente
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        404:
+          description: Not Found
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Utente non trovato
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+  /user/deleteUser:
+    post:
+      tags:
+      - User
+      description: Effettua l'eliminazione logica dell'utente selezionato dal gestionale
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      - name: requiredgroup
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: json contenente i dati dell'utente
+        content:
+          application/json: {}
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  message:
+                    type: object
+                    example: L'utente è stato cancellato
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore durante la cancellazione
+                      dell'utente
+        503:
+          description: Utente non autorizzato
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: You are not authorized.
+      x-codegen-request-body-name: body
+  /v1/civico/:
+    post:
+      tags:
+      - Shared
+      description: Effettua la ricerca e, se presente, restituisce l'indirizzo dal
+        civilario comunale
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                indirizzo:
+                  type: object
+                  example: any
+                numero:
+                  type: object
+                  example: any
+                esponente:
+                  type: object
+                  example: any
+        required: false
+      responses:
+        200:
+          description: array contenente gli indirizzi trovati
+          content: {}
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                description: array vuoto
+      x-codegen-request-body-name: body
+  /v1/civico/getDataSingoloMunicipio:
+    post:
+      tags:
+      - Shared
+      description: Effettua la ricerca e, se presente, restituisce l'indirizzo dal
+        civilario comunale (cercandolo unicamente nel municipio indicato)
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                indirizzo:
+                  type: object
+                  example: any
+                numero:
+                  type: object
+                  example: any
+                municipio_id:
+                  type: object
+                  example: any
+                esponente:
+                  type: object
+                  example: any
+        required: false
+      responses:
+        200:
+          description: array contenente gli indirizzi trovati
+          content: {}
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                description: array vuoto
+      x-codegen-request-body-name: body
+  /v1/getPoi:
+    post:
+      tags:
+      - Shared
+      description: Restituisce le pratiche (tutte, valide o non valide) con l'indirizzo
+        nel range di distanza definito dal punto in cui ci si trova
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                distance:
+                  type: object
+                  example: any
+                lat:
+                  type: object
+                  example: any
+                lon:
+                  type: object
+                  example: any
+                isValid:
+                  type: object
+                  example: any
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    example: array contenente i passi carrabili che rispettano i filtri
+                      impostati
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+      x-codegen-request-body-name: body
+  /v1/checkAsset:
+    post:
+      tags:
+      - Shared
+      description: Effettua il controllo di validità di una concessione di passo carrabile
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_doc:
+                  type: object
+                  example: any
+                tag_rfid:
+                  type: object
+                  example: any
+                lat:
+                  type: object
+                  example: any
+                lon:
+                  type: object
+                  example: any
+        required: false
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    example: array contenente le pratiche che rispettano i filtri
+                      impostati
+                  violation:
+                    type: object
+                    example: json contenente lo stato di validità della pratica ed
+                      eventuale motivazione
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  error:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+      x-codegen-request-body-name: body
+  /setDataVerificaCartello:
+    post:
+      tags:
+      - Shared
+      description: Effettua la verifica della data dell'ultima rilevazione del segnale
+        indicatore di passo carrabile. Nel caso in cui la data di rilevazione sia
+        successiva alla data registrata, quest'ultima viene sovrascritta
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                id_doc:
+                  type: object
+                  example: any
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  data:
+                    type: object
+                    example: json contenente i dati della pratica
+                  message:
+                    type: object
+                    example: Data di controllo cartello impostata
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  err:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+      x-codegen-request-body-name: body
+  /v1/segnalazioni:
+    get:
+      tags:
+      - Shared
+      description: Restituisce la lista delle segnalazioni presenti a sistema
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    example: array contenente le segnalazioni
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  error:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+    put:
+      tags:
+      - Shared
+      description: Inserire una segnalazione nel sistema
+      parameters:
+      - name: authorization
+        in: header
+        required: true
+        schema:
+          type: string
+      requestBody:
+        description: json contenente i dati della segnalazione
+        content:
+          application/json: {}
+        required: true
+      responses:
+        200:
+          description: OK
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  result:
+                    type: object
+                    example: Segnalazione inserita correttamente
+        403:
+          description: Forbidden
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  message:
+                    type: object
+                    example: No token provided.
+        500:
+          description: Errore di sistema
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  auth:
+                    type: object
+                    example: "false"
+                  error:
+                    type: object
+                    example: json contenente l'errore restituito dal sistema
+                  message:
+                    type: object
+                    example: Failed to authenticate token. / Errore di sistema
+      x-codegen-request-body-name: body
+components: {}

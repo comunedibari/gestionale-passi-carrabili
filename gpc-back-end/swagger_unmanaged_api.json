@@ -1,0 +1,278 @@
+{
+  "/passicarrabili/cercaPraticaDaNumProtocollo/{numero_protocollo}": {
+    "get": {
+      "description": "",
+      "parameters": [
+        {
+          "name": "numero_protocollo",
+          "in": "path",
+          "required": true,
+          "type": "string"
+        },
+        {
+          "name": "authorization",
+          "in": "header",
+          "type": "string"
+        }
+      ],
+      "responses": {
+        "403": {
+          "description": "Forbidden"
+        },
+        "500": {
+          "description": "Internal Server Error"
+        }
+      }
+    }
+  },
+  "/passicarrabili/getNumeroProtocollo": {
+    "post": {
+      "description": "",
+      "parameters": [],
+      "responses": {
+        "200": {
+          "description": "OK"
+        }
+      }
+    }
+  },
+  "/passicarrabili/startScadenziario": {
+    "get": {
+      "description": "",
+      "parameters": [],
+      "responses": {
+        "200": {
+          "description": "OK"
+        }
+      }
+    }
+  },
+  "/utility/sendEmail": {
+    "post": {
+      "description": "",
+      "parameters": [
+        {
+          "name": "authorization",
+          "in": "header",
+          "type": "string"
+        },
+        {
+          "name": "requiredgroup",
+          "in": "header",
+          "type": "string"
+        },
+        {
+          "name": "body",
+          "in": "body",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "blob": {
+                "example": "any"
+              },
+              "to": {
+                "example": "any"
+              },
+              "cc": {
+                "example": "any"
+              },
+              "subject": {
+                "example": "any"
+              },
+              "messaggio": {
+                "example": "any"
+              }
+            }
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "403": {
+          "description": "Forbidden"
+        },
+        "500": {
+          "description": "Internal Server Error"
+        },
+        "503": {
+          "description": "Service Unavailable"
+        }
+      }
+    }
+  },
+  "/utility/takeEmails": {
+    "post": {
+      "description": "",
+      "parameters": [
+        {
+          "name": "authorization",
+          "in": "header",
+          "type": "string"
+        },
+        {
+          "name": "requiredgroup",
+          "in": "header",
+          "type": "string"
+        },
+        {
+          "name": "body",
+          "in": "body",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "forEach(el": {
+                "example": "any"
+              }
+            }
+          }
+        }
+      ],
+      "responses": {
+        "403": {
+          "description": "Forbidden"
+        },
+        "500": {
+          "description": "Internal Server Error"
+        },
+        "503": {
+          "description": "Service Unavailable"
+        }
+      }
+    }
+  },
+  "/utility/generaPdfPerProtocollo": {
+    "post": {
+      "description": "",
+      "parameters": [
+        {
+          "name": "authorization",
+          "in": "header",
+          "type": "string"
+        },
+        {
+          "name": "requiredgroup",
+          "in": "header",
+          "type": "string"
+        },
+        {
+          "name": "body",
+          "in": "body",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "pratica": {
+                "example": "any"
+              },
+              "filename": {
+                "example": "any"
+              }
+            }
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "403": {
+          "description": "Forbidden"
+        },
+        "500": {
+          "description": "Internal Server Error"
+        },
+        "503": {
+          "description": "Service Unavailable"
+        }
+      }
+    }
+  },
+  "/user/cercaCittadino": {
+    "post": {
+      "description": "",
+      "parameters": [
+        {
+          "name": "authorization",
+          "in": "header",
+          "type": "string"
+        },
+        {
+          "name": "requiredgroup",
+          "in": "header",
+          "type": "string"
+        },
+        {
+          "name": "body",
+          "in": "body",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "codFiscale": {
+                "example": "any"
+              }
+            }
+          }
+        }
+      ],
+      "responses": {
+        "403": {
+          "description": "Forbidden"
+        },
+        "500": {
+          "description": "Internal Server Error"
+        },
+        "503": {
+          "description": "Service Unavailable"
+        }
+      }
+    }
+  },
+  "/v1/civico/soloIndirizzo": {
+    "post": {
+      "description": "",
+      "parameters": [
+        {
+          "name": "body",
+          "in": "body",
+          "schema": {
+            "type": "object",
+            "properties": {
+              "indirizzo": {
+                "example": "any"
+              }
+            }
+          }
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        }
+      }
+    }
+  },
+  "/v1/getPoi": {
+    "get": {
+      "description": "",
+      "parameters": [
+        {
+          "name": "authorization",
+          "in": "header",
+          "type": "string"
+        }
+      ],
+      "responses": {
+        "200": {
+          "description": "OK"
+        },
+        "403": {
+          "description": "Forbidden"
+        },
+        "500": {
+          "description": "Internal Server Error"
+        }
+      }
+    }
+  }
+}

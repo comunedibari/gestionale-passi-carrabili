@@ -1,0 +1,139 @@
+# Default values for gpc.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+image:
+  # Overrides the image repository
+  repository: cc-harbor.comune.bari.it/citta_connessa
+  pullPolicy: IfNotPresent
+  backEnd:
+    replicaCount: 1
+    image: gpc-back-end
+    tag: 1.0.5
+  frontEnd:
+    replicaCount: 1
+    image: gpc-front-end
+    tag: 1.0.10
+  job:
+    image: gpc-jobs
+    tag: 1.0.0
+
+imagePullSecrets:
+  - name: harbor
+nameOverride: ""
+fullnameOverride: ""
+
+serviceAccount:
+  # Specifies whether a service account should be created
+  create: true
+  # Annotations to add to the service account
+  annotations: {}
+  # The name of the service account to use.
+  # If not set and create is true, a name is generated using the fullname template
+  name: ""
+
+podAnnotations: {}
+
+podSecurityContext: {}
+  # fsGroup: 2000
+
+securityContext: {}
+  # capabilities:
+  #   drop:
+  #   - ALL
+  # readOnlyRootFilesystem: true
+  # runAsNonRoot: true
+  # runAsUser: 1000
+
+service:
+  backEnd: 
+    type: ClusterIP
+    port: 8080
+  frontEnd:
+    type: ClusterIP
+    port: 80  
+
+ingress:
+  className: ""
+  annotations:
+    nginx.ingress.kubernetes.io/proxy-body-size: 50m
+    nginx.ingress.kubernetes.io/proxy-connect-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-read-timeout: "600"
+    nginx.ingress.kubernetes.io/proxy-send-timeout: "600"
+    # kubernetes.io/ingress.class: nginx
+    # kubernetes.io/tls-acme: "true"
+  host: gestionale-passi-carrabili.comune.bari.it
+  pathType: ImplementationSpecific
+  tls: 
+    - secretName: comune.bari.it
+      hosts:
+        - gestionale-passi-carrabili.comune.bari.it
+
+resources: {}
+  # We usually recommend not to specify default resources and to leave this as a conscious
+  # choice for the user. This also increases chances charts run on environments with little
+  # resources, such as Minikube. If you do want to specify resources, uncomment the following
+  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+  # limits:
+  #   cpu: 100m
+  #   memory: 128Mi
+  # requests:
+  #   cpu: 100m
+  #   memory: 128Mi
+
+autoscaling:
+  enabled: false
+  minReplicas: 1
+  maxReplicas: 100
+  targetCPUUtilizationPercentage: 80
+  # targetMemoryUtilizationPercentage: 80
+
+nodeSelector: {}
+
+tolerations: []
+
+affinity: {}
+
+scadenziarioUrl: http://gpc-be.gestionale-passi-carrabili.svc.cluster.local:8080/api/passicarrabili/startScadenziario
+
+esHost: http://master.elasticsearch
+esLog: error
+civilarioUser: xxxxx
+civilarioPsw: yyyy
+civilarioHost: http://0.0.0.0/er
+smtpHost: xxx.xxx.com
+smtpHostPec: mail.pec.xxx.puglia.it
+smtpPort: 465
+smtpSecure: false
+smtpFrom: gpc@comune.bari.it
+smtpUser: xxxx
+smtpPsw: xxxxx
+smtpTlsUnauth: true
+smtpTlsMinVersion: TLSv1.2
+smtpTls_MaxVersion: TLSv1.3
+linksCredentialsUs: xxxx
+linksCredentialsPsw: xxxxxx
+tz: Europe/Paris
+linkDashboardKibana: https://kibana.comune.bari.it/app/dashboards
+smtpFromPecM1: municipio1.comunebari@pec.rupar.puglia.it
+smtpUserPecM1: municipio1.comunebari@pec.rupar.puglia.it
+smtpPswPecM1: xxxxxxx
+smtpFromPecM2: municipio2.comunebari@pec.rupar.puglia.it
+smtpUserPecM2: municipio2.comunebari@pec.rupar.puglia.it
+smtpPswPecM2: xxxxxxx
+smtpFromPecM3: municipio3.comunebari@pec.rupar.puglia.it
+smtpUserPecM3: municipio3.comunebari@pec.rupar.puglia.it
+smtpPswPecM3: xxxxxxx
+smtpFromPecM4: municipio4.comunebari@pec.rupar.puglia.it
+smtpUserPecM4: municipio4.comunebari@pec.rupar.puglia.it
+smtpPswPecM4: xxxxxxx
+smtpFromPecM5: municipio5.comunebari@pec.rupar.puglia.it
+smtpUserPecM5: municipio5.comunebari@pec.rupar.puglia.it
+smtpPswPecM5: xxxxxxx
+linkDashboardKibanaM1: https://kibana.comune.bari.it/app/dashboards
+linkDashboardKibanaM2: https://kibana.comune.bari.it/app/dashboards
+linkDashboardKibanaM3: https://kibana.comune.bari.it/app/dashboards
+linkDashboardKibanaM4: https://kibana.comune.bari.it/app/dashboards
+linkDashboardKibanaM5: https://kibana.comune.bari.it/app/dashboards
+maxDimAllegatiProtocolloKb: 29296.9
+flagControlloAllegati: true

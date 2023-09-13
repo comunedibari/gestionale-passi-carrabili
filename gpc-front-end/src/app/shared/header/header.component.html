@@ -1,0 +1,70 @@
+<div class="p-grid p-nogutter">
+    
+    <div class="p-col-12 p-d-flex p-jc-between p-ai-center pre-header">
+        <div class="p-pl-3 p-d-flex">
+            <a href="http://www.comune.bari.it" target="_blank">
+                <img src="../../../assets/logo-bari-black-white.png" />
+                <label class="social-label pointer link">Comune di Bari</label>
+            </a>
+        </div>
+        <div class="p-pr-3 p-d-flex">
+            <label class="social-label p-mr-1">Seguici su:</label>
+            <div class="div-social-icon div-social-icon-fb">
+                <a href="http://www.facebook.com/comunedibari" pTooltip="Facebook" target="_blank">
+                    <i class="fa fa-facebook social-icon"></i>
+                </a>
+            </div>
+            <div class="div-social-icon">
+                <a href="https://twitter.com/ComunediBari" pTooltip="Twitter" target="_blank">
+                    <i class="fa fa-twitter social-icon"></i>
+                </a>
+            </div>
+            <div class="div-social-icon">
+                <a href="https://www.youtube.com/comunedibari" pTooltip="YouTube" target="_blank">
+                    <i class="fa fa-youtube social-icon"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="p-col-12 p-d-flex p-jc-between p-ai-center header-content">
+        <div class="p-pl-4 p-d-flex">
+            <img class="logo p-p-3" src="../../../assets/logocomunebari-originale.png" alt="logo_not_found">
+            <div class="p-d-inline-flex p-flex-column p-ai-start p-jc-center">
+                    <div class="p-flex-row">
+                        <span class="p-text-bold title-span pointer" (click)="goHome()">Bari Smart City</span>
+                        <span class="p-text-bold title-span pointer p-ml-1" (click)="goHome()" [class.mobile-view]="mobileQuery.matches">- Città Connessa</span>
+                        <span *ngIf="tipologiaAmbiente" class="p-text-bold title-span pointer p-ml-1" [class.mobile-view]="mobileQuery.matches"> [{{tipologiaAmbiente}}]</span>
+                    </div>
+                    <div class="p-flex-row">
+                        <span class="p-text-normal sub-title-span">Gestionale Passi Carrabili</span>
+                    </div>
+                    <span *ngIf="isAuthenticate" class="p-text-light municipi-title-span">{{municipioAppartenenza}}</span>
+            </div>
+        </div>
+
+        <div *ngIf="isAuthenticate" class="p-pr-4 p-d-flex">
+            <button pButton class="btn-custom-style btn-disconnetti p-button-rounded" icon="pi pi-power-off" (click)="signOut()" pTooltip="Disconnetti"></button>
+        </div>
+
+    </div>
+
+    <div *ngIf="isAuthenticate" class="p-col-12 p-d-flex p-ai-center header-menu">
+        <div class="p-d-flex">
+            <button class="btn-menu" type="button" pButton icon="pi pi-fw pi-bars" pTooltip="Menu"
+                (click)="openMenu()"></button>
+        </div>
+        <div class="p-d-flex">
+            <p-breadcrumb [model]="menuItems" [home]="homeItems"></p-breadcrumb> <!-- styleClass="breadcrum-header" -->
+        </div>
+        <div class="p-d-flex p-ml-auto p-pr-3">
+            <span class="p-text-normal info-user p-mr-3" [class.mobile-view]="mobileQuery.matches" pTooltip="Ultimo accesso: {{this.lastLogin}}">
+                Benvenuto {{this.infoUtente}}</span>
+            <i *ngIf="abilitaNotifiche" class="pi pi-calendar p-mr-2 p-text-secondary icon-header-class pointer" pBadge [value]="badgeValue" severity="warning" (click)="openScadenziarioDialog()" [pTooltip]="infoBadge"></i>
+            <i class="pi pi-question-circle p-mr-2 p-text-secondary icon-header-class pointer" (click)="helpStatiPratica()" pTooltip="Spiegazione stati pratica"></i>
+            <div class="logo-profilo {{this.tipoUtente}}"></div>
+        </div>
+    </div>
+</div>
+
+<app-spinner-dialog *ngIf="showSpinner"></app-spinner-dialog>

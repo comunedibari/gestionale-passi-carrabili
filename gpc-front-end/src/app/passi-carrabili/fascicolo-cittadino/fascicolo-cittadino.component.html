@@ -1,0 +1,162 @@
+<div class="p-grid p-nogutter p-pt-2 p-pr-3 p-pl-3 p-pb-3">
+    <h4 class="intestazione-componente">Ricerca pratiche</h4>
+</div>
+
+<form [formGroup]="fascicoloForm">
+    <div class="p-fluid p-formgrid p-grid p-inputtext-lg p-m-2">
+
+        <div class="p-col-12">
+            <legend class="legend">Cerca il fascicolo nel sistema:</legend>
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputNome" class="p-text-bold">Nome</label>
+            <input type="text" id="txtinputNome" name="txtinputNome" pInputText
+                formControlName="nome">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputCognome" class="p-text-bold">Cognome</label>
+            <input type="text" id="txtinputCognome" name="txtinputCognome" pInputText
+                formControlName="cognome">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputRagioneSociale" class="p-text-bold">Ragione Sociale</label>
+            <input type="text" id="txtinputRagioneSociale" name="txtinputRagioneSociale" pInputText
+                formControlName="ragione_sociale">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputCodiceFiscale" class="p-text-bold">Codice Fiscale / Partita IVA</label>
+            <input type="text" id="txtinputCodiceFiscale" name="txtinputCodiceFiscale" pInputText
+                formControlName="codice_fiscale">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputProtocollo" class="p-text-bold">Num. Protocollo</label>
+            <input type="text" id="txtinputProtocollo" name="txtinputProtocollo" pInputText
+                formControlName="numero_protocollo">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputDetermina" class="p-text-bold">Num. Determina</label>
+            <input type="text" id="txtinputDetermina" name="txtinputDetermina" pInputText
+                formControlName="id_determina">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputTag" class="p-text-bold">Tag RFID</label>
+            <input type="text" id="txtinputTag" name="txtinputTag" pInputText
+                formControlName="tag_rfid">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0 relative-container">
+            <label for="txtinputStatoPratica" class="p-text-bold">Stato Pratica</label>
+            <i *ngIf="this.fascicoloForm.get('stato_pratica').value || this.fascicoloForm.get('stato_pratica').value == 0" class="pi pi-times-circle icon-delete-filter pointer" (click)="clearFilter('stato_pratica')" pTooltip="Deseleziona filtro stato pratica"></i>
+            <p-dropdown [options]="statiPratica" formControlName="stato_pratica" styleClass="stretch" 
+                appendTo="body" placeholder="Seleziona..."></p-dropdown>
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0 relative-container">
+            <label for="txtinputTipologiaProcesso" class="p-text-bold">Tipologia Processo</label>
+            <i *ngIf="this.fascicoloForm.get('tipologia_processo').value" class="pi pi-times-circle icon-delete-filter pointer" (click)="clearFilter('tipologia_processo')" pTooltip="Deseleziona filtro tipologia processo"></i>
+            <p-dropdown [options]="tipologieProcesso" formControlName="tipologia_processo" styleClass="stretch" 
+                appendTo="body" placeholder="Seleziona..."></p-dropdown>
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="txtinputIndirizzoSegnale" class="p-text-bold">Indirizzo del segnale indicatore</label>
+            <p-autoComplete formControlName="indirizzo_segnale_indicatore" [suggestions]="civilarioResults" (completeMethod)="searchCivilario($event)" 
+                placeholder="indirizzo, civico/esponente" field="indirizzo" (onBlur)="checkSelectedIndirizzo()"></p-autoComplete>    
+        </div>
+
+        <div class="p-d-flex p-col-12 p-jc-end">
+            <button pButton label="Cerca" type="button" class="btn-custom-style button-avanti"
+            (click)="cercaPratiche()" [disabled]="formGroupEmpy"></button>
+        </div>
+
+    </div>
+</form>
+
+<app-spinner-dialog *ngIf="showSpinner"></app-spinner-dialog>
+<div [hidden]="showSpinner" class="p-m-3">
+    <table-prime-ng
+      [dataSource]="this.dataSource" 
+      [columnSchema]="this.columnSchema" 
+      [actions]="this.actions"
+      [initSortColumn]="initSortColumn" 
+      [directionSortColumn]="directionSortColumn"
+      (onEvent)="this.onTableEvent($event)"
+      [titleTable]="titleTable"
+      [exportName]="exportName"
+      [globalFilters]="globalFilters">
+    </table-prime-ng>
+</div> 
+
+<p-dialog header="Notifica necessaria rettifica:" [(visible)]="showNotificaRettificaDialog" (onHide)="closeNotificaRettificaDialog()" styleClass="dialog-500" [draggable]="false" [resizable]="false" [modal]="true">
+    <div class="p-grid p-m-2"> 
+        <div class="p-col-12  p-p-0">
+            <textarea pInputTextarea [rows]="5" [(ngModel)]="this.noteNotificaRettifica" class="text-area-no-resize stretch"></textarea>
+        </div>
+    </div> 
+    <p-footer>
+      <div class="p-d-flex p-col-12 p-jc-end">
+        <button pButton label="Annulla" class="btn-custom-style"
+          (click)="closeNotificaRettificaDialog()"></button>
+        <button pButton label="Conferma" class="btn-custom-style"
+          (click)="invioNotificaRettifica()" [disabled]="!this.noteNotificaRettifica.trim()"></button>
+      </div>  
+    </p-footer>
+</p-dialog>
+
+<p-dialog header="Numero protocollo:" [(visible)]="showProtocolloDialog" (onHide)="closeProtocolloDialog()" styleClass="dialog-400" [draggable]="false" [resizable]="false" [modal]="true" [closable]="false">
+    <div class="p-grid p-m-2"> 
+        <div class="p-col-12">
+            <input *ngIf="!isProtocollata" type="text" pInputText [(ngModel)]="this.numProtocollo" class="stretch" [readonly]="true">
+            <input *ngIf="isProtocollata" type="text" pInputText [(ngModel)]="this.pratica.numero_protocollo_comunicazione" class="stretch" [readonly]="true">
+            <label *ngIf="isProtocollata" for="txtProtocollo" class="p-text-bold p-pt-2" style="display: block;">Protocollazione avvenuta con successo</label>
+        </div>
+    </div> 
+    <p-footer>
+        <div class="p-d-flex p-col-12 p-jc-end">
+            <button *ngIf="this.numProtocollo == '--|--'" pButton label="Protocolla" class="btn-custom-style"
+                (click)="this[actionRiprotocollazione](this.pratica)"></button> 
+            <button pButton label="Chiudi" class="btn-custom-style" (click)="showProtocolloDialog = false; this.resetProtocollo();"></button>
+        </div>  
+    </p-footer>
+</p-dialog>
+
+<p-dialog header="Dichiarazioni modifiche dei luoghi (ai sensi del DPR 445/2000):" [(visible)]="showDichiarazioniModificheStatoLuoghiDialog" (onHide)="closeDichiarazioniModificheStatoLuoghiDialog()" styleClass="dialog-850" [draggable]="false" [resizable]="false" [modal]="true">
+    <div class="p-grid p-m-2"> 
+        <div class="p-col-12">
+            <div *ngFor="let condizioni of condizioniTrasferimentoTitolaritaSchema" class="p-field-checkbox">
+              <p-checkbox name="condizioniGroup" [value]="condizioni.value" [label]="condizioni.label" [(ngModel)]="selectedCondizioniTrasferimentoTitolarita"></p-checkbox>
+            </div>
+        </div>
+    </div> 
+    <p-footer>
+      <div class="p-d-flex p-col-12 p-jc-end">
+        <button pButton label="Annulla" class="btn-custom-style" (click)="closeDichiarazioniModificheStatoLuoghiDialog()"></button>
+        <button pButton label="Conferma" class="btn-custom-style" (click)="avviaTrasferimentoTitolarita(this.pratica)"></button>
+      </div>  
+    </p-footer>
+</p-dialog>
+
+<p-dialog header="Data fine lavori:" [(visible)]="showDataFineLavoriDialog" (onHide)="closeDataFineLavoriDialog()" styleClass="dialog-500" [draggable]="false" [resizable]="false" [modal]="true">
+    <div class="p-grid p-m-2"> 
+        <div class="p-col-12  p-p-0">
+            <p-calendar name='txtinputDataFineLavori' dateFormat="dd/mm/yy" [yearNavigator]="true" [yearRange]="calculateYearRange()" [monthNavigator]="true"
+                [(ngModel)]="data_scadenza_fine_lavori" placeholder="dd/mm/yyyy" appendTo="body" icon="pi pi-calendar" [showIcon]="true" 
+                [minDate]="dateNow" inputId="txtinputDataFineLavori" styleClass="data-calendar stretch"></p-calendar>
+        </div>
+    </div> 
+    <p-footer>
+      <div class="p-d-flex p-col-12 p-jc-end">
+        <button pButton label="Annulla" class="btn-custom-style"
+          (click)="closeDataFineLavoriDialog()"></button>
+        <button pButton label="Conferma" class="btn-custom-style"
+          (click)="uploadDocumentazioneRichiestaLavori(this.pratica)" [disabled]="!data_scadenza_fine_lavori"></button>
+      </div>  
+    </p-footer>
+</p-dialog>

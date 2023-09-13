@@ -1,0 +1,37 @@
+/*sticky header*/
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+  position: -webkit-sticky;
+  position: sticky;
+  top: 0px;
+  z-index: 1;
+  /* white-space: nowrap; */
+}
+
+/*sticky header con resizableColumns*/
+:host ::ng-deep .p-datatable .p-datatable-wrapper {
+  overflow-x: initial;
+}
+
+/*sticky header*/
+@media screen and (max-width: 64em) {
+:host ::ng-deep .p-datatable .p-datatable-thead > tr > th {
+    top: 0px;
+    white-space: normal; /*per vedere i filtri quando si diminuisce la grandezza della finestra */
+  }
+}
+
+.btn-inserisci {
+  font-weight: 600;
+  height: 34px;
+}
+
+.btn-export-size {
+  height: 32px;
+  width: 32px;
+}
+
+:host ::ng-deep .btn-custom-style .p-button-icon {
+  font-size: 1.2rem;
+}
+
+

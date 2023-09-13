@@ -1,0 +1,101 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    tools:context="com.zebra.rfidreader.demo.bari_citta_connessa.ui.fragment.ListEventIdTagFragment">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/permission_message"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="@dimen/margin_standard">
+
+        <TextView
+            android:id="@+id/text_title_rfid"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Elementi rilevati"
+            android:textSize="24sp"
+            android:fontFamily="@font/titilliumweb_bold"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintBottom_toBottomOf="@+id/close_rfid"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/close_rfid" />
+
+        <ImageView
+            android:id="@+id/close_rfid"
+            android:layout_width="32dp"
+            android:layout_height="32dp"
+            android:src="@drawable/ic_close"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/text_title_rfid"
+            app:layout_constraintBottom_toBottomOf="@id/text_title_rfid"/>
+
+        <Button
+            android:id="@+id/button_cancel_rfid"
+            android:layout_width="150dp"
+            android:layout_height="wrap_content"
+            android:text="Annulla"
+            android:background="@drawable/selector_effect_button_grey"
+            android:fontFamily="@font/titilliumweb_regular"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent" />
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/content_list_tag"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginBottom="8dp"
+            android:visibility="visible"
+            app:layout_constraintBottom_toTopOf="@+id/button_cancel_rfid"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/text_title_rfid">
+
+            <TextView
+                android:id="@+id/textView7"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:text="Lista tag rilevati"
+                android:fontFamily="@font/titilliumweb_regular"
+                android:textAppearance="@style/TextAppearance.AppCompat.Medium"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/listView_tag"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginBottom="8dp"
+                android:visibility="visible"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView7"
+                tools:listitem="@layout/card_tag_revelation" />
+
+            <include
+                android:id="@+id/empty_state_layout"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                tools:visibility="gone"
+                layout="@layout/search_empty_state_layout"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/textView7"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+</LinearLayout>

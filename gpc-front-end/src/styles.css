@@ -1,0 +1,423 @@
+/* You can add global styles to this file, and also import other style files */
+
+.p-panelmenu .p-panelmenu-header > a {
+    background: #E20A16 !important;
+    color: white !important;
+}
+
+.p-breadcrumb ul li .p-menuitem-link .p-menuitem-icon,
+.p-breadcrumb-chevron,
+.p-breadcrumb .p-menuitem-text  {
+    color: white !important;
+}
+
+.p-breadcrumb ul li .p-menuitem-link:focus {
+  box-shadow: none !important;
+}
+
+.p-breadcrumb .p-menuitem-text:hover{
+  text-decoration: underline;
+}
+
+.p-breadcrumb {
+  padding: 9px !important;
+  border: none !important;
+  background-color: #444444 !important;
+  border-radius: 0% !important;
+}
+
+.field-label {
+    font-size: 1.2em;
+    color: rgba(0,0,0,.87);
+    font-weight: 600;
+    margin: 5px 0px;
+    display: block;
+}
+
+.label {
+    font-size: 1em;
+}
+
+.intestazione-componente {
+  width: 100%;
+  margin: 0;
+  font-size: 1.3em;
+  font-weight: 500;
+  color: rgba(0,0,0,.87);
+  border-bottom: 1px solid #e5e5e5;
+}
+
+.container-routing {
+    height: calc(100% - 35px);
+}
+
+.pointer {
+    cursor: pointer !important;
+}
+
+.link {
+    color: #124b94;
+    text-decoration: none;
+}
+
+.link:hover{
+  text-decoration: underline;
+}
+
+/* Dialog */
+.p-dialog .p-dialog-header {
+    padding: 1rem !important;
+}
+
+.p-dialog .p-dialog-content {
+    padding: 0 1rem 1rem 1rem !important;
+    height: 100%;
+}
+
+.p-dialog .p-dialog-footer {
+    padding: 0 1rem 1rem 1rem !important;
+}
+
+.p-progress-spinner-circle {
+    stroke: #E20A16 !important;
+}
+.p-checkbox .p-checkbox-box.p-highlight,
+.p-radiobutton .p-radiobutton-box.p-highlight,
+.p-togglebutton.p-button.p-highlight,
+.p-inputswitch.p-inputswitch-checked .p-inputswitch-slider {
+    background-color: #E20A16 !important;
+    border-color: #E20A16 !important;
+} 
+
+.btn-custom-style.p-button,
+.p-button.p-fileupload-choose,
+.p-fileupload .p-fileupload-buttonbar .p-button {
+  background-color: white !important; 
+  border-color: #7B95A3 !important;
+  color: #E20A16 !important;
+  border-width: 1px !important;
+  border-radius: 5px;
+}
+
+.btn-custom-style.p-button:enabled:hover,
+.p-button.p-fileupload-choose:hover,
+.p-fileupload .p-fileupload-buttonbar .p-button:enabled:hover {
+    background-color: #E20A16 !important;
+    border-color: transparent !important;
+    color: white !important;
+} 
+
+.btn-custom-style.p-button:enabled:focus,
+.p-button:focus{
+  box-shadow: none !important;
+}
+
+@media screen and (min-width:0px) and (max-width:575px) {
+    .p-sm-min-l {
+      width: 25%;
+    }
+    .p-sm-min-r {
+      width: 75%;
+    }
+}
+
+.p-toolbar {
+  border-bottom: none !important;
+}
+
+.p-tooltip {
+  max-width: 500px !important;
+  white-space: pre-wrap !important;
+}
+
+.p-datatable .p-sortable-column.p-highlight,
+.p-datatable .p-sortable-column.p-highlight .p-sortable-column-icon {
+  color: #E20A16 !important;
+}
+
+.p-datatable .p-datatable-tbody > tr > td {
+  padding: 0.5rem 1rem !important;
+}
+
+.p-selectbutton .p-button.p-highlight {
+  background-color: #E20A16 !important;
+  border-color: #E20A16 !important;
+}
+
+.p-selectbutton .p-button:not(.p-highlight) {
+  background-color: white !important;
+  color: #E20A16 !important;
+}
+
+.p-radiobutton-box{
+  border-radius: 3px !important;
+}
+
+.p-radiobutton-icon{
+  background: url("assets/glyphicon-ok.png") center / 14px 14px no-repeat !important;
+  width: 14px !important;
+  height: 14px !important;
+}
+
+.p-inputtext-lg .p-inputtext{
+  height: 45px;
+  font-size: 18px !important;
+}
+
+.p-inputtext-lg .p-inputtextarea{
+  height: auto;
+  font-size: 18px !important;
+}
+
+.p-calendar .p-datepicker{
+  min-width: 300px !important;
+}
+
+.p-datepicker table td {
+  padding: 0px !important;
+}
+
+.p-column-filter-buttonbar .p-button {
+  background-color: #E20A16 !important; 
+  border-color: #E20A16 !important;
+  color: white !important;
+}
+
+.p-column-filter-buttonbar .p-button:enabled:hover {
+  background-color: #E20A16 !important;
+}
+
+.p-column-filter-add-rule .p-column-filter-add-button {
+  color: #E20A16 !important; 
+}
+
+.p-component{
+  font-family: inherit !important;
+}
+
+.p-datepicker-month,
+.p-datepicker-year{
+  font-size: 1rem !important;
+}
+
+.p-column-filter-menu-button.p-column-filter-menu-button-active {
+  background-color: #E20A16 !important; 
+  border-color: #E20A16 !important;
+  color: white !important;
+}
+
+.p-inputtext:enabled:hover:read-only,
+.p-inputtext:enabled:focus-visible:read-only,
+.p-checkbox:hover:read-only{
+  border-color: #ced4da;
+  cursor: default;
+}
+
+.p-link:focus,
+.p-inputtext:enabled:focus,
+.p-inputtext:enabled:hover,
+.p-buttonset .p-button:focus,
+.p-dropdown:not(.p-disabled):hover,
+.p-multiselect:not(.p-disabled):hover,
+.p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box.p-focus,
+.p-checkbox:not(.p-checkbox-disabled) .p-checkbox-box:hover,
+.p-column-filter-operator-dropdown.p-dropdown.p-component.p-focus,
+.p-column-filter-matchmode-dropdown.p-dropdown.p-component.p-focus,
+.p-radiobutton .p-radiobutton-box:not(.p-disabled):not(.p-highlight):hover,
+.p-dropdown:not(.p-disabled).p-focus,
+.p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus,
+.p-inputswitch.p-focus .p-inputswitch-slider
+ {
+  box-shadow: 0 0 0 0.1rem #ced4da !important ;
+  border-color: transparent !important;
+}
+
+.p-datatable .p-sortable-column:focus{
+  box-shadow: inset 0 0 0 0.15rem #ced4da !important;
+}
+
+.p-radiobutton .p-radiobutton-box:not(.p-disabled).p-focus,
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item:focus,
+.p-panelmenu .p-panelmenu-header > a:focus,
+.p-panelmenu .p-panelmenu-content .p-menuitem .p-menuitem-link:focus
+{
+  box-shadow: none !important;
+}
+
+.p-radiobutton .p-radiobutton-box:not(.p-disabled):not(.p-highlight).p-focus{
+  border-color: #ced4da !important;
+}
+
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight,
+.p-togglebutton.p-button:not(.p-disabled):not(.p-highlight):hover {
+  background-color: transparent !important;
+}
+
+.p-multiselect-panel .p-multiselect-items .p-multiselect-item.p-highlight:hover,
+.p-dropdown-panel .p-dropdown-items .p-dropdown-item.p-highlight,
+.p-paginator .p-paginator-pages .p-paginator-page.p-highlight,
+.p-button.p-button-text:enabled:hover{
+  background-color: #e9ecef !important;
+}
+
+.p-progressbar .p-progressbar-value {
+  background: #E20A16 !important;
+}
+
+.p-fluid .p-dropdown .p-dropdown-label{
+  font-family: inherit !important;
+}
+
+.p-multiselect-item{
+  white-space: normal !important;
+}
+
+.spanEllipsis,
+.p-autocomplete-input {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  display: block;
+}
+
+.p-tabview .p-tabview-nav li.p-highlight .p-tabview-nav-link,
+.p-tabview .p-tabview-nav li .p-tabview-nav-link:not(.p-disabled):focus {
+  background-color: white !important;
+  color: #E20A16 !important;
+  border-bottom: 1px solid #E20A16 !important;
+}
+
+.p-tabview .p-tabview-nav li:not(.p-highlight):not(.p-disabled):hover .p-tabview-nav-link {
+  border-bottom: 1px solid #E20A16 !important;
+}
+
+/*Stili bottoni ConfirmDialog*/
+.btn-dialog-validazione-pratica {
+  width: 180px !important;
+}
+
+.btn-dialog-confirm {
+  width: 135px !important;
+}
+
+.legend {
+  font-size: 21px;
+  border-bottom: 1px solid #e5e5e5;
+  margin-bottom: 20px;
+}
+
+.button-select{
+  height: 45px;
+}
+
+.data-calendar .p-button {
+  background-color: #E20A16 !important;
+  border-color: #E20A16 !important;
+}
+
+.toggle-button {
+  width: 20px !important;
+  height: 20px !important;
+  border-radius: 3px !important;
+}
+
+.toggle-button .pi {
+  font-size: 14px;
+}
+
+.checkbox-form {
+  margin-bottom: 5px;
+  margin-left: 5px;
+}
+
+.readonly {
+  pointer-events: none !important;
+}
+
+.disabled {
+  opacity: 0.6 !important;
+  pointer-events: none !important;
+}
+
+.dialog-400 {
+  width: 400px !important;
+}
+
+.dialog-500 {
+  width: 500px !important;
+}
+
+.dialog-550 {
+  width: 550px !important;
+}
+
+.dialog-600 {
+  width: 600px !important;
+}
+
+.dialog-650 {
+  width: 650px !important;
+}
+
+.dialog-850 {
+  width: 850px !important;
+}
+
+.dialog-full-screen {
+  width: 98% !important;
+  height: 100% !important;
+}
+
+.dialog-400 .p-dialog-footer button,
+.dialog-500 .p-dialog-footer button,
+.dialog-550 .p-dialog-footer button,
+.dialog-600 .p-dialog-footer button,
+.dialog-850 .p-dialog-footer button,
+.dialog-full-screen .p-dialog-footer button {
+  width: 105px !important;
+}
+
+.p-dialog .p-dialog-header .p-dialog-title {
+  font-size: 1.2rem !important;
+}
+
+.stretch {
+  width: 100% !important;
+}
+
+.text-area-no-resize {
+  resize: none !important;
+}
+
+.button-avanti {
+  width: 115px !important;
+  height: 45px !important;
+}
+
+.p-tabview .p-tabview-panels{
+  padding: 0rem !important;
+}
+
+body.modal-open {
+  overflow: hidden;
+}
+
+.relative-container {
+  position: relative;
+}
+
+.heatmap-icon {
+  background-image: url("./assets/heatmap.png");
+}
+
+.tipologia-persona-label {
+  font-size: 20px;
+  margin-left: 15px;
+  line-height: 28px;
+  vertical-align: top;
+}
+
+.campi-obbligatori {
+  float: right;
+  font-size: 15px;
+}

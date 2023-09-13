@@ -1,0 +1,11 @@
+.arrow-map-class {
+    position: absolute;
+    right: 5px;
+    top: 6px;
+}
+
+.button-add-address {
+    position: absolute;
+    right: 12px;
+    bottom: 19px;
+}

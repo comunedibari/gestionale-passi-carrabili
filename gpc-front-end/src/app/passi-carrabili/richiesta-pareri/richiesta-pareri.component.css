@@ -1,0 +1,18 @@
+:host ::ng-deep .button-select-parere .p-button,
+:host ::ng-deep .button-select-competenza .p-button {
+    height: 45px;
+}
+
+:host ::ng-deep .button-select-competenza .p-button {
+    width: 50%;
+}
+
+:host ::ng-deep .button-select-parere .p-button,
+:host ::ng-deep .header-tab {
+    width: 33%;
+}
+
+.header-tab-label{
+    margin: auto;
+    white-space: nowrap;
+}

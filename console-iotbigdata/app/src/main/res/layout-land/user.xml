@@ -1,0 +1,252 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/searchRoot"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:descendantFocusability="beforeDescendants"
+        android:focusableInTouchMode="true">
+
+        <androidx.core.widget.NestedScrollView
+            android:id="@+id/nested"
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:descendantFocusability="beforeDescendants"
+            android:fillViewport="true"
+            android:focusableInTouchMode="true"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/appbar_layout">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:padding="24dp">
+
+                <TextView
+                    android:id="@+id/utenza_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/titilliumweb_bold"
+                    android:text="@string/utenza"
+                    android:textSize="24sp"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/utenza_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/titilliumweb_regular"
+                    android:text="-"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="@id/utenza_label"
+                    app:layout_constraintStart_toStartOf="@id/provincia_nascita_value"
+                    app:layout_constraintTop_toTopOf="@id/utenza_label" />
+
+                <TextView
+                    android:id="@+id/cf_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/titilliumweb_bold"
+                    android:text="@string/codice_fiscale"
+                    android:textSize="24sp"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/utenza_label" />
+
+                <TextView
+                    android:id="@+id/cf_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/titilliumweb_regular"
+                    android:text="-"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="@id/cf_label"
+                    app:layout_constraintStart_toStartOf="@id/provincia_nascita_value"
+                    app:layout_constraintTop_toTopOf="@id/cf_label" />
+
+                <TextView
+                    android:id="@+id/nome_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/titilliumweb_bold"
+                    android:text="@string/nome"
+                    android:textSize="24sp"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cf_label" />
+
+                <TextView
+                    android:id="@+id/nome_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/titilliumweb_regular"
+                    android:text="-"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="@id/nome_label"
+                    app:layout_constraintStart_toStartOf="@id/provincia_nascita_value"
+                    app:layout_constraintTop_toTopOf="@id/nome_label" />
+
+                <TextView
+                    android:id="@+id/cognome_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/titilliumweb_bold"
+                    android:text="@string/cognome"
+                    android:textSize="24sp"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/nome_label" />
+
+                <TextView
+                    android:id="@+id/cognome_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/titilliumweb_regular"
+                    android:text="-"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="@id/cognome_label"
+                    app:layout_constraintStart_toStartOf="@id/provincia_nascita_value"
+                    app:layout_constraintTop_toTopOf="@id/cognome_label" />
+
+                <TextView
+                    android:id="@+id/data_nascita_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/titilliumweb_bold"
+                    android:text="@string/data_di_nascita"
+                    android:textSize="24sp"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/cognome_label" />
+
+                <TextView
+                    android:id="@+id/data_nascita_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/titilliumweb_regular"
+                    android:text="-"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="@id/data_nascita_label"
+                    app:layout_constraintStart_toStartOf="@id/provincia_nascita_value"
+                    app:layout_constraintTop_toTopOf="@id/data_nascita_label" />
+
+                <TextView
+                    android:id="@+id/luogo_nascita_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/titilliumweb_bold"
+                    android:text="@string/luogo_di_nascita"
+                    android:textSize="24sp"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/data_nascita_label" />
+
+                <TextView
+                    android:id="@+id/luogo_nascita_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/titilliumweb_regular"
+                    android:text="-"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="@id/luogo_nascita_label"
+                    app:layout_constraintStart_toStartOf="@id/provincia_nascita_value"
+                    app:layout_constraintTop_toTopOf="@id/luogo_nascita_label" />
+
+                <TextView
+                    android:id="@+id/provincia_nascita_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/titilliumweb_bold"
+                    android:text="@string/provincia_di_nascita"
+                    android:textSize="24sp"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/luogo_nascita_label" />
+
+                <TextView
+                    android:id="@+id/provincia_nascita_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="24dp"
+                    android:fontFamily="@font/titilliumweb_regular"
+                    android:text="-"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="@id/provincia_nascita_label"
+                    app:layout_constraintStart_toEndOf="@id/provincia_nascita_label"
+                    app:layout_constraintTop_toTopOf="@id/provincia_nascita_label" />
+
+                <TextView
+                    android:id="@+id/telefono_label"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:fontFamily="@font/titilliumweb_bold"
+                    android:text="@string/telefono"
+                    android:textSize="24sp"
+                    android:textColor="@color/colorBlack"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/provincia_nascita_label" />
+
+                <TextView
+                    android:id="@+id/telefono_value"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/titilliumweb_regular"
+                    android:text="-"
+                    android:textSize="24sp"
+                    app:layout_constraintBottom_toBottomOf="@id/telefono_label"
+                    app:layout_constraintStart_toStartOf="@id/provincia_nascita_value"
+                    app:layout_constraintTop_toTopOf="@id/telefono_label" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+        </androidx.core.widget.NestedScrollView>
+
+        <com.google.android.material.appbar.AppBarLayout
+            android:id="@+id/appbar_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:theme="@style/AppTheme.AppBarOverlay"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <androidx.appcompat.widget.Toolbar
+                android:id="@+id/toolbarSearch"
+                android:layout_width="match_parent"
+                android:layout_height="?attr/actionBarSize"
+                android:background="?attr/colorPrimary"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                app:popupTheme="@style/AppTheme.PopupOverlay" />
+
+            <ImageView
+                android:id="@+id/layout_banner"
+                android:layout_width="match_parent"
+                android:layout_height="100dp"
+                android:background="@color/colorWhite"
+                android:src="@raw/banner"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/toolbar"/>
+
+        </com.google.android.material.appbar.AppBarLayout>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</layout>

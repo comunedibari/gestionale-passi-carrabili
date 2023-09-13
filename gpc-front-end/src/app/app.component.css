@@ -1,0 +1,8 @@
+::ng-deep .menu-sidebar .p-sidebar .p-sidebar-content{
+   padding: 0px !important;
+   overflow: auto;
+}
+
+::ng-deep .menu-sidebar .p-sidebar .p-sidebar-header {
+   padding: 0px;
+}

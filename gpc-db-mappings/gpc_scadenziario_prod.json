@@ -1,0 +1,88 @@
+{
+	"mappings": {
+		"properties": {
+			"codice_fiscale": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"data_operazione": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"id_doc": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"indirizzo": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"info": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"municipio_id": {
+				"type": "long"
+			},
+			"numero_protocollo": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"proprietario_pratica": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"risposta_pareri": {
+				"properties": {
+					"polizia": {
+						"type": "boolean"
+					},
+					"urbanistica": {
+						"type": "boolean"
+					},
+					"utd": {
+						"type": "boolean"
+					}
+				}
+			},
+			"stato_pratica": {
+				"type": "long"
+			}
+		}
+	}
+}

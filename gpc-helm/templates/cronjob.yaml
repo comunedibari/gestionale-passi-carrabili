@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: {{ include "gpc.fullname" . }}-jobs
+  labels:
+    {{- include "gpc.labels" . | nindent 4 }}
+spec:
+  schedule: "30 0 * * *"
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          restartPolicy: Never
+          {{- if .Values.imagePullSecrets }}
+          imagePullSecrets: 
+          {{ toYaml .Values.imagePullSecrets | indent 2 }}
+          {{- end }}
+          containers:
+          - name: {{ .Chart.Name }}-job
+            image: "{{ .Values.image.repository }}/{{ .Values.image.job.image}}:{{ .Values.image.job.tag}}"
+            imagePullPolicy: {{ .Values.image.pullPolicy }}
+            env:
+            - name: SCADENZIARIO_URL
+              value: {{ .Values.scadenziarioUrl }}
+          
+            
+          

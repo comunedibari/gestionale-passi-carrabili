@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="dark_grey">#808080</color>
+    <color name="notification_image_bg_color">#1d3741</color>
+
+    <color name="colorPrimary">#d12f27</color>
+    <color name="colorPrimaryDark">#a52320</color>
+    <color name="colorAccent">#d12f27</color>
+
+    <color name="colorGrey">#808080</color>
+    <color name="colorBlack">#000000</color>
+    <color name="colorWhite">#FFFFFF</color>
+    <color name="colorGreen">#23BA18</color>
+    <color name="colorDarkGreen">#147a00</color>
+    <color name="colorYellow">#ffe900</color>
+    <color name="colorGreyNormal">#b7c3c5</color>
+    <color name="colorGreyPress">#9ba3a3</color>
+</resources>

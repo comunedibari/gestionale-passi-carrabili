@@ -1,0 +1,23 @@
+export enum StatoPraticaPassiCarrabili {  
+    'Bozza' = 0,
+    'Inserita' = 1,
+    'Verifica formale' = 2,
+    'Richiesta pareri' = 3,
+    'Necessaria integrazione' = 4,
+    'Pratica da rigettare' = 5,
+    'Approvata' = 6,
+    'Preavviso diniego' = 7,
+    'Attesa di pagamento' = 8,
+    'Pronto al rilascio' = 9,
+    'Concessione valida' = 10,
+    'Pronto alla restituzione' = 11,
+    'Richiesta lavori' = 12,
+    'Attesa fine lavori' = 13,
+    'Pratica da revocare' = 14,
+    'Regolarizzazione' = 15,
+    // '' = 16,
+    // '' = 17,
+    'Archiviata'= 18,
+    'Revocata'= 19,
+    'Rigettata'= 20
+}

@@ -1,0 +1,33 @@
+.footer{
+    background-color: #333333;
+    height: 181px;
+}
+
+.div-logo {
+    height: 130px;
+}
+
+.logo-footer{
+    height: 100%;
+}
+
+.footer-info {
+    color: white;
+    font-size: 1rem;
+}
+
+.footer-line{
+    border-top: 1px solid white;
+}
+
+@media screen and (min-width:600px) and (max-width:780px) {
+    .logo-footer{
+        height: 80%;
+    }
+}
+
+@media screen and (min-width:0px) and (max-width:600px) {
+    .logo-footer{
+        height: 60%;
+    }
+}

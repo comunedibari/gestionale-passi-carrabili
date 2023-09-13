@@ -1,0 +1,212 @@
+<div class="p-grid p-nogutter p-pt-2 p-pr-3 p-pl-3 p-pb-3">
+    <h4 class="intestazione-componente">Configurazione parametri</h4>
+</div>
+
+<div class="p-grid p-nogutter p-m-3"> 
+    <form #insertHUBForm="ngForm">  
+        <p-fieldset *ngIf="hub_pagamenti" class="p-field p-col-12" legend="Parametri HUB Pagamenti" [toggleable]="true">
+            
+            <div class="p-fluid p-formgrid p-grid p-inputtext-lg">
+
+                <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                    <label for="txtinputCodCapitoloCauzioneInfruttifera" class="p-text-bold">Codice capitolo segnale indicatore (*)</label>
+                    <input id="txtinputCodCapitoloCauzioneInfruttifera" name="txtinputCodCapitoloCauzioneInfruttifera" type="text" 
+                        [(ngModel)]="hub_pagamenti.codCapitolo_costo_segnale_indicatore" pInputText aria-required="true" [required]="true"> 
+                </div>
+
+                <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                    <label for="txtinputCodCapitoloCostoSegnaleIndicatore" class="p-text-bold">Codice capitolo cauzione infruttifera (*)</label>
+                    <input id="txtinputCodCapitoloCostoSegnaleIndicatore" name="txtinputCodCapitoloCostoSegnaleIndicatore" type="text" 
+                        [(ngModel)]="hub_pagamenti.codCapitolo_cauzione_infruttifera" pInputText aria-required="true" [required]="true"> 
+                </div>
+
+                <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                    <label for="txtinputCodUfficioMunicipio1" class="p-text-bold">Codice ufficio Municipio 1 (*)</label>
+                    <input id="txtinputCodUfficioMunicipio1" name="txtinputCodUfficioMunicipio1" type="text" 
+                        [(ngModel)]="hub_pagamenti.codUfficio_municipio_1" pInputText aria-required="true" [required]="true"> 
+                </div>
+
+                <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                    <label for="txtinputCodUfficioMunicipio2" class="p-text-bold">Codice ufficio Municipio 2 (*)</label>
+                    <input id="txtinputCodUfficioMunicipio2" name="txtinputCodUfficioMunicipio2" type="text" 
+                        [(ngModel)]="hub_pagamenti.codUfficio_municipio_2" pInputText aria-required="true" [required]="true"> 
+                </div>
+
+                <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                    <label for="txtinputCodUfficioMunicipio3" class="p-text-bold">Codice ufficio Municipio 3 (*)</label>
+                    <input id="txtinputCodUfficioMunicipio3" name="txtinputCodUfficioMunicipio3" type="text" 
+                        [(ngModel)]="hub_pagamenti.codUfficio_municipio_3" pInputText aria-required="true" [required]="true"> 
+                </div>
+
+                <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                    <label for="txtinputCodUfficioMunicipio4" class="p-text-bold">Codice ufficio Municipio 4 (*)</label>
+                    <input id="txtinputCodUfficioMunicipio4" name="txtinputCodUfficioMunicipio4" type="text" 
+                        [(ngModel)]="hub_pagamenti.codUfficio_municipio_4" pInputText aria-required="true" [required]="true"> 
+                </div>
+
+                <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                    <label for="txtinputCodUfficioMunicipio5" class="p-text-bold">Codice ufficio Municipio 5 (*)</label>
+                    <input id="txtinputCodUfficioMunicipio5" name="txtinputCodUfficioMunicipio5" type="text" 
+                        [(ngModel)]="hub_pagamenti.codUfficio_municipio_5" pInputText aria-required="true" [required]="true"> 
+                </div>
+
+                <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                    <label for="txtinputCostoSegnaleIndicatore" class="p-text-bold">Importo segnale indicatore (*)</label>
+                    <input id="txtinputCostoSegnaleIndicatore" name="txtinputCostoSegnaleIndicatore" type="text" 
+                        [(ngModel)]="hub_pagamenti.costo_segnale_indicatore" pInputText aria-required="true" [required]="true"> 
+                </div>
+
+                <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                    <label for="txtinputCauzioneInfruttifera" class="p-text-bold">Importo cauzione infruttifera (*)</label>
+                    <input id="txtinputCauzioneInfruttifera" name="txtinputCauzioneInfruttifera" type="text" 
+                        [(ngModel)]="hub_pagamenti.cauzione_infruttifera" pInputText aria-required="true" [required]="true"> 
+                </div>
+
+                <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+                    <label for="txtinputDatiSpecificiRiscossione" class="p-text-bold">Dati riscossione (*)</label>
+                    <input id="txtinputDatiSpecificiRiscossione" name="txtinputDatiSpecificiRiscossione" type="text" 
+                        [(ngModel)]="hub_pagamenti.datiSpecificiRiscossione" pInputText aria-required="true" [required]="true"> 
+                </div>
+                
+                <div class="p-d-flex p-col-12 p-jc-end">
+                    <button pButton label="Salva" type="button" class="btn-custom-style button-avanti" 
+                        (click)="updateConfiguration(hub_pagamenti)" [disabled]="insertHUBForm.invalid"></button>
+                </div>
+            </div>
+
+        </p-fieldset>
+    </form>
+    <form #insertProtocolloForm="ngForm">
+    <p-fieldset *ngIf="uo_protocollo" class="p-field p-col-12" legend="Parametri Automi Protocollo" [toggleable]="true">
+        <div class="p-fluid p-formgrid p-grid p-inputtext-lg">
+
+            <div class="p-field p-col-12 p-sm-4 p-md-4 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputUOM1" class="p-text-bold">Municipio 1 - U.O. (*)</label>
+                <input id="txtinputUOM1" name="txtinputUOM1" type="text" [(ngModel)]="uo_protocollo.municipio_1.uoid" 
+                    pInputText aria-required="true" [required]="true"> 
+            </div>
+
+            <div class="p-field p-col-12 p-sm-8 p-md-8 p-lg-8 p-pb-3 p-m-0">
+                <label for="txtinputDenominazioneM1" class="p-text-bold">Denominazione (*)</label>
+                <input id="txtinputDenominazioneM1" name="txtinputDenominazioneM1" type="text" [(ngModel)]="uo_protocollo.municipio_1.denominazione" 
+                    pInputText aria-required="true" [required]="true"> 
+            </div>
+
+            <div class="p-field p-col-12 p-sm-4 p-md-4 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputUOM2" class="p-text-bold">Municipio 2 - U.O. (*)</label>
+                <input id="txtinputUOM2" name="txtinputUOM2" type="text" [(ngModel)]="uo_protocollo.municipio_2.uoid" 
+                    pInputText aria-required="true" [required]="true"> 
+            </div>
+
+            <div class="p-field p-col-12 p-sm-8 p-md-8 p-lg-8 p-pb-3 p-m-0">
+                <label for="txtinputDenominazioneM2" class="p-text-bold">Denominazione (*)</label>
+                <input id="txtinputDenominazioneM2" name="txtinputDenominazioneM2" type="text" [(ngModel)]="uo_protocollo.municipio_2.denominazione" 
+                    pInputText aria-required="true" [required]="true"> 
+            </div>
+
+            <div class="p-field p-col-12 p-sm-4 p-md-4 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputUOM3" class="p-text-bold">Municipio 3 - U.O. (*)</label>
+                <input id="txtinputUOM3" name="txtinputUOM3" type="text" [(ngModel)]="uo_protocollo.municipio_3.uoid" 
+                    pInputText aria-required="true" [required]="true"> 
+            </div>
+
+            <div class="p-field p-col-12 p-sm-8 p-md-8 p-lg-8 p-pb-3 p-m-0">
+                <label for="txtinputDenominazioneM3" class="p-text-bold">Denominazione (*)</label>
+                <input id="txtinputDenominazioneM3" name="txtinputDenominazioneM3" type="text" [(ngModel)]="uo_protocollo.municipio_3.denominazione" 
+                    pInputText aria-required="true" [required]="true"> 
+            </div>
+
+            <div class="p-field p-col-12 p-sm-4 p-md-4 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputUOM4" class="p-text-bold">Municipio 4 - U.O. (*)</label>
+                <input id="txtinputUOM4" name="txtinputUOM4" type="text" [(ngModel)]="uo_protocollo.municipio_4.uoid" 
+                    pInputText aria-required="true" [required]="true"> 
+            </div>
+
+            <div class="p-field p-col-12 p-sm-8 p-md-8 p-lg-8 p-pb-3 p-m-0">
+                <label for="txtinputDenominazioneM4" class="p-text-bold">Denominazione (*)</label>
+                <input id="txtinputDenominazioneM4" name="txtinputDenominazioneM4" type="text" [(ngModel)]="uo_protocollo.municipio_4.denominazione" 
+                    pInputText aria-required="true" [required]="true"> 
+            </div>
+
+            <div class="p-field p-col-12 p-sm-4 p-md-4 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputUOM5" class="p-text-bold">Municipio 5 - U.O. (*)</label>
+                <input id="txtinputUOM5" name="txtinputUOM5" type="text" [(ngModel)]="uo_protocollo.municipio_5.uoid" 
+                    pInputText aria-required="true" [required]="true"> 
+            </div>
+
+            <div class="p-field p-col-12 p-sm-8 p-md-8 p-lg-8 p-pb-3 p-m-0">
+                <label for="txtinputDenominazioneM5" class="p-text-bold">Denominazione (*)</label>
+                <input id="txtinputDenominazioneM5" name="txtinputDenominazioneM5" type="text" [(ngModel)]="uo_protocollo.municipio_5.denominazione" 
+                    pInputText aria-required="true" [required]="true"> 
+            </div>
+
+            <div class="p-field p-col-12 p-sm-4 p-md-4 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputPoliziaLocale" class="p-text-bold">Rip. Corpo di Polizia Municipale e Protezione Civile - U.O. (*)</label>
+                <input id="txtinputPoliziaLocale" name="txtinputPoliziaLocale" type="text" [(ngModel)]="uo_protocollo.polizia_locale.uoid" 
+                    pInputText aria-required="true" [required]="true"> 
+            </div>
+
+            <div class="p-field p-col-12 p-sm-8 p-md-8 p-lg-8 p-pb-3 p-m-0">
+                <label for="txtinputPoliziaLocaleDenominazione" class="p-text-bold">Denominazione (*)</label>
+                <input id="txtinputPoliziaLocaleDenominazione" name="txtinputPoliziaLocaleDenominazione" type="text" [(ngModel)]="uo_protocollo.polizia_locale.denominazione" 
+                    pInputText aria-required="true" [required]="true"> 
+            </div>
+
+            <div class="p-field p-col-12 p-sm-4 p-md-4 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputUTD" class="p-text-bold">Uffici Tecnici Decentrati - U.O. (*)</label>
+                <input id="txtinputUTD" name="txtinputUTD" type="text" [(ngModel)]="uo_protocollo.utd.uoid" 
+                    pInputText aria-required="true" [required]="true"> 
+            </div>
+
+            <div class="p-field p-col-12 p-sm-8 p-md-8 p-lg-8 p-pb-3 p-m-0">
+                <label for="txtinputUTDDenominazione" class="p-text-bold">Denominazione (*)</label>
+                <input id="txtinputUTDDenominazione" name="txtinputUTDDenominazione" type="text" [(ngModel)]="uo_protocollo.utd.denominazione" 
+                    pInputText aria-required="true" [required]="true"> 
+            </div>
+
+            <div class="p-field p-col-12 p-sm-4 p-md-4 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputRagioneria" class="p-text-bold">Rip. Ragioneria Generale - U.O. (*)</label>
+                <input id="txtinputRagioneria" name="txtinputRagioneria" type="text" [(ngModel)]="uo_protocollo.ragioneria.uoid" 
+                    pInputText aria-required="true" [required]="true"> 
+            </div>
+
+            <div class="p-field p-col-12 p-sm-8 p-md-8 p-lg-8 p-pb-3 p-m-0">
+                <label for="txtinputRagioneriaDenominazione" class="p-text-bold">Denominazione (*)</label>
+                <input id="txtinputRagioneriaDenominazione" name="txtinputRagioneriaDenominazione" type="text" [(ngModel)]="uo_protocollo.ragioneria.denominazione" 
+                    pInputText aria-required="true" [required]="true"> 
+            </div>
+
+            <div class="p-field p-col-12 p-sm-4 p-md-4 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputUrbanistica" class="p-text-bold">Rip. Urbanistica ed Edilizia Privata - U.O. (*)</label>
+                <input id="txtinputUrbanistica" name="txtinputUrbanistica" type="text" [(ngModel)]="uo_protocollo.urbanistica.uoid" 
+                    pInputText aria-required="true" [required]="true"> 
+            </div>
+
+            <div class="p-field p-col-12 p-sm-8 p-md-8 p-lg-8 p-pb-3 p-m-0">
+                <label for="txtinputUrbanisticaDenominazione" class="p-text-bold">Denominazione (*)</label>
+                <input id="txtinputUrbanisticaDenominazione" name="txtinputUrbanisticaDenominazione" type="text" [(ngModel)]="uo_protocollo.urbanistica.denominazione" 
+                    pInputText aria-required="true" [required]="true"> 
+            </div>
+
+            <div class="p-field p-col-12 p-sm-4 p-md-4 p-lg-4 p-pb-3 p-m-0">
+                <label for="txtinputTributi" class="p-text-bold">Rip. Tributi - U.O. (*)</label>
+                <input id="txtinputTributi" name="txtinputTributi" type="text" [(ngModel)]="uo_protocollo.tributi.uoid" 
+                    pInputText aria-required="true" [required]="true"> 
+            </div>
+
+            <div class="p-field p-col-12 p-sm-8 p-md-8 p-lg-8 p-pb-3 p-m-0">
+                <label for="txtinputTributiDenominazione" class="p-text-bold">Denominazione (*)</label>
+                <input id="txtinputTributiDenominazione" name="txtinputTributiDenominazione" type="text" [(ngModel)]="uo_protocollo.tributi.denominazione" 
+                    pInputText aria-required="true" [required]="true"> 
+            </div>
+
+            <div class="p-d-flex p-col-12 p-jc-end">
+                <button pButton label="Salva" type="button" class="btn-custom-style button-avanti" 
+                    (click)="updateConfiguration(uo_protocollo)" [disabled]="insertProtocolloForm.invalid"></button>
+            </div>
+
+        </div>
+
+    </p-fieldset>
+    </form>
+</div>

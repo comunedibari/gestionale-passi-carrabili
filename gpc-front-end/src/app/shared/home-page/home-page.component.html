@@ -1,0 +1,51 @@
+<div class="p-grid p-nogutter p-pt-2 p-pr-3 p-pl-3 p-pb-3">
+    <h4 class="intestazione-componente">Home Page</h4>
+</div>
+        
+<div class="p-grid p-nogutter container-routing"> 
+    <div class="p-grid p-nogutter p-jc-center p-ai-center stretch">
+        <div class="p-col-11 p-sm-11 p-md-10 p-lg-9 p-xl-8">
+
+            <ng-container *ngFor="let element of menuItems">
+                <div *ngIf="element.visible && element.items" class="p-d-flex p-flex-column p-ai-center div-padre p-shadow-24">                      
+                    <div class="p-mb-2 p-as-start">
+                        <label class="field-label">{{element.label}}</label>
+                    </div>
+                    <div class="p-d-flex p-flex-wrap p-jc-center">
+                        <ng-container *ngFor="let child of element.items">     
+                            <div *ngIf="child.visible" class="div-figlio">
+                                <div class="p-mb-2 icon-div" (click)="navigate(child.routerLink)">
+                                    <i *ngIf="child.badge" [class]="child.icon" [pTooltip]="child.title" tooltipPosition="bottom" pBadge [value]="child.badge" severity="danger"></i>
+                                    <i *ngIf="!child.badge" [class]="child.icon" [pTooltip]="child.title" tooltipPosition="bottom"></i>
+                                </div>
+                                <div class="p-mb-2 label-button-div">
+                                    <label class="label-button">{{child.label}}</label>
+                                </div>
+                            </div>
+                        </ng-container>  
+                    </div>  
+                </div>              
+            </ng-container>
+
+            <div *ngIf="thereAreUtilities" class="p-d-flex p-flex-column p-ai-center div-padre p-shadow-24">                      
+                <div class="p-mb-2 p-as-start">
+                    <label class="field-label">Utility</label>
+                </div>
+                <div class="p-d-flex p-flex-wrap p-jc-center">
+                    <ng-container *ngFor="let element of menuItems">     
+                        <div *ngIf="element.visible && !element.items" class="div-figlio">
+                            <div class="p-mb-2 icon-div" (click)="navigate(element.routerLink)">    
+                                <i *ngIf="element.badge" [class]="element.icon" [pTooltip]="element.title" tooltipPosition="bottom" pBadge [value]="element.badge" severity="danger"></i>                           
+                                <i *ngIf="!element.badge" [class]="element.icon" [pTooltip]="element.title" tooltipPosition="bottom"></i>
+                            </div>
+                            <div class="p-mb-2 label-button-div">
+                                <label class="label-button">{{element.label}}</label>
+                            </div>
+                        </div>
+                    </ng-container>  
+                </div>  
+            </div>  
+
+        </div>   
+    </div>
+</div>

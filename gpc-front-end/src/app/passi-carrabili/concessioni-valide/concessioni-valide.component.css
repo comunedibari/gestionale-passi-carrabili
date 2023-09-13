@@ -1,0 +1,54 @@
+.container-div {
+    margin: 0 5px;
+    width: 188px;
+}
+
+.icon-div {
+    border: 1px solid #7B95A3;
+    margin: auto;
+    width: 80px;
+    height: 80px;
+    border-radius: 100%;
+    display: block;
+    background-color: white; 
+}
+
+.icon-div:hover {
+    background-color: #E20A16;
+    border-color: transparent;
+}
+
+.icon-div > i {
+    color: #E20A16;
+    font-size: 2.5rem;
+    width: auto;
+    padding: 20px;
+}
+
+.icon-div > i:hover {
+    color: white;
+}
+
+.post-concessione-box {
+    max-height: 80%;
+}
+
+.label-button-div {
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    width: 188px;
+    text-align: center;
+}
+
+.label-button {
+    font-size: 1.1em;
+    color: #495057;
+    font-weight: 400;
+}
+
+.marker-map-class {
+    position: absolute;
+    top: 13px;
+    right: 16px;
+}

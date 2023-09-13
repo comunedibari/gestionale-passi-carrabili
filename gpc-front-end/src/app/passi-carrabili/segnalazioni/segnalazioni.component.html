@@ -1,0 +1,147 @@
+<div class="p-grid p-nogutter p-pt-2 p-pr-3 p-pl-3 p-pb-3">
+    <h4 class="intestazione-componente">Segnalazioni</h4>
+</div>
+
+<app-spinner-dialog *ngIf="showSpinner"></app-spinner-dialog>
+<div [hidden]="showSpinner" class="p-m-3">
+    <table-prime-ng
+      [dataSource]="this.dataSource" 
+      [columnSchema]="this.columnSchema" 
+      [actions]="this.actions"
+      [initSortColumn]="initSortColumn" 
+      [directionSortColumn]="directionSortColumn"
+      (onEvent)="this.onTableEvent($event)"
+      [titleTable]="titleTable"
+      [exportName]="exportName"
+      [globalFilters]="globalFilters">
+    </table-prime-ng>
+</div> 
+
+<p-dialog header="Dettaglio segnalazione:" [(visible)]="showDettaglioSegnalazioneDialog" (onHide)="closeDettaglioSegnalazioneDialog()" styleClass="dialog-full-screen" [draggable]="false" [resizable]="false" [modal]="true">
+  <form *ngIf="dettaglioPraticaForm" [formGroup]="dettaglioPraticaForm">
+      <div class="p-fluid p-formgrid p-grid p-inputtext-lg p-m-2"> 
+
+        <div class="p-field p-col-12 p-sm-6 p-pb-4 p-m-0">
+          <img *ngIf="dettaglioPraticaForm.get('blob').value" class="img-size noStretch" [src]="'data:image/png;base64, ' + dettaglioPraticaForm.get('blob').value | safeHtml" alt="Foto non disponibile"/>
+          <img *ngIf="!dettaglioPraticaForm.get('blob').value" class="img-size noStretch pointer" src="../../../assets/img_non_disponibile.png" alt="Foto non disponibile" (click)="fileImageInput.click()"/>
+          <input #fileImageInput type="file" (change)="uploadImageFile($event)" [accept]="acceptedImageExtensions" style="display: none;">
+          <p-progressBar *ngIf="showImageProgressBar" mode="indeterminate" [style]="{'height': '6px'}"></p-progressBar>
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-pb-4 p-m-0">
+
+          <div class="p-field p-col-12 p-pb-4 p-m-0">
+            <label for="txtinputNome" class="p-text-bold">Nome</label>
+            <input type="text" id="txtinputNome" name="txtinputNome" pInputText formControlName="nome" [readonly]="true">
+          </div>
+  
+          <div class="p-field p-col-12 p-pb-4 p-m-0">
+            <label for="txtinputCognome" class="p-text-bold">Cognome</label>
+            <input type="text" id="txtinputCognome" name="txtinputCognome" pInputText formControlName="cognome" [readonly]="true">
+          </div>
+
+          <div class="p-field p-col-12 p-pb-4 p-m-0">
+            <label for="txtinputRagioneSociale" class="p-text-bold">Ragione sociale</label>
+            <input type="text" id="txtinputRagioneSociale" name="txtinputRagioneSociale" pInputText formControlName="ragione_sociale" [readonly]="true">
+          </div>
+  
+          <!-- <div class="p-field p-col-12 p-pb-4 p-m-0">
+            <label for="txtinputIndirizzoSegnale" class="p-text-bold">Indirizzo del segnale indicatore</label>
+            <input type="text" id="txtinputIndirizzoSegnale" name="txtinputIndirizzoSegnale" pInputText 
+              formControlName="indirizzo_segnale_indicatore" [readonly]="true" [pTooltip]="dettaglioPraticaForm.get('indirizzo_segnale_indicatore').value">
+          </div> -->
+
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-4 p-pb-4 p-m-0">
+          <label for="txtinputIndirizzoSegnale" class="p-text-bold">Indirizzo del segnale indicatore</label>
+            <input type="text" id="txtinputIndirizzoSegnale" name="txtinputIndirizzoSegnale" pInputText 
+              formControlName="indirizzo_segnale_indicatore" [readonly]="true" [pTooltip]="dettaglioPraticaForm.get('indirizzo_segnale_indicatore').value">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-4 p-pb-4 p-m-0">
+          <label for="txtinputEmail" class="p-text-bold">Email/PEC</label>
+          <input type="email" id="txtinputEmail" name="txtinputEmail" pInputText formControlName="email" [readonly]="true">  
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-4 p-pb-4 p-m-0">
+          <label for="txtinputNumtel" class="p-text-bold">Recapito telefonico</label>
+          <input id="txtinputNumtel" name="txtinputNumtel" pInputText formControlName="recapito_telefonico" [readonly]="true">  
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-4 p-pb-4 p-m-0">
+          <label for="txtinputRFID" class="p-text-bold">Tag RFID</label>
+          <input type="text" id="txtinputRFID" name="txtinputRFID" pInputText formControlName="tag_rfid" [readonly]="true">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-4 p-pb-4 p-m-0">
+          <label for="txtinputDataInserimento" class="p-text-bold">Data inserimento segnalazione</label>
+          <p-calendar name='txtinputDataInserimento' dateFormat="dd/mm/yy" showTime="true" formControlName="data_inserimento" icon="pi pi-calendar" [showIcon]="true" styleClass="data-calendar readonly"></p-calendar>
+        </div>      
+
+        <div class="p-field p-col-12 p-sm-6 p-md-4 p-pb-4 p-m-0">
+          <label for="txtinputUtenteSegnalazione" class="p-text-bold">Segnalazione inserita da</label>
+          <input id="txtinputUtenteSegnalazione" name="txtinputUtenteSegnalazione" pInputText formControlName="utente" [readonly]="true">  
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-4 p-pb-4 p-m-0">
+          <label for="txtinputNote" class="p-text-bold">Note</label>
+          <input type="text" id="txtinputNote" name="txtinputNote" pInputText 
+            formControlName="note" [readonly]="true" [pTooltip]="dettaglioPraticaForm.get('note').value">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-8 p-pb-4 p-m-0">
+        </div>
+
+        <div *ngIf="isSegnalazioneConclusa" class="p-field p-col-12 p-sm-6 p-md-4 p-pb-4 p-m-0">
+          <label for="txtinputDataInserimentoChiusura" class="p-text-bold">Data chiusura segnalazione</label>
+          <p-calendar name='txtinputDataInserimentoChiusura' dateFormat="dd/mm/yy" showTime="true" formControlName="data_chiusura" icon="pi pi-calendar" [showIcon]="true" styleClass="data-calendar readonly"></p-calendar>
+        </div>      
+
+        <div *ngIf="isSegnalazioneConclusa" class="p-field p-col-12 p-sm-6 p-md-4 p-pb-4 p-m-0">
+          <label for="txtinputUtenteSegnalazioneChiusura" class="p-text-bold">Segnalazione chiusa da</label>
+          <input id="txtinputUtenteSegnalazioneChiusura" name="txtinputUtenteSegnalazioneChiusura" pInputText formControlName="utente_chiusura" [readonly]="true">  
+        </div>
+
+        <div *ngIf="isSegnalazioneConclusa" class="p-field p-col-12 p-sm-6 p-md-4 p-pb-4 p-m-0">
+          <label for="txtinputNoteConclusive" class="p-text-bold">Note conclusive</label>
+          <input type="text" id="txtinputNoteConclusive" name="txtinputNoteConclusive" pInputText 
+            formControlName="note_conclusive" [readonly]="true" [pTooltip]="dettaglioPraticaForm.get('note_conclusive').value">
+        </div>
+
+        <div class="p-col-12 relative-container">
+          <legend class="legend">Visualizza su mappa</legend>
+          <button *ngIf="!hidePositionOnMap" pButton pRipple type="button" icon="pi pi-angle-up" 
+              class="p-button-rounded p-button-text btn-custom-style arrow-map-class" (click)="hidePositionOnMap = true"></button>
+          <button *ngIf="hidePositionOnMap" pButton pRipple type="button" icon="pi pi-angle-down" 
+              class="p-button-rounded p-button-text btn-custom-style arrow-map-class" (click)="hidePositionOnMap = false"></button>
+        </div>
+
+        <div *ngIf="!hidePositionOnMap && segnalazione.dati_istanza.indirizzo_segnale_indicatore.location.lat && segnalazione.dati_istanza.indirizzo_segnale_indicatore.location.lon" class="p-field p-col-12 p-mt-2">
+            <app-mappa [elements]="this.currElement" (dettaglioFeature)="dettaglioFeature($event)" [dettaglioSegnalazione]="isDettaglioSegnalazione"></app-mappa>
+        </div>
+        
+      </div> 
+  </form>
+  <p-footer>
+    <div class="p-d-flex p-col-12 p-jc-end">
+      <button pButton label="Chiudi" class="btn-custom-style" (click)="closeDettaglioSegnalazioneDialog()"></button>
+    </div>  
+  </p-footer>
+</p-dialog>
+
+<p-dialog header="Nota chiusura segnalazione:" [(visible)]="showChiudiSegnalazioneDialog" (onHide)="closeChiudiSegnalazioneDialog()" styleClass="dialog-600" [draggable]="false" [resizable]="false" [modal]="true">
+  <div class="p-grid p-m-2"> 
+      <div class="p-col-12">
+        <textarea pInputTextarea [rows]="5" [(ngModel)]="this.note_conclusive" class="text-area-no-resize stretch"></textarea>       
+      </div>
+  </div> 
+  <p-footer>
+    <div class="p-d-flex p-col-12 p-jc-end">
+      <button pButton label="Annulla" class="btn-custom-style"
+        (click)="closeChiudiSegnalazioneDialog()"></button>
+      <button pButton label="Conferma" class="btn-custom-style"
+        (click)="confermaChiudiSegnalazione(dettaglioSegnalazione)" [disabled]="!this.note_conclusive.trim()"></button>
+    </div>  
+  </p-footer>
+</p-dialog>

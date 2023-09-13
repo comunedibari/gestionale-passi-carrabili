@@ -1,0 +1,227 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name_main">ConsoleIoT&amp;BigData</string>
+
+    <!-- Options available in the Navigation Drawer of the application -->
+    <string-array name="options_array">
+        <item>Home</item>
+        <item>Rapid Read</item>
+        <item>Inventory</item>
+        <item>Locate Tag</item>
+        <item>Accoppia il dispositivo</item>
+        <item>Access Control</item>
+        <item>Pre Filters</item>
+        <item>Accoppia il dispositivo</item>
+        <item>About</item>
+    </string-array>
+
+    <string name="title_activity_readers_list">Accoppia il dispositivo</string>
+
+    <string-array name="inv_menu_items">
+        <item>None</item>
+        <item>User</item>
+        <item>Reserved</item>
+        <item>TID</item>
+        <item>EPC</item>
+    </string-array>
+
+    <!-- Strings for Access Operations Read Write Fragment -->
+
+    <!-- Items for memory bank state -->
+    <string-array name="acess_read_write_memory_bank_array">
+        <item>EPC</item>
+        <item>RESV</item>
+        <item>TID</item>
+        <item>USER</item>
+    </string-array>
+
+    <!-- Strings for Access Operations Lock Fragment -->
+    <!-- Items for memory bank state -->
+    <string-array name="acess_lock_memory_bank_array">
+        <item>EPC</item>
+        <item>ACCESS PWD</item>
+        <item>KILL PWD</item>
+        <item>TID</item>
+        <item>USER</item>
+    </string-array>
+
+    <!-- Items for lock privilege state -->
+    <string-array name="acess_lock_privilege_array">
+        <!--<item>None</item>-->
+        <item>Read and Write</item>
+        <item>Permanent Lock</item>
+        <item>Permanent Unlock</item>
+        <item>Unlock</item>
+    </string-array>
+
+    <!-- Strings for Access Operations Kill Fragment -->
+    <!-- Items for tagID -->
+    <string-array name="pre_filter_memory_bank_array">
+        <item>EPC</item>
+        <item>TID</item>
+        <item>USER</item>
+    </string-array>
+
+    <string-array name="pre_filter_action_array">
+        <item>INV A NOT INV B OR ASRT SL NOT DSRT SL</item>
+        <item>INV A OR ASRT SL</item>
+        <item>NOT INV B OR NOT DSRT SL</item>
+        <item>INV A2BB2A NOT INV A OR NEG SL NOT ASRT SL</item>
+        <item>INV B NOT INV A OR DSRT SL NOT ASRT SL</item>
+        <item>INV B OR DSRT SL</item>
+        <item>NOT INV A OR NOT ASRT SL</item>
+        <item>NOT INV A2BB2A OR NOT NEG SL</item>
+    </string-array>
+
+    <string-array name="pre_filter_target_options">
+        <item>SESSION S0</item>
+        <item>SESSION S1</item>
+        <item>SESSION S2</item>
+        <item>SESSION S3</item>
+        <item>SL FLAG</item>
+    </string-array>
+
+    <!-- Error Indicators -->
+    <string name="none_paired">Nessun dispositivo trovato</string>
+    <string name="title_activity_search_concessions">Ricerca concessioni</string>
+    <string name="title_user">Dati dell\'agente</string>
+    <string name="action_search">Ricerca</string>
+    <string name="action_scan">Scansiona</string>
+    <string name="user">Utente</string>
+    <string name="search_hint">Enter Tag ID</string>
+
+    <!-- Titles in ReadersList -->
+    <string name="available_readers_title">Dispositivi disponibili</string>
+
+
+    <!-- Titles in connection settings -->
+    <string name="battery">Battery</string>
+    <string name="rr_total_tag_title">TOTAL READS</string>
+    <string name="rr_read_time_title">READ TIME</string>
+    <string name="rr_read_rate_title">READ RATE</string>
+    <string name="start_title">START</string>
+    <string name="stop_title">STOP</string>
+    <string name="tag_pattern_title">Tag Pattern</string>
+    <string name="password_title">Password</string>
+    <string name="memory_bank_title">Memory Bank</string>
+    <string name="offset_title">Offset (words)</string>
+    <string name="length_title">Length (words)</string>
+    <string name="data_title">Data</string>
+    <string name="read_title">READ</string>
+    <string name="write_title">WRITE</string>
+    <string name="lock_privilege_title">Lock Privilege</string>
+    <string name="lock_title">LOCK</string>
+    <string name="kill_pass_title">Kill Password</string>
+    <string name="kill_title">KILL</string>
+    <string name="offset_bits_title">Offset (words)</string>
+    <string name="target_title">Target</string>
+    <string name="action_title">Action</string>
+    <string name="enable_filter_1">Enable Filter 1</string>
+    <string name="enable_filter_2">Enable Filter 2</string>
+    <string name="power_level_title">Power Level (dbm)</string>
+    <string name="link_profile_title">Link Profile</string>
+    <string name="status_success_message">Settings Applied Successfully</string>
+    <string name="battery_discharging_message">Status: Discharging.</string>
+    <string name="OK">OK</string>
+    <string name="drawer_item_text">Drawer Item</string>
+    <string name="drawer_image_desc">Icon for the Navigation drawer item</string>
+    <string name="battery_level_desc">Icon depicting level of battery in the reader</string>
+    <string name="battery_percentage_text">0%</string>
+    <string name="inv_filter_title">MEMORY BANK</string>
+    <string name="inv_unique_title">UNIQUE TAGS</string>
+    <string name="inv_count_title">TOTAL READS</string>
+    <string name="home_rapid_read">Rapid Read</string>
+    <string name="home_inventory">Inventory</string>
+    <string name="home_settings">Accoppia il dispositivo</string>
+    <string name="home_locate">Locate Tag</string>
+    <string name="home_filter">Pre Filters</string>
+    <string name="home_access">Access Control</string>
+    <string name="inv_user_memory_title">USER MEMORY</string>
+    <string name="inv_pc_title">PC</string>
+    <string name="inv_rssi_title">RSSI</string>
+    <string name="inv_phase_title">PHASE</string>
+    <string name="inv_channel_title">CHANNEL</string>
+    <string name="setting_icon_desc">Setting Icon</string>
+    <string name="error_bluetooth_disabled">Please enable the bluetooth</string>
+    <string name="error_disconnected">No Active Connection with Reader</string>
+    <string name="error_reader_not_updated">Reader capabilities not updated</string>
+    <string name="title_model">Modello</string>
+    <string name="title_serial">Seriale</string>
+    <string name="colon">:</string>
+    <string name="msg_read_succeed">Read succeed</string>
+    <string name="msg_write_succeed">Write succeed</string>
+    <string name="msg_lock_succeed">Lock succeed</string>
+    <string name="msg_kill_succeed">Kill succeed</string>
+    <string name="err_access_op_failed">Access operation Failed</string>
+    <string name="password_connection_title">Connection password required !</string>
+    <string name="hint_password">Password</string>
+    <string name="cancel_title">Cancel</string>
+    <string name="connect_title">Connessione</string>
+    <string name="battery_status__critical_message">Battery is critical !\nPlease charge the Sled</string>
+    <string name="battery_charging_message">Status: Charging</string>
+    <string name="set_region_msg">Please set the region</string>
+    <string name="save_config_progress_title">Saving Configuration</string>
+    <string name="pre_filter">PreFiltersCommand</string>
+    <string name="app_title">RFID Reader</string>
+    <string name="battery_no_active_connection_message">Stato: NESSUNA CONNESSIONE ATTIVA</string>
+    <string name="status_failure_message">Failed to apply settings</string>
+    <string name="battery_status_low_message">Battery is low !\nPlease charge the Sled</string>
+    <string name="battery_critical_message">Status: Battery level is critical</string>
+    <string name="battery_low_message">Status: Battery level is low</string>
+    <string name="battery_full_message">Status: Battery is fully charged</string>
+    <string name="error_empty_fields_preFilters">Empty fields in pre filters</string>
+    <string name="empty_length">Please fill legth</string>
+    <string name="empty_offset">Please fill offset</string>
+    <string name="batch_mode_inventory_title">Inventory is running in batch mode</string>
+    <string name="batch_mode_running_title">Running in batch mode</string>
+    <string name="tari_title">Tari</string>
+
+    <string-array name="batch_modes_array">
+        <item>Disable</item>
+        <item>Auto</item>
+        <item>Enable</item>
+    </string-array>
+    <string name="title_activity_main">MainActivity</string>
+
+
+    <string name="application_name">Bari Città Connessa</string>
+    <string name="action_settings">Accoppia il dispositivo</string>
+    <string name="action_read">Leggi</string>
+    <string name="info_botton_sheet">Selezionare un POI</string>
+    <string name="title_activity_login">Accedi</string>
+    <string name="label_user_agent">Nome agente</string>
+    <string name="label_password">Password</string>
+
+
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
+    <string name="nav_header_title">Android Studio</string>
+    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_desc">Navigation header</string>
+
+
+    <string name="url_base_real">http://10.207.233.108:8080/api/</string>
+    <string name="url_base_debug">https://almacloud.inet2.org/filemanager/bari_citta_connessa/</string>
+    <string name="generic_error">Errore Generico</string>
+
+    <string name="new_asset">Vuoi compilare la form per un nuovo asset?</string>
+    <string name="new_asset_no">No</string>
+    <string name="utenza">Utenza</string>
+    <string name="codice_fiscale">Codice fiscale</string>
+    <string name="nome">Nome</string>
+    <string name="cognome">Cognome</string>
+    <string name="data_di_nascita">Data di nascita</string>
+    <string name="luogo_di_nascita">Luogo di nascita</string>
+    <string name="provincia_di_nascita">Provincia di nascita</string>
+    <string name="telefono">Telefono</string>
+    <string name="no_permission_camera">Per procedere con la scansione bisogna fornire i permessi all\'utilizzo della fotocamera. Vai nelle impostazioni del dispositivo per abilitarli</string>
+    <string name="scan_error">Errore nella scansione</string>
+    <string name="tutti">Tutti</string>
+    <string name="validi">Validi</string>
+    <string name="non_validi">Non validi / Anomali</string>
+    <string name="storico">Storico</string>
+    <string name="segnala">Segnala</string>
+    <string name="numero_passo_carrabile">Numero passo carrabile</string>
+
+</resources>

@@ -1,0 +1,185 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginStart="16dp"
+    android:layout_marginTop="4dp"
+    android:layout_marginEnd="16dp"
+    android:layout_marginBottom="4dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/image_history"
+            android:layout_width="24dp"
+            android:layout_height="24dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:src="@drawable/ic_menu_carraio"
+            app:layout_constraintStart_toEndOf="@id/bool_valid_history"
+            app:layout_constraintTop_toTopOf="parent"/>
+
+        <TextView
+            android:id="@+id/type_history"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/titilliumweb_regular"
+            tools:text="Passo Carrabile"
+            android:textColor="@color/colorBlack"
+            app:layout_constraintHorizontal_bias="0"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="4dp"
+            android:maxLines="1"
+            android:ellipsize="end"
+            app:layout_constraintStart_toEndOf="@id/image_history"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="@id/image_history"
+            app:layout_constraintBottom_toBottomOf="@id/image_history"/>
+
+        <TextView
+            android:id="@+id/text_part1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="8dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Indirizzo"
+            android:textSize="@dimen/text_normal"
+            android:textColor="@android:color/black"
+            android:fontFamily="@font/titilliumweb_regular"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toEndOf="@id/bool_valid_history"
+            app:layout_constraintTop_toBottomOf="@id/image_history" />
+
+        <TextView
+            android:id="@+id/text_title_history"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="2"
+            tools:text="Via Roma 83"
+            android:fontFamily="@font/titilliumweb_regular"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintHorizontal_bias="0.0"
+            app:layout_constraintStart_toEndOf="@id/bool_valid_history"
+            app:layout_constraintTop_toBottomOf="@id/text_part1" />
+
+        <TextView
+            android:id="@+id/text_part2"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Segnalazione"
+            android:textSize="@dimen/text_normal"
+            android:textColor="@android:color/black"
+            android:fontFamily="@font/titilliumweb_regular"
+            app:layout_constraintStart_toEndOf="@id/bool_valid_history"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_title_history"/>
+
+        <TextView
+            android:id="@+id/text_subtitle_history"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:text="Cartello da aggiornare in quanto manca il tag RFID"
+            android:fontFamily="@font/titilliumweb_regular"
+            app:layout_constraintStart_toEndOf="@id/bool_valid_history"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_part2"/>
+
+
+
+        <TextView
+            android:id="@+id/text_part3"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:ellipsize="end"
+            android:maxLines="1"
+            android:text="Agente che ha effettuato la segnalazione"
+            android:textSize="@dimen/text_normal"
+            android:textColor="@android:color/black"
+            android:fontFamily="@font/titilliumweb_regular"
+            app:layout_constraintStart_toEndOf="@id/bool_valid_history"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/text_subtitle_history"/>
+
+        <TextView
+            android:id="@+id/text_subtitle_agent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            tools:text="Mario Rossi"
+            android:fontFamily="@font/titilliumweb_regular"
+            app:layout_constraintStart_toEndOf="@id/bool_valid_history"
+            app:layout_constraintTop_toBottomOf="@id/text_part3"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/text_subtitle_the"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            android:text="il"
+            android:fontFamily="@font/titilliumweb_regular"
+            app:layout_constraintStart_toEndOf="@id/text_subtitle_agent"
+            app:layout_constraintTop_toBottomOf="@id/text_part3"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <TextView
+            android:id="@+id/text_subtitle_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginBottom="8dp"
+            android:maxLines="2"
+            android:ellipsize="end"
+            tools:text="20/11/2022"
+            android:fontFamily="@font/titilliumweb_regular"
+            app:layout_constraintStart_toEndOf="@id/text_subtitle_the"
+            app:layout_constraintTop_toBottomOf="@id/text_part3"
+            app:layout_constraintBottom_toBottomOf="parent"/>
+
+        <View
+            android:id="@+id/bool_valid_history"
+            android:layout_width="10dp"
+            android:layout_height="0dp"
+            tools:background="@color/colorAccent"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</androidx.cardview.widget.CardView>
+

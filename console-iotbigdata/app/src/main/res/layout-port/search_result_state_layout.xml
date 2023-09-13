@@ -1,0 +1,405 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:ignore="MissingDefaultResource">
+
+    <androidx.cardview.widget.CardView
+        android:id="@+id/state_card"
+        android:layout_width="match_parent"
+        android:layout_height="300dp"
+        android:layout_marginTop="4dp"
+        android:layout_marginBottom="4dp"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
+        app:cardCornerRadius="16dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/bool_valid_history"
+                android:layout_width="10dp"
+                android:layout_height="wrap_content"
+                tools:background="@color/colorGreen"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/part1"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="25dp"
+                android:orientation="vertical"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="@id/bool_valid_history"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintEnd_toStartOf="@id/guideline">
+
+                <TextView
+                    android:id="@+id/text_part1"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Indirizzo segnale indicatore"
+                    android:layout_marginTop="5dp"
+                    android:textSize="@dimen/text_normal"
+                    android:layout_marginEnd="8dp"
+                    android:textColor="@android:color/black"
+                    android:fontFamily="@font/titilliumweb_bold"
+                    app:layout_constraintBottom_toTopOf="@+id/text_title_history"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/text_title_history"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:paddingEnd="12dp"
+                    android:ellipsize="end"
+                    tools:text="Via Roma 83"
+                    android:fontFamily="@font/titilliumweb_regular"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_part1" />
+
+                <TextView
+                    android:id="@+id/text_part3"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Cognome e nome del cittadino"
+                    android:textSize="@dimen/text_normal"
+                    android:textColor="@android:color/black"
+                    android:fontFamily="@font/titilliumweb_bold"
+                    app:layout_constraintStart_toEndOf="@id/bool_valid_history"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_title_history"/>
+
+                <TextView
+                    android:id="@+id/text_subtitle_agent"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="10dp"
+                    android:maxLines="2"
+                    android:paddingEnd="12dp"
+                    android:ellipsize="end"
+                    tools:text="Mario Rossi"
+                    android:fontFamily="@font/titilliumweb_regular"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_part3" />
+
+                <TextView
+                    android:id="@+id/text_title_fiscal_code"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Codice fiscale"
+                    android:textSize="@dimen/text_normal"
+                    android:textColor="@android:color/black"
+                    android:fontFamily="@font/titilliumweb_bold"
+                    app:layout_constraintStart_toEndOf="@id/bool_valid_history"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_subtitle_agent"/>
+
+                <TextView
+                    android:id="@+id/text_fiscal_code"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="10dp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    tools:text="MNNRND81P16H501U"
+                    android:paddingEnd="12dp"
+                    android:fontFamily="@font/titilliumweb_regular"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_title_fiscal_code" />
+
+                <TextView
+                    android:id="@+id/text_title_residence"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Luogo di residenza"
+                    android:textSize="@dimen/text_normal"
+                    android:textColor="@android:color/black"
+                    android:fontFamily="@font/titilliumweb_bold"
+                    app:layout_constraintStart_toEndOf="@id/bool_valid_history"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_fiscal_code"/>
+
+                <TextView
+                    android:id="@+id/text_residence"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="10dp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    tools:text="via luigi quaranta, 3 Bari"
+                    android:paddingEnd="12dp"
+                    android:fontFamily="@font/titilliumweb_regular"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_title_residence" />
+
+
+
+                <TextView
+                    android:id="@+id/text_title_telephone_number"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Numero di telefono"
+                    android:textSize="@dimen/text_normal"
+                    android:textColor="@android:color/black"
+                    android:fontFamily="@font/titilliumweb_bold"
+                    app:layout_constraintStart_toEndOf="@id/bool_valid_history"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_residence"/>
+
+                <TextView
+                    android:id="@+id/text_telephone_number"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="10dp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    tools:text="3385003492"
+                    android:paddingEnd="12dp"
+                    android:fontFamily="@font/titilliumweb_regular"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_title_telephone_number" />
+
+                <View
+                    android:layout_width="1dp"
+                    android:layout_height="match_parent"
+                    android:layout_marginTop="20dp"
+                    android:layout_marginBottom="20dp"
+                    android:background="@color/dark_grey"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <androidx.constraintlayout.widget.Guideline
+                android:id="@+id/guideline"
+                android:layout_width="wrap_content"
+                android:layout_height="0dp"
+                android:orientation="vertical"
+                app:layout_constraintGuide_percent="0.5"/>
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/part2"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toStartOf="@+id/type_history"
+                app:layout_constraintStart_toEndOf="@id/guideline"
+                app:layout_constraintTop_toTopOf="parent">
+
+                <TextView
+                    android:id="@+id/text_title_emiss_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Data emissione determina"
+                    android:textSize="@dimen/text_normal"
+                    android:textColor="@android:color/black"
+                    android:fontFamily="@font/titilliumweb_bold"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"/>
+
+                <TextView
+                    android:id="@+id/text_emiss_date"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="10dp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    tools:text="2022-05-26"
+                    android:fontFamily="@font/titilliumweb_regular"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_title_emiss_date" />
+
+
+                <TextView
+                    android:id="@+id/text_title_expire"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:ellipsize="end"
+                    android:maxLines="1"
+                    android:text="Data di scadenza concessione"
+                    android:textSize="@dimen/text_normal"
+                    android:textColor="@android:color/black"
+                    android:fontFamily="@font/titilliumweb_bold"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_emiss_date"/>
+
+                <TextView
+                    android:id="@+id/text_expire"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="8dp"
+                    android:layout_marginBottom="10dp"
+                    android:maxLines="2"
+                    android:ellipsize="end"
+                    tools:text="12/01/2023"
+                    android:fontFamily="@font/titilliumweb_regular"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_title_expire" />
+
+                <TextView
+                    android:id="@+id/text_part2"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/titilliumweb_bold"
+                    android:text="Stato pratica"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:textSize="@dimen/text_normal"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_expire" />
+
+                <TextView
+                    android:id="@+id/text_subtitle_history"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    tools:text="18"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_part2" />
+
+                <TextView
+                    android:id="@+id/text_title_id_doc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/titilliumweb_bold"
+                    android:text="N. determina"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:textSize="@dimen/text_normal"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_subtitle_history" />
+
+                <TextView
+                    android:id="@+id/text_id_doc"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    tools:text="123456"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_title_id_doc" />
+
+                <TextView
+                    android:id="@+id/text_title_protocol_number"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:fontFamily="@font/titilliumweb_bold"
+                    android:text="Numero protocollo"
+                    android:layout_marginTop="5dp"
+                    android:layout_marginEnd="8dp"
+                    android:textSize="@dimen/text_normal"
+                    android:textColor="@android:color/black"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@id/text_id_doc" />
+
+                <TextView
+                    android:id="@+id/text_protocol_number"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    tools:text="511|2022"
+                    android:layout_marginEnd="8dp"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/text_title_protocol_number" />
+
+
+                <!--
+                "stato_pratica": 18,
+            "id_doc": "NRELCI82D42H501X_2",
+            "numero_protocollo": "511|2022",
+
+            numero determina  "id": "aaaaa",
+                "data_emissione": "2022-05-26",
+            -->
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <ImageView
+                android:id="@+id/image_history"
+                android:layout_width="40dp"
+                android:layout_height="40dp"
+                android:src="@drawable/ic_menu_carraio"
+                android:layout_marginEnd="36dp"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintTop_toTopOf="parent"/>
+
+            <TextView
+                android:id="@+id/type_history"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="10dp"
+                android:fontFamily="@font/titilliumweb_bold"
+                android:text="Tipo asset"
+                android:textSize="12dp"
+                android:textAlignment="center"
+                android:textColor="@color/colorBlack"
+                app:layout_constraintStart_toStartOf="@id/image_history"
+                app:layout_constraintEnd_toEndOf="@id/image_history"
+                app:layout_constraintTop_toBottomOf="@id/image_history"
+                tools:text="Passi Carrabili"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.cardview.widget.CardView>
+</layout>

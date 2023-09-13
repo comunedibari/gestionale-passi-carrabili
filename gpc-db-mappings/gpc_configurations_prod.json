@@ -1,0 +1,328 @@
+{
+	"mappings": {
+		"properties": {
+			"cauzione_infruttifera": {
+				"type": "float"
+			},
+			"codCapitolo_cauzione_infruttifera": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"codCapitolo_costo_segnale_indicatore": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"codUfficio_municipio_1": {
+				"type": "long"
+			},
+			"codUfficio_municipio_2": {
+				"type": "long"
+			},
+			"codUfficio_municipio_3": {
+				"type": "long"
+			},
+			"codUfficio_municipio_4": {
+				"type": "long"
+			},
+			"codUfficio_municipio_5": {
+				"type": "long"
+			},
+			"costo_segnale_indicatore": {
+				"type": "float"
+			},
+			"datiSpecificiRiscossione": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"id": {
+				"type": "text",
+				"fields": {
+					"keyword": {
+						"type": "keyword",
+						"ignore_above": 256
+					}
+				}
+			},
+			"municipio_1": {
+				"properties": {
+					"denominazione": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"group_id": {
+						"type": "long"
+					},
+					"municipio_id": {
+						"type": "long"
+					},
+					"uoid": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					}
+				}
+			},
+			"municipio_2": {
+				"properties": {
+					"denominazione": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"group_id": {
+						"type": "long"
+					},
+					"municipio_id": {
+						"type": "long"
+					},
+					"uoid": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					}
+				}
+			},
+			"municipio_3": {
+				"properties": {
+					"denominazione": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"group_id": {
+						"type": "long"
+					},
+					"municipio_id": {
+						"type": "long"
+					},
+					"uoid": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					}
+				}
+			},
+			"municipio_4": {
+				"properties": {
+					"denominazione": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"group_id": {
+						"type": "long"
+					},
+					"municipio_id": {
+						"type": "long"
+					},
+					"uoid": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					}
+				}
+			},
+			"municipio_5": {
+				"properties": {
+					"denominazione": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"group_id": {
+						"type": "long"
+					},
+					"municipio_id": {
+						"type": "long"
+					},
+					"uoid": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					}
+				}
+			},
+			"polizia_locale": {
+				"properties": {
+					"denominazione": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"group_id": {
+						"type": "long"
+					},
+					"uoid": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					}
+				}
+			},
+			"ragioneria": {
+				"properties": {
+					"denominazione": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"group_id": {
+						"type": "long"
+					},
+					"uoid": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					}
+				}
+			},
+			"tributi": {
+				"properties": {
+					"denominazione": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"group_id": {
+						"type": "long"
+					},
+					"uoid": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					}
+				}
+			},
+			"urbanistica": {
+				"properties": {
+					"denominazione": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"group_id": {
+						"type": "long"
+					},
+					"uoid": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					}
+				}
+			},
+			"utd": {
+				"properties": {
+					"denominazione": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					},
+					"group_id": {
+						"type": "long"
+					},
+					"uoid": {
+						"type": "text",
+						"fields": {
+							"keyword": {
+								"type": "keyword",
+								"ignore_above": 256
+							}
+						}
+					}
+				}
+			}
+		}
+	}
+}

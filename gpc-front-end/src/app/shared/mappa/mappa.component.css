@@ -1,0 +1,37 @@
+#map { 
+  height: calc(100vh - 185px);
+  width: 100%;
+}
+
+::ng-deep.leaflet-styleeditor-header,
+::ng-deep.leaflet-styleeditor-button {
+    background-color: #E20A16 !important;
+}
+
+::ng-deep.styleeditor-nextBtn {
+    background-image: url('../../../assets/icon-play.png');
+    background-size: contain;
+    background-repeat: no-repeat;
+    background-position: 4px 3px;
+    height: 35px;
+}
+
+::ng-deep .btn-dettagli {
+  display: block;
+  margin: 10px auto;
+  padding: 5px 10px;
+}
+
+::ng-deep .btn-custom-style {
+  background-color: white !important; 
+  border-color: #7B95A3 !important;
+  color: #E20A16 !important;
+  border-width: 1px !important;
+  border-radius: 5px;
+}
+
+::ng-deep .btn-custom-style:hover {
+  background-color: #E20A16 !important;
+  border-color: transparent !important;
+  color: white !important;
+} 

@@ -1,0 +1,77 @@
+<div class="p-grid p-nogutter p-pt-2 p-pr-3 p-pl-3 p-pb-3">
+    <h4 class="intestazione-componente">{{getPageTitle()}}</h4>
+</div>
+
+<app-spinner-dialog *ngIf="showSpinner"></app-spinner-dialog>
+<div [hidden]="showSpinner" class="p-m-3">
+    <table-prime-ng
+      [dataSource]="this.dataSource" 
+      [columnSchema]="this.columnSchema" 
+      [actions]="this.actions"
+      [initSortColumn]="initSortColumn" 
+      [directionSortColumn]="directionSortColumn"
+      (onEvent)="this.onTableEvent($event)"
+      [titleTable]="titleTable"
+      [exportName]="exportName"
+      [globalFilters]="globalFilters">
+    </table-prime-ng>
+</div> 
+
+<p-dialog header="Seleziona istruttore:" [(visible)]="showAssegnaDialog" (onHide)="closeAssegnaDialog()" styleClass="dialog-400" [draggable]="false" [resizable]="false" [modal]="true">
+    <div class="p-grid p-m-2"> 
+        <div class="p-col-12">
+            <p-dropdown [options]="istruttoriMunicipio" [(ngModel)]="selectedIstruttore" optionLabel="cognome"
+                styleClass="stretch" appendTo="body" placeholder="Seleziona...">
+                <ng-template pTemplate="selectedItem">
+                    <div *ngIf="selectedIstruttore">
+                        {{selectedIstruttore.nome + ' ' + selectedIstruttore.cognome}}
+                    </div>
+                </ng-template>
+                <ng-template let-istruttore pTemplate="item">
+                    {{istruttore.nome + ' ' + istruttore.cognome}}
+                </ng-template>
+            </p-dropdown>
+        </div>
+    </div> 
+    <p-footer>
+      <div class="p-d-flex p-col-12 p-jc-end">
+        <button pButton label="Annulla" class="btn-custom-style"
+          (click)="closeAssegnaDialog()"></button>
+        <button pButton label="Conferma" class="btn-custom-style"
+          (click)="this.isRevoca || this.isDecadenza ? avviaRichiestaLavori(true) : submitPrendiInCarico(true)" [disabled]="!this.selectedIstruttore"></button>
+      </div>  
+    </p-footer>
+</p-dialog>
+  
+<p-dialog header="Numero protocollo:" [(visible)]="showProtocolloDialog" (onHide)="closeProtocolloDialog()" styleClass="dialog-400" [draggable]="false" [resizable]="false" [modal]="true" [closable]="false">
+  <div class="p-grid p-m-2"> 
+      <div class="p-col-12">
+        <input *ngIf="!isProtocollata" type="text" pInputText [(ngModel)]="this.numProtocollo" class="stretch" [readonly]="true">
+        <input *ngIf="isProtocollata" type="text" pInputText [(ngModel)]="this.pratica.numero_protocollo_comunicazione" class="stretch" [readonly]="true">
+        <label *ngIf="isProtocollata" for="txtProtocollo" class="p-text-bold p-pt-2" style="display: block;">Protocollazione avvenuta con successo</label>
+      </div>
+  </div> 
+  <p-footer>
+      <div class="p-d-flex p-col-12 p-jc-end">
+        <button *ngIf="this.numProtocollo == '--|--'" pButton label="Protocolla" class="btn-custom-style"
+		      (click)="this[actionRiprotocollazione](this.isAssegnaPratica)"></button> 
+        <button pButton label="Chiudi" class="btn-custom-style" (click)="showProtocolloDialog = false"></button>
+      </div>  
+  </p-footer>
+</p-dialog>
+
+<p-dialog header="{{this.isRevoca ? 'Note per la richiesta dei lavori:' : 'Note per comunicare la decadenza:'}}" [(visible)]="showIntegrazioneDialog" (onHide)="closeIntegrazioneDialog()" styleClass="dialog-600" [draggable]="false" [resizable]="false" [modal]="true">
+    <div class="p-grid p-m-2"> 
+        <div class="p-col-12">
+            <textarea pInputTextarea [rows]="5" [(ngModel)]="this.noteIstruttoreMunicipio" class="text-area-no-resize stretch"></textarea>
+        </div>
+    </div> 
+    <p-footer>
+      <div class="p-d-flex p-col-12 p-jc-end">
+        <button pButton label="Annulla" class="btn-custom-style"
+          (click)="closeIntegrazioneDialog()"></button>
+        <button pButton label="Conferma" class="btn-custom-style"
+          (click)="invioRichiestaLavori()" [disabled]="!this.noteIstruttoreMunicipio.trim()"></button>
+      </div>  
+    </p-footer>
+  </p-dialog>

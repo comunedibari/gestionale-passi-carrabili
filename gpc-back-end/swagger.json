@@ -1,0 +1,5238 @@
+{
+  "swagger": "2.0",
+  "info": { 
+    "title": "Swagger GPC & Console IoT",
+    "description": "Documentazione API Gestionale Passi Carrabili e Console IoT",
+    "version": "1.0"
+  },
+  "host": "gestionale-passi-carrabili.comune.bari.it",
+  "basePath": "/api",
+  "tags":[
+    {
+      "name":"Autenticazione",
+      "description":"API accesso alla web app"
+   },
+    {
+       "name":"Passi Carrabili",
+       "description":"API passi carrabili"
+    },
+    {
+       "name":"Utility",
+       "description":"API utility"
+    },
+    {
+       "name":"User",
+       "description":"API gestione utenti"
+    },
+    {
+      "name":"Shared",
+      "description":"API condivise con sistemi esterni"
+    }
+ ],
+  "schemes": [
+    "https"
+  ],
+  "paths": {
+    "/auth/login": {
+      "post": {
+        "tags": ["Autenticazione"],
+        "description": "Permette l'autenticazione dell'utente al sistema",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],      
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "example": "any",
+                  "type": "string",
+                  "required": true
+                },
+                "password": {
+                  "example": "any",
+                  "type": "string",
+                  "required": true
+                }
+              }
+            }
+          }    
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "auth": { "example": true },
+                "token": { "example": "<<jwt_token>>" },
+                "groups": { "example": "json contenente i permessi per le funzioni del gestionale in base al profilo utente connesso" },
+                "username": { "example": "any" },
+                "userlogged": { "example": "json contenente i dati dell'utente connesso" }
+              }  
+            }
+          },
+          "404": {
+            "description": "Username o Password Errata / L'utente non è attivo o è stato cancellato",       
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "token": { "example": null },
+                "message": { "example": "Username o Password Errata" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/auth/logout": {
+      "post": {
+        "tags": ["Autenticazione"],
+        "description": "Permette la disconnessione dell'utente dal sistema",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ], 
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"         
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "example": "any",
+                  "type": "string",
+                  "required": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "token": { "example": null },
+                "message": { "example": "Logout utente registrato." }
+              }                      
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },
+          "500": {
+            "description": "Internal Server Error",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "Failed to authenticate token." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/auth/recuperoPassword": {
+      "post": {
+        "tags": ["Autenticazione"],
+        "description": "Effettua il reset della password nel caso in cui sia stata dimenticata",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ], 
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "example": "any",
+                  "type": "string",
+                  "required": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": { "example": "Nuova password inviata all'indirizzo mail associato all'account" }
+              }                      
+            }
+          },
+          "404": {
+            "description": "Username errato / Errore durante la modifica della password",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Username errato" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/auth/getToken": {
+      "post": {
+        "tags": ["Autenticazione"],
+        "description": "Permette di ottenere il token jwt di accesso alle API del gestionale (per cooperazione con egov)",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "username": {
+                  "example": "any",
+                  "type": "string",
+                  "required": true
+                },
+                "password": {
+                  "example": "any",
+                  "type": "string",
+                  "required": true
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "auth": { "example": true },
+                "token": { "example": "<<jwt_token>>" },
+                "username": { "example": "any" },
+                "message": { "example": "Connessione avvenuta con successo" }
+              }  
+            }
+          },
+          "404": {
+            "description": "Username o Password Errata",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "token": { "example": null },
+                "message": { "example": "Username o Password Errata" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/inserimentoBozzaPratica": {
+      "post": {
+        "tags": ["Passi Carrabili"],
+        "description": "Effettua l'inserimento della pratica nel sistema in stato bozza",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "json contenente i dati dell'istanza",
+            "type": "object"           
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "istanza": { "example": "json contenente l'istanza inserita a sistema" },
+                "message": { "example": "messaggio di avvenuto inserimento" },
+                "responseEmail": { "example": "comunicazione di avvenuto o meno invio della mail" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },
+          "409": {
+            "description": "Esiste già una pratica nel sistema per il civico selezionato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": { "example": "Esiste già una pratica nel sistema per il civico selezionato" }
+              }                      
+            }
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/inserimentoPratica": {
+      "post": {
+        "tags": ["Passi Carrabili"],
+        "description": "Effettua l'inserimento della pratica nel sistema in stato inserita",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "istanza": {
+                  "example": "json contenente i dati dell'istanza"
+                },
+                "emailInviata": {
+                  "example": "boolean, true se api chiamata da GPC, false se api chiamata da egov"
+                },
+                "isPregresso": {
+                  "example": "boolean, true se pratica proveniente dallo storico"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "istanza": { "example": "json contenente l'istanza inserita a sistema" },
+                "message": { "example": "messaggio di avvenuto inserimento" },
+                "responseEmail": { "example": "comunicazione di avvenuto o meno invio della mail" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },
+          "409": {
+            "description": "Esiste già una pratica nel sistema per il civico selezionato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": { "example": "Esiste già una pratica nel sistema per il civico selezionato" }
+              }                      
+            }
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/aggiornaPratica": {
+      "post": {
+        "tags": ["Passi Carrabili"],
+        "description": "Effettua l'aggiornamento dei dati della pratica nei diversi step del flusso di istruttoria",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "istanza": {
+                  "example": "json contenente i dati dell'istanza"
+                },
+                "emailInviata": {
+                  "example": "boolean, true se api chiamata da GPC, false se api chiamata da egov"
+                },
+                "statoIntegrazione": {
+                  "example": "stato pratica relativo all'integrazione"
+                },
+                "storicizza_pratica": {
+                  "example": "boolean, true se bisogna preservare il log dell'aggiornamento dell'istanza nel sistema"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "istanza": { "example": "json contenente l'istanza inserita a sistema" },
+                "message": { "example": "messaggio di avvenuto aggiornamento" },
+                "responseEmail": { "example": "comunicazione di avvenuto o meno invio della mail" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/eliminaPratica/{id_doc}": {
+      "delete": {
+        "tags": ["Passi Carrabili"],
+        "description": "Elimina la pratica dal sistema",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id_doc",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Eliminazione della pratica avvenuta con successo",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": { "example": "La pratica è stata eliminata" }
+              }                      
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": { "example": "Errore durante la cancellazione della pratica" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/praticheCittadino": {
+      "post": {
+        "tags": ["Passi Carrabili"],
+        "description": "Effettua la ricerca delle pratiche utilizzando i filtri inseriti nel body",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>" 
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "codice_fiscale": {
+                  "example": "any"
+                },
+                "nome": {
+                  "example": "any"
+                },
+                "cognome": {
+                  "example": "any"
+                },
+                "numero_protocollo": {
+                  "example": "any"
+                },
+                "id_determina": {
+                  "example": "any"
+                },
+                "tag_rfid": {
+                  "example": "any"
+                },
+                "ragione_sociale": {
+                  "example": "any"
+                },
+                "indirizzo": {
+                  "example": "any"
+                },
+                "indirizzo_segnale_indicatore": {
+                  "example": "any"
+                },
+                "stato_pratica": {
+                  "example": "any"
+                },
+                "tipologia_processo": {
+                  "example": "any"
+                },
+                "municipio_id": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "array contenente le pratiche che rispettano i filtri impostati" },
+                "count": { "example": "numero di pratiche trovate con i filtri impostati" },
+                "notFound": { "example": "boolean, true se non sono stati dati" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/storicoPratica/{idpratica}": {
+      "get": {
+        "tags": ["Passi Carrabili"],
+        "description": "Restituisce lo storico della pratica, cioè le operazioni dell'istruttoria ed i relativi dettagli",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>" 
+          },
+          {
+            "name": "idpratica",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }     
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "array contenente lo storico delle operazioni della pratica selezionata" },
+                "notFound": { "example": "boolean, true se non sono stati dati" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/cercaPratica/{id}": {
+      "get": {
+        "tags": ["Passi Carrabili"],
+        "description": "Effettua la ricerca della pratica selezionata",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "json": { "example": "json contenente l'istanza cercata" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/documentiPratica/{idpratica}": {
+      "get": {
+        "tags": ["Passi Carrabili"],
+        "description": "Restituisce la lista dei documenti relativi alla pratica selezionata",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>" 
+          },
+          {
+            "name": "idpratica",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }       
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "array contenente i documenti associati alla pratica selezionata" },
+                "notFound": { "example": "boolean, true se non sono stati dati" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/getDocumento/{id_doc}": {
+      "get": {
+        "tags": ["Passi Carrabili"],
+        "description": "Restituisce il documento selezionato per id",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "id_doc",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }     
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "json": { "example": "json contenente il documento cercato" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Documento non presente nel DB" }
+              }                      
+            }
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/uploadDocument": {
+      "post": {
+        "tags": ["Passi Carrabili"],
+        "description": "Effettua il caricamento di un documento nel sistema",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": "any"
+                },
+                "name": {
+                  "example": "any"
+                },
+                "mimeType": {
+                  "example": "any"
+                },
+                "blob": {
+                  "example": "any"
+                },
+                "tipologia_documento": {
+                  "example": "any"
+                },
+                "rev": {
+                  "example": "any"
+                },
+                "id_doc": {
+                  "example": "any"
+                },
+                "numero_protocollo": {
+                  "example": ""
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "message": { "example": "Documento inserito correttamente." }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },
+          "413": {
+            "description": "Errore dimensione documento",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Errore durante l'inserimento del documento - dimensione massima file consentita 19mb" }
+              }                      
+            }
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore durante l'inserimento del documento" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/assegnaProtocolloDocumento": {
+      "post": {
+        "tags": ["Passi Carrabili"],
+        "description": "Effettua l'assegnazione del numero di protocollo al documento",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": "any"
+                },
+                "name": {
+                  "example": "any"
+                },
+                "mimeType": {
+                  "example": "any"
+                },
+                "blob": {
+                  "example": "any"
+                },
+                "tipologia_documento": {
+                  "example": "any"
+                },
+                "rev": {
+                  "example": "any"
+                },
+                "id_doc": {
+                  "example": "any"
+                },
+                "numero_protocollo": {
+                  "example": "123|2023"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "message": { "example": "Protocollo associato correttamente." }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore durante la cancellazione del documento" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/deleteDocument/{id}": {
+      "delete": {
+        "tags": ["Passi Carrabili"],
+        "description": "Elimina il documento dal sistema",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [        
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "message": { "example": "Il documento è stato eliminato" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore durante la cancellazione del documento" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/cercaPratichePerStatoPratica/{statoPratica}/{municipio_id}/{group_id}": {
+      "get": {
+        "tags": ["Passi Carrabili"],
+        "description": "Permette di ricercare una pratica per lo stato, il municipio di appartenenza ed il ruolo utente connesso al sistema",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "statoPratica",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "municipio_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>" 
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "array contenente le pratiche che rispettano i filtri impostati" },
+                "notFound": { "example": "boolean, true se non sono stati dati" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/cercaIstruttoriMunicipio/{municipio_id}": {
+      "get": {
+        "tags": ["Passi Carrabili"],
+        "description": "Permette di ottenere la lista degli istruttori appartenenti ad uno specifico municipio",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "municipio_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>" 
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "array contenente gli istruttori che rispettano i filtri impostati" },
+                "notFound": { "example": "boolean, true se non sono stati dati" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/archiviaPraticaOriginaria": {
+      "post": {
+        "tags": ["Passi Carrabili"],
+        "description": "Effettua l'archiviazione della pratica originaria nell'iter di un processo di post concessione",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "json contenente i dati dell'istanza",
+            "type": "object"           
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "istanza": { "example": "json contenente l'istanza inserita a sistema" },
+                "message": { "example": "messaggio di avvenuto aggiornamento" },
+                "responseEmail": { "example": "comunicazione di avvenuto o meno invio della mail" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/revocaPraticaOriginaria": {
+      "post": {
+        "tags": ["Passi Carrabili"],
+        "description": "Effettua la revoca della pratica originaria durante il processo di revoca",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "json contenente i dati dell'istanza",
+            "type": "object"           
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "istanza": { "example": "json contenente l'istanza inserita a sistema" },
+                "message": { "example": "messaggio di avvenuto aggiornamento" },
+                "responseEmail": { "example": "comunicazione di avvenuto o meno invio della mail" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/cercaSegnalazioniRegolarizzazione/{municipio_id}": {
+      "get": {
+        "tags": ["Passi Carrabili"],
+        "description": "Restituisce la lista delle segnalazioni presenti a sistema relative al singolo municipio",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "municipio_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "array contenente le pratiche da regolarizzare" },
+                "notFound": { "example": "boolean, true se non sono stati dati" }
+              }  
+            }
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/inserimentoSegnalazioniRegolarizzazione": {
+      "post": {
+        "tags": ["Passi Carrabili"],
+        "description": "Effettua l'inserimento di una segnalazione di regolarizzazione nel sistema",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id_doc": {
+                  "example": "null"
+                },
+                "nome": {
+                  "example": "any"
+                },
+                "cognome": {
+                  "example": "any"
+                },
+                "recapito_telefonico": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "indirizzo_segnale_indicatore": {
+                  "example": "json contenente i dati relativi all'indirizzo restituito dal servizio di toponomastica"
+                },
+                "regolarizzazione_notificata": {
+                  "example": "false"
+                },
+                "notifiche_attive": {
+                  "example": "true"
+                },
+                "relazione_servizio": {
+                  "example": "{ blob: '', name: '' }"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "istanza": { "example": "json contenente l'istanza inserita a sistema" },
+                "message": { "example": "messaggio di avvenuto inserimento" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/getRelazioneServizioRegolarizzazione/{id_doc}": {
+      "get": {
+        "tags": ["Passi Carrabili"],
+        "description": "Permette il download del template della relazione di servizio di regolarizzazione",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id_doc",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "json": { "example": "json contenente il documento cercato" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Documento non presente nel DB" }
+              }                      
+            }
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/notificaRegolarizzazioneInviata/{id_doc}": {
+      "get": {
+        "tags": ["Passi Carrabili"],
+        "description": "Effettua l'aggiornamento della pratica di regolarizzazione con l'informazione dell'avvenuta notifica esternamente al gestionale",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id_doc",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>" 
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data_scadenza_regolarizzazione": { "example": "data in dormato iso" },
+                "message": { "example": "Invio notifica di regolarizzazione avvenuto con successo" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore durante la registrazione della notifica di regolarizzazione" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/disattivaNotificaScadenziarioRegolarizzazione/{id_doc}": {
+      "get": {
+        "tags": ["Passi Carrabili"],
+        "description": "Permette di disattivare il servizio di scadenziario per la pratica selezionata",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id_doc",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "message": { "example": "Disattivazione notifiche scadenziario avvenuta con successo" }              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore durante la disattivazione delle notifiche dello scadenziario" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }	
+        }
+      }
+    },
+    "/passicarrabili/cercaNotificheScadenziario/{municipio_id}/{group_id}": {
+      "get": {
+        "tags": ["Passi Carrabili"],
+        "description": "Restituisce la lista delle notifiche dello scadenziario relative alle pratiche in scadenza",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "municipio_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "array contenente le pratiche che rispettano i filtri impostati" },
+                "notFound": { "example": "boolean, true se non sono stati dati" }
+              }  
+            }
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/eliminaPraticaDaScadenziario/{id}": {
+      "get": {
+        "tags": ["Passi Carrabili"],
+        "description": "Permette l'archiviazione della pratica selezionata con la funzionalità dello scadenziario",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>" 
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "message": { "example": "La pratica è stata archiviata" }              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Errore durante la cancellazione della notifica dallo scadenziario" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/pregressoPratiche": {
+      "get": {
+        "tags": ["Passi Carrabili"],
+        "description": "Restituisce la lista delle pratiche 'storiche' importate dai file Excel del Comune di Bari",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "array contenente le pratiche dello storico" },
+                "notFound": { "example": "boolean, true se non sono stati dati" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/setPraticaControllataPregresso": {
+      "post": {
+        "tags": ["Passi Carrabili"],
+        "description": "Effettua l'associazione della pratica importata dallo storico alla pratica nuova inserita nel sistema",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>" 
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "json contenente i dati dell'istanza",
+            "type": "object"           
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "message": { "example": "Aggiornamento controllo effettuato" }              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore durante l'aggiornamento dello stato della pratica" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato ad eliminare le pratiche dal sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/ripristinaPraticaPregresso": {
+      "post": {
+        "tags": ["Passi Carrabili"],
+        "description": "Elimina la pratica importata dallo storico ed in attesa della bonifica e la rende reimportabile dallo storico",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>" 
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "json contenente i dati dell'istanza",
+            "type": "object"           
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "message": { "example": "Ripristino pratica storico effettuato" }              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore durante l'aggiornamento dello stato della pratica" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }	
+        }
+      }
+    },
+    "/passicarrabili/getPraticheSenzaTagRFID/{municipio_id}": {
+      "get": {
+        "tags": ["Passi Carrabili"],
+        "description": "Restituisce la lista delle pratiche di concessione valide senza un tag rfid associato",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "municipio_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>" 
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "array contenente le pratiche senza tag rfid associato" },
+                "notFound": { "example": "boolean, true se non sono stati dati" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/praticheAvviabiliPostConcessione": {
+      "post": {
+        "tags": ["Passi Carrabili"],
+        "description": "Lista delle concessioni valide per cui è avviabile il processo di post concessione utilizzando il portale egov.",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>" 
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "tipologia_processo": {
+                  "required": true,
+                  "example": "any"
+                },
+                "codice_fiscale": {
+                  "example": "any"
+                },
+                "codice_fiscale_piva": {
+                  "example": "any"
+                },
+                "numero_protocollo": {
+                  "example": "any"
+                },
+                "id_determina": {
+                  "example": "any"
+                },
+                "tag_rfid": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "array contenente le pratiche avviabili post concessione per la tipologia di processo selezionato" },
+                "notFound": { "example": "boolean, true se non sono stati dati" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/caricaDashboardKibana/{municipio_id}": {
+      "get": {
+        "tags": ["Passi Carrabili"],
+        "description": "Caricamento della dashboard di statistiche sulla base del municipio di appartenenza",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "municipio_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "link della dashboard di kibana" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }	
+        }
+      }
+    },
+    "/passicarrabili/bonificaPratiche/{municipio_id}": {
+      "get": {
+        "tags": ["Passi Carrabili"],
+        "description": "Restituisce la lista delle pratiche da bonificare sulla base del municipio di appartenenza",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "municipio_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "array contenente le pratiche da bonificare" },
+                "notFound": { "example": "boolean, true se non sono stati dati" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }	
+        }
+      }
+    },
+    "/passicarrabili/getSegnalazioni/{municipio_id}": {
+      "get": {
+        "tags": ["Passi Carrabili"],
+        "description": "Restituisce la lista delle segnalazioni presenti a sistema sulla base del municipio di appartenenza",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "municipio_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>" 
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "array contenente le segnalazioni" },
+                "notFound": { "example": "boolean, true se non sono stati dati" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/getSegnalazione/{id_doc}": {
+      "get": {
+        "tags": ["Passi Carrabili"],
+        "description": "Restituisce i dati relativi alla segnalazione selezionata",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id_doc",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "segnalazione": { "example": "json contenente la segnalazione presente a sistema" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/aggiornaSegnalazione": {
+      "post": {
+        "tags": ["Passi Carrabili"],
+        "description": "Permette l'aggiornamento della segnalazione selezionata con i nuovi dati",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>" 
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "json contenente i dati della segnalazione",
+            "type": "object"           
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "segnalazione": { "example": "json contenente la segnalazione inserita a sistema" },
+                "message": { "example": "La segnalazione è passata alla fase successiva" }              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/getPraticheInRevoca": {
+      "post": {
+        "tags": ["Passi Carrabili"],
+        "description": "Lista delle pratiche per cui è stata avviata la revoca",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>" 
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "stato_pratica": {
+                  "required": true,
+                  "example": "any"
+                },
+                "codice_fiscale": {
+                  "example": "any"
+                },
+                "codice_fiscale_piva": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "array contenente le pratiche per cui è stata avviata la revoca lato back office" },
+                "notFound": { "example": "boolean, true se non sono stati dati" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/getPraticheInAttesaPagamentoBollo": {
+      "post": {
+        "tags": ["Passi Carrabili"],
+        "description": "Lista delle pratiche per cui è necessario pagare la marca da bollo mediante egov",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>" 
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "codice_fiscale": {
+                  "example": "any"
+                },
+                "codice_fiscale_piva": {
+                  "example": "any"
+                },
+                "id_determina": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "array contenente le pratiche in attesa di pagamento del bollo" },
+                "notFound": { "example": "boolean, true se non sono stati dati" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/checkTagRFID/{tag_rfid}": {
+      "get": {
+        "tags": ["Passi Carrabili"],
+        "description": "Effettua il controllo di univocità del tag rfid inserito",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "tag_rfid",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "array contenente le pratiche con il tag rfid indicato" },
+                "notFound": { "example": "boolean, true se non sono stati dati" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/validazionePratica": {
+      "post": {
+        "tags": ["Passi Carrabili"],
+        "description": "Permette i controlli di validazione pre inserimento della pratica nel sistema",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "istanza": {
+                  "example": "any"
+                },
+                "dimensione_totale_allegati_protocollo_kb": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "message": { "example": "Validazione avvenuta con successo" }              
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },
+          "409": {
+            "description": "Esiste già una pratica nel sistema per il civico selezionato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": { "example": "Esiste già una pratica nel sistema per il civico selezionato" }
+              }                      
+            }
+          },
+          "413": {
+            "description": "Payload Too Large",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "err": { "example": "Payload Too Large" },
+                "message": { "example": "Dimensione allegati maggiore a quella consentita [MAX: 29296.9kb]" }
+              }                      
+            }
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/checkAvvioProcessiPostConcessioneMultipli": {
+      "post": {
+        "tags": ["Passi Carrabili"],
+        "description": "Permette il controllo di eventuali processi post concessione già avviati",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "istanza": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "message": { "example": "Processo post concessione avviabile" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },
+          "409": {
+            "description": "Esiste già un processo post concessione avviato per la pratica selezionata",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": { "example": "Esiste già un processo post concessione avviato per la pratica selezionata" }
+              }                      
+            }
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/countPratichePerStato/{municipio_id}/{group_id}": {
+      "get": {
+        "tags": ["Passi Carrabili"],
+        "description": "Effettua il conteggio delle pratiche sulla base dello stato, del municipio di apparteneneza e del ruolo utente",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "municipio_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "group_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "array contenente json con la coppia stato_pratica e count" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/passicarrabili/countPratichePerFunzionalita/{municipio_id}": {
+      "get": {
+        "tags": ["Passi Carrabili"],
+        "description": "Effettua il conteggio delle pratiche per funzionalità e municipio di appartenenza",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "municipio_id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "array contenente json con la coppia stato_pratica e count" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },  
+    "/utility/generaDetermina": {
+      "post": {
+        "tags": ["Utility"],
+        "description": "Generazione del template di determina con valori pre compilati attinti dall'istanza presente nel sistema",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "json contenente i dati dell'istanza",
+            "type": "object"           
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers":{
+              "Content-disposition":{
+                 "description":"attachment; filename=fileName.docx"
+              }
+           }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }	
+        }
+      }
+    },
+    "/utility/generaRelazioneServizio": {
+      "post": {
+        "tags": ["Utility"],
+        "description": "Generazione del template della relazione di servizio della polizia con valori pre compilati attinti dall'istanza presente nel sistema",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "json contenente i dati dell'istanza",
+            "type": "object"           
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers":{
+              "Content-disposition":{
+                 "description":"attachment; filename=fileName.docx"
+              }
+           }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/utility/generaIstruttoriaUTD": {
+      "post": {
+        "tags": ["Utility"],
+        "description": "Generazione del template dell'istruttoria dell'utd con valori pre compilati attinti dall'istanza presente nel sistema",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "json contenente i dati dell'istanza",
+            "type": "object"           
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers":{
+              "Content-disposition":{
+                 "description":"attachment; filename=fileName.docx"
+              }
+           }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/utility/generaIstruttoriaUrbanistica": {
+      "post": {
+        "tags": ["Utility"],
+        "description": "Generazione del template dell'istruttoria dell'urbanistica con valori pre compilati attinti dall'istanza presente nel sistema",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json",
+          "application/vnd.openxmlformats-officedocument.wordprocessingml.document"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "json contenente i dati dell'istanza",
+            "type": "object"           
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "headers":{
+              "Content-disposition":{
+                 "description":"attachment; filename=fileName.docx"
+              }
+           }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/utility/getTemplateDocumenti": {
+      "get": {
+        "tags": ["Utility"],
+        "description": "Restituisce la lista dei template presenti nel sistema",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "array contenente i template presenti a sistema" },
+                "notFound": { "example": "boolean, true se non sono stati dati" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/utility/getTemplateDocumento/{id}": {
+      "get": {
+        "tags": ["Utility"],
+        "description": "Permette di ottenere il template selezionato, presente a sistema, per effettuare il download",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "json": { "example": "json contenente il documento cercato" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/utility/uploadTemplateDocumento": {
+      "post": {
+        "tags": ["Utility"],
+        "description": "Effettua l'upload nel sistema del nuovo template in sostituzione del documento selezionato",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id": {
+                  "example": "any"
+                },
+                "label": {
+                  "example": "any"
+                },
+                "blob": {
+                  "example": "any"
+                },
+                "last_modification": {
+                  "example": "{ 'username': 'admin', 'utente': 'Admin  Admin', 'data_operazione': '' }"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "template": { "example": "json contenente il template appena inserito" },
+                "message": { "example": "Template documento aggiornato." }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/utility/getRagioneSocialeDestinatariSync": {
+      "post": {
+        "tags": ["Utility"],
+        "description": "Permette di ottenere la ragione sociale dei destinatari, indicati nel body della richiesta, per il servizio di protocollo",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "array",
+              "description": "array di json group_id e municipio_id"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "array contenente i dati richiesti"
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/utility/getUOID/{id}": {
+      "get": {
+        "tags": ["Utility"],
+        "description": "Permette di ottenere l'identificativo UO del ruolo utente connesso a sistema che necessita di protocollare",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "json": { "example": "json contenente l'UOID" }
+              }  
+            }
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/utility/getConfigurations": {
+      "get": {
+        "tags": ["Utility"],
+        "description": "Restituisce la lista dei parametri di configurazione salvati a sistema",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "array contenente i parametri di configurazione del sistema" },
+                "notFound": { "example": "boolean, true se non sono stati dati" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/utility/getConfiguration/{id}": {
+      "get": {
+        "tags": ["Utility"],
+        "description": "Permette di ottenere la configurazione dello specifico dominio che si vuole visualizzare",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "id",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "json": { "example": "json contenente il parametro di configurazione cercato" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/utility/updateConfiguration": {
+      "post": {
+        "tags": ["Utility"],
+        "description": "Permette l'aggiornamento dei parametri di configurazione del sistema",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "json contenente i parametri di configurazione da aggiornare",
+            "type": "object"           
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "message": { "example": "Configurazione aggiornata correttamente." }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/user/getUsers": {
+      "get": {
+        "tags": ["User"],
+        "description": "Restituisce la lista degli utenti presenti nel gestionale",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "array contenente gli utenti censiti a sistema" },
+                "notFound": { "example": "boolean, true se non sono stati dati" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/user/getUsersConcessionario": {
+      "get": {
+        "tags": ["User"],
+        "description": "Restituisce la lista degli utenti di tipo concessionario presenti nel gestionale",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "array contenente gli utenti concessionario censiti a sistema" },
+                "notFound": { "example": "boolean, true se non sono stati dati" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/user/disableUsersConcessionario/{username}": {
+      "get": {
+        "tags": ["User"],
+        "description": "Disabilita gli utenti concessionario presenti nel gestionale, prima di inserirne uno nuovo",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>" 
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "message": { "example": "L'utente concessionario è stato disabilitato" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },      
+          "409": {
+            "description": "Username già in uso nel sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": { "example": "Username già in uso nel sistema" }
+              }                      
+            }
+          },   
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "Failed to authenticate token. / Errore durante la disabilitazione dell'utente concessionario" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/user/inserisciUtente": {
+      "post": {
+        "tags": ["User"],
+        "description": "Inserimento nuovo utente nel gestionale",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>" 
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "newuser": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {   
+                "obj": { "example": "json contenente i dati del nuovo utente inserito" },  
+                "message": { "example": "Utente inserito correttamente" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },      
+          "409": {
+            "description": "Codice fiscale già censito nel sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "message": { "example": "Codice fiscale già censito nel sistema / Username già in uso nel sistema" }
+              }                      
+            }
+          },   
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "Failed to authenticate token. / Errore durante l'inserimento dell'utente" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/user/modificaDatiUtente": {
+      "post": {
+        "tags": ["User"],
+        "description": "Effettua la modifica dei dati dell'utente selezionato",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "nome": {
+                  "example": "any"
+                },
+                "cognome": {
+                  "example": "any"
+                },
+                "sesso": {
+                  "example": "any"
+                },
+                "datadinascita": {
+                  "example": "any"
+                },
+                "luogodinascita": {
+                  "example": "any"
+                },
+                "codicefiscale": {
+                  "example": "any"
+                },
+                "email": {
+                  "example": "any"
+                },
+                "numtel": {
+                  "example": "any"
+                },
+                "group_id": {
+                  "example": "any"
+                },
+                "enabled": {
+                  "example": "boolean"
+                },
+                "provinciadinascita": {
+                  "example": "any"
+                },
+                "municipio_id": {
+                  "example": "any"
+                },
+                "indirizzo": {
+                  "example": "any"
+                },
+                "uoid": {
+                  "example": "any"
+                },
+                "denominazione": {
+                  "example": "any"
+                },
+                "ragioneSociale": {
+                  "example": "any"
+                },
+                "deleted": {
+                  "example": "boolean"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "message": { "example": "Dati dell'utente aggiornati correttamente" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore durante l'aggiornamento dei dati" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/user/cambiaPasswordUtente": {
+      "post": {
+        "tags": ["User"],
+        "description": "Permette di cambiare la password dell'utente loggato al sistema",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>" 
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "user": {
+                  "example": "json contenente i dati dell'utente con la nuova password"
+                },
+                "oldPassword": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "message": { "example": "Password aggiornata correttamente / La vecchia password inserita è errata" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },    
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Utente non trovato" }
+              }                      
+            }
+          },      
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore durante l'aggiornamento della password" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/user/getUser/{username}": {
+      "get": {
+        "tags": ["User"],
+        "description": "Restituisce i dati dell'utente selezionato",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "username",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "json": { "example": "json contenente i dati dell'utente" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          }, 
+          "404": {
+            "description": "Not Found",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Utente non trovato" }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/user/deleteUser": {
+      "post": {
+        "tags": ["User"],
+        "description": "Effettua l'eliminazione logica dell'utente selezionato dal gestionale",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "requiredgroup",
+            "in": "header",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "json contenente i dati dell'utente",
+            "type": "object"           
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "message": { "example": "L'utente è stato cancellato" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "Failed to authenticate token. / Errore durante la cancellazione dell'utente" }
+              }                      
+            }
+          },
+          "503": {
+            "description": "Utente non autorizzato",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "You are not authorized." }
+              }                      
+            }
+          }
+        }
+      }
+    }, 
+    "/v1/civico/": {
+      "post": {
+        "tags": ["Shared"],
+        "description": "Effettua la ricerca e, se presente, restituisce l'indirizzo dal civilario comunale",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "indirizzo": {
+                  "required": true,
+                  "example": "any"
+                },
+                "numero": {
+                  "example": "any"
+                },
+                "esponente": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "type": "array",
+            "description": "array contenente gli indirizzi trovati"
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "array",
+              "description": "array vuoto"                     
+            }
+          }
+        }
+      }
+    },
+    "/v1/civico/getDataSingoloMunicipio": {
+      "post": {
+        "tags": ["Shared"],
+        "description": "Effettua la ricerca e, se presente, restituisce l'indirizzo dal civilario comunale (cercandolo unicamente nel municipio indicato)",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "indirizzo": {
+                  "required": true,
+                  "example": "any"
+                },
+                "numero": {
+                  "example": "any"
+                },
+                "municipio_id": {
+                  "example": "any"
+                },
+                "esponente": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "type": "array",
+            "description": "array contenente gli indirizzi trovati"
+          },
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "array",
+              "description": "array vuoto"                     
+            }
+          }
+        }
+      }
+    }, 
+	  "/v1/getPoi": {
+      "post": {
+        "tags": ["Shared"],
+        "description": "Restituisce le pratiche (tutte, valide o non valide) con l'indirizzo nel range di distanza definito dal punto in cui ci si trova",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "distance": {
+                  "example": "any"
+                },
+                "lat": {
+                  "example": "any"
+                },
+                "lon": {
+                  "example": "any"
+                },
+                "isValid": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "result": { "example": "array contenente i passi carrabili che rispettano i filtri impostati" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/v1/checkAsset": {
+      "post": {
+        "tags": ["Shared"],
+        "description": "Effettua il controllo di validità di una concessione di passo carrabile",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id_doc": {
+                  "example": "any"
+                },
+                "tag_rfid": {
+                  "example": "any"
+                },
+                "lat": {
+                  "example": "any"
+                },
+                "lon": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "result": { "example": "array contenente le pratiche che rispettano i filtri impostati" },
+                "violation": { "example": "json contenente lo stato di validità della pratica ed eventuale motivazione" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "error": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/setDataVerificaCartello": {
+      "post": {
+        "tags": ["Shared"],
+        "description": "Effettua la verifica della data dell'ultima rilevazione del segnale indicatore di passo carrabile. Nel caso in cui la data di rilevazione sia successiva alla data registrata, quest'ultima viene sovrascritta",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "schema": {
+              "type": "object",
+              "properties": {
+                "id_doc": {
+                  "example": "any"
+                }
+              }
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "data": { "example": "json contenente i dati della pratica" },
+                "message": { "example": "Data di controllo cartello impostata" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "err": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    },
+    "/v1/segnalazioni": {
+      "get": {
+        "tags": ["Shared"],
+        "description": "Restituisce la lista delle segnalazioni presenti a sistema",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "result": { "example": "array contenente le segnalazioni" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "error": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      },
+      "put": {
+        "tags": ["Shared"],
+        "description": "Inserire una segnalazione nel sistema",
+        "consumes":[
+          "application/json"
+        ],
+        "produces":[
+          "application/json"
+        ],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "required": true,
+            "type": "string",
+            "example": "Bearer <<jwt_token>>"  
+          },
+          {
+            "name": "body",
+            "in": "body",
+            "required": true,
+            "description": "json contenente i dati della segnalazione",
+            "type": "object"           
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {  
+              "type": "object",  
+              "properties": {     
+                "result": { "example": "Segnalazione inserita correttamente" }
+              }  
+            }
+          },
+          "403": {
+            "description": "Forbidden",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "message": { "example": "No token provided." }
+              }                      
+            }
+          },         
+          "500": {
+            "description": "Errore di sistema",
+            "schema": {
+              "type": "object",
+              "properties": {
+                "auth": { "example": false },
+                "error": { "example": "json contenente l'errore restituito dal sistema" },
+                "message": { "example": "Failed to authenticate token. / Errore di sistema" }
+              }                      
+            }
+          }
+        }
+      }
+    }  
+  }
+}

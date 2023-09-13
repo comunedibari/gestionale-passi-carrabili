@@ -1,0 +1,91 @@
+{
+	"mappings": {
+		"properties": {
+			"auth": {
+				"properties": {
+					"aggiungiTagRfid": {
+						"type": "boolean"
+					},
+					"attesaPagamento": {
+						"type": "boolean"
+					},
+					"auditLog": {
+						"type": "boolean"
+					},
+					"concessioniValide": {
+						"type": "boolean"
+					},
+					"fascicolo": {
+						"type": "boolean"
+					},
+					"gestioneAsset": {
+						"type": "boolean"
+					},
+					"gestioneFeature": {
+						"type": "boolean"
+					},
+					"gestioneUtenti": {
+						"type": "boolean"
+					},
+					"ilMioProfilo": {
+						"type": "boolean"
+					},
+					"inserisciRichiesta": {
+						"type": "boolean"
+					},
+					"praticheApprovate": {
+						"type": "boolean"
+					},
+					"praticheArchiviate": {
+						"type": "boolean"
+					},
+					"praticheBozza": {
+						"type": "boolean"
+					},
+					"praticheDaRigettare": {
+						"type": "boolean"
+					},
+					"praticheRevocate": {
+						"type": "boolean"
+					},
+					"praticheRigettate": {
+						"type": "boolean"
+					},
+					"presaInCarico": {
+						"type": "boolean"
+					},
+					"regolarizzazione": {
+						"type": "boolean"
+					},
+					"rielaborazionePareri": {
+						"type": "boolean"
+					},
+					"ritiroRilascio": {
+						"type": "boolean"
+					},
+					"segnalazioni": {
+						"type": "boolean"
+					},
+					"statistiche": {
+						"type": "boolean"
+					},
+					"statisticheAsset": {
+						"type": "boolean"
+					},
+					"storicoPratiche": {
+						"type": "boolean"
+					},
+					"templates": {
+						"type": "boolean"
+					},
+					"validazionePratiche": {
+						"type": "boolean"
+					}
+				}
+			},
+			"id": {
+				"type": "long"
+			}
+		}
+	}
+}

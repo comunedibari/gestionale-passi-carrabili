@@ -1,0 +1,196 @@
+<app-spinner-dialog *ngIf="showSpinner"></app-spinner-dialog>
+
+<form [formGroup]="dovutoForm">
+    <div class="p-fluid p-formgrid p-grid p-inputtext-lg p-m-2" formGroupName="anagrafica">
+        <div class="p-col-12">
+            <legend class="legend">Dati anagrafici pagatore</legend>
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="tipoIdentificativoUnivoco" class="p-text-bold">Tipologia identificativo univoco (*)</label>
+                <p-selectButton name="tipoIdentificativoUnivoco" [options]="tipoIdentificativi" optionLabel="label" optionValue="value"
+                formControlName="tipoIdentificativoUnivoco" styleClass="button-select"></p-selectButton>
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="codiceIdentificativoUnivoco" class="p-text-bold">Codice identificativo univoco (*)</label>
+            <input id="codiceIdentificativoUnivoco" name="codiceIdentificativoUnivoco" pInputText 
+                formControlName="codiceIdentificativoUnivoco">  
+                <p-message *ngIf="isNotValid('codiceIdentificativoUnivoco','anagrafica')" severity="error" text="Formato codice identificativo univoco non valido."></p-message>
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="anagraficaPagatore" class="p-text-bold">Anagrafica (*)</label>
+            <input type="text" id="anagraficaPagatore" name="anagraficaPagatore" pInputText
+                formControlName="anagraficaPagatore">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="indirizzoPagatore" class="p-text-bold">Indirizzo (*)</label>
+            <input type="text" id="indirizzoPagatore" name="indirizzoPagatore" pInputText
+                formControlName="indirizzoPagatore">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="civicoPagatore" class="p-text-bold">Civico (*)</label>
+            <input type="text" id="civicoPagatore" name="civicoPagatore" pInputText
+                formControlName="civicoPagatore">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="capPagatore" class="p-text-bold">CAP (*)</label>
+            <input type="text" id="capPagatore" name="capPagatore" pInputText
+                formControlName="capPagatore">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="localitaPagatore" class="p-text-bold">Località (*)</label>
+            <input type="text" id="localitaPagatore" name="localitaPagatore" pInputText
+                formControlName="localitaPagatore">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="provinciaPagatore" class="p-text-bold">Provincia (*)</label>
+            <input type="text" id="provinciaPagatore" name="provinciaPagatore" pInputText
+                formControlName="provinciaPagatore" placeholder="Es: BA">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="nazionePagatore" class="p-text-bold">Nazione (*)</label>
+            <input type="text" id="nazionePagatore" name="nazionePagatore" pInputText
+                formControlName="nazionePagatore" placeholder="Es: IT">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="mailPagatore" class="p-text-bold">Email/PEC (*)</label>
+            <input type="email" id="mailPagatore" name="mailPagatore" pInputText 
+                formControlName="mailPagatore">  
+            <p-message *ngIf="isNotValid('mailPagatore','anagrafica')" severity="error" text="Formato email non valido."></p-message>
+        </div>
+    </div>
+
+    <div class="p-fluid p-formgrid p-grid p-inputtext-lg p-m-2" formGroupName="dovuto">
+        <div class="p-col-12">
+            <legend class="legend">Dati versamento - Tipologia dovuto: {{dovutoForm.get('dovuto.tipoDovuto').value}}</legend>
+        </div>
+
+        <div class="p-field p-col-12 p-pb-3 p-m-0">
+            <label for="causaleVersamento" class="p-text-bold">Causale (*)</label>
+            <input type="text" id="causaleVersamento" name="causaleVersamento" pInputText
+                formControlName="causaleVersamento">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="dataEsecuzionePagamento" class="p-text-bold">Data scadenza pagamento (*)</label>
+            <p-calendar name='dataEsecuzionePagamento' dateFormat="dd/mm/yy" [yearNavigator]="true" [yearRange]="calculateYearRange()" [monthNavigator]="true"
+                formControlName="dataEsecuzionePagamento" placeholder="dd/mm/yyyy" appendTo="body" icon="pi pi-calendar" [showIcon]="true" inputId="dataEsecuzionePagamento" 
+                [minDate]="dateNow" styleClass="data-calendar"></p-calendar>
+        </div>
+
+        <!-- <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="tipoDovuto" class="p-text-bold">Tipologia dovuto (*)</label>
+            <input type="text" id="tipoDovuto" name="tipoDovuto" pInputText
+                formControlName="tipoDovuto">
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="tipoVersamento" class="p-text-bold">Tipologia versamento</label>
+            <input type="text" id="tipoVersamento" name="tipoVersamento" pInputText
+                formControlName="tipoVersamento">
+        </div> -->
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="datiSpecificiRiscossione" class="p-text-bold">Dati riscossione (*)</label>
+            <input type="text" id="datiSpecificiRiscossione" name="datiSpecificiRiscossione" pInputText
+                formControlName="datiSpecificiRiscossione">
+        </div>
+
+        <!-- <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0 p-d-flex p-ai-center">
+            <p-checkbox class="p-mb-1" name="flgGeneraIuv" id="flgGeneraIuv" label="Flag generazione IUV"
+                [binary]="true" [formControl]="dovutoForm.controls['dovuto'].get('flgGeneraIuv')"></p-checkbox>
+        </div>
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="azione" class="p-text-bold">Tipologia azione</label>
+            <input type="text" id="azione" name="azione" pInputText
+                formControlName="azione">
+        </div> -->
+
+        <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-4 p-pb-3 p-m-0">
+            <label for="commissioneCaricoPa" class="p-text-bold">Commissione Carico Pa (*)</label>
+            <input type="number" id="commissioneCaricoPa" name="commissioneCaricoPa" pInputText (blur)="calcolaImporto();"
+                formControlName="commissioneCaricoPa" min="0" max="1000" onkeypress="return !(event.charCode == 44) && !(event.charCode == 45)" placeholder="Es: 0.00">
+                <p-message *ngIf="rangeIsNotValid('commissioneCaricoPa','dovuto')" severity="error" text="Valori consentiti: [0 - 1000]"></p-message>
+        </div>
+    </div>
+
+    <div class="p-fluid p-formgrid p-grid p-inputtext-lg p-m-2" formGroupName="bilancio">
+        <div class="p-col-12">
+            <legend class="legend">Bilancio - Importo dovuto: {{dovutoForm.get('bilancio.importoDovuto').value || '0.00'}} €</legend>
+        </div>
+
+        <p-fieldset class="p-field p-col-12" legend="Cauzione infruttifera">
+            <div class="p-fluid p-formgrid p-grid">
+                <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-3 p-pb-3 p-m-0">
+                    <label for="cauzione_infruttifera" class="p-text-bold">Importo (*)</label>
+                    <input type="number" id="cauzione_infruttifera" name="cauzione_infruttifera" pInputText (blur)="calcolaImporto();"
+                        formControlName="cauzione_infruttifera" min="0" max="1000" onkeypress="return !(event.charCode == 44) && !(event.charCode == 45)" placeholder="Es: 0.00">
+                    <p-message *ngIf="rangeIsNotValid('cauzione_infruttifera','bilancio')" severity="error" text="Valori consentiti: [0 - 1000]"></p-message>
+                </div>
+        
+                <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-3 p-pb-3 p-m-0">
+                    <label for="codCapitolo_cauzione_infruttifera" class="p-text-bold">Codice capitolo</label>
+                    <input type="text" id="codCapitolo_cauzione_infruttifera" name="codCapitolo_cauzione_infruttifera" pInputText
+                        formControlName="codCapitolo_cauzione_infruttifera">
+                </div>
+        
+                <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-3 p-pb-3 p-m-0">
+                    <label for="codUfficio_cauzione_infruttifera" class="p-text-bold">Codice ufficio</label>
+                    <input type="text" id="codUfficio_cauzione_infruttifera" name="codUfficio_cauzione_infruttifera" pInputText
+                        formControlName="codUfficio_cauzione_infruttifera">
+                </div>
+        
+                <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-3 p-pb-3 p-m-0">
+                    <label for="codAccertamento_cauzione_infruttifera" class="p-text-bold">Codice accertamento</label>
+                    <input type="text" id="codAccertamento_cauzione_infruttifera" name="codAccertamento_cauzione_infruttifera" pInputText
+                        formControlName="codAccertamento_cauzione_infruttifera">
+                </div>
+            </div>
+        </p-fieldset>
+
+        <p-fieldset class="p-field p-col-12" legend="Costo segnale indicatore">
+            <div class="p-fluid p-formgrid p-grid">
+                <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-3 p-pb-3 p-m-0">
+                    <label for="costo_segnale_indicatore" class="p-text-bold">Importo (*)</label>
+                    <input type="number" id="costo_segnale_indicatore" name="costo_segnale_indicatore" pInputText (blur)="calcolaImporto();"
+                        formControlName="costo_segnale_indicatore" min="0" max="1000" onkeypress="return !(event.charCode == 44) && !(event.charCode == 45)" placeholder="Es: 0.00">
+                    <p-message *ngIf="rangeIsNotValid('costo_segnale_indicatore','bilancio')" severity="error" text="Valori consentiti: [0 - 1000]"></p-message>
+                </div>
+        
+                <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-3 p-pb-3 p-m-0">
+                    <label for="codCapitolo_costo_segnale_indicatore" class="p-text-bold">Codice capitolo</label>
+                    <input type="text" id="codCapitolo_costo_segnale_indicatore" name="codCapitolo_costo_segnale_indicatore" pInputText
+                        formControlName="codCapitolo_costo_segnale_indicatore">
+                </div>
+        
+                <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-3 p-pb-3 p-m-0">
+                    <label for="codUfficio_costo_segnale_indicatore" class="p-text-bold">Codice ufficio</label>
+                    <input type="text" id="codUfficio_costo_segnale_indicatore" name="codUfficio_costo_segnale_indicatore" pInputText
+                        formControlName="codUfficio_costo_segnale_indicatore">
+                </div>
+        
+                <div class="p-field p-col-12 p-sm-6 p-md-6 p-lg-3 p-pb-3 p-m-0">
+                    <label for="codAccertamento_costo_segnale_indicatore" class="p-text-bold">Codice accertamento</label>
+                    <input type="text" id="codAccertamento" name="codAccertamento_costo_segnale_indicatore" pInputText
+                        formControlName="codAccertamento_costo_segnale_indicatore">
+                </div>
+            </div>
+        </p-fieldset>
+
+        <div class="p-d-flex p-col-12 p-jc-end">
+            <button pButton label="Crea dovuto" type="button" class="btn-custom-style button-avanti"
+              [disabled]="!dovutoForm.valid" (click)="confermaCreazioneDovuto()"></button>
+          </div>
+    </div>
+         
+</form>

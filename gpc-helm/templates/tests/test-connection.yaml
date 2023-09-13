@@ -1,0 +1,19 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: "{{ include "gpc.fullname" . }}-test-connection"
+  labels:
+    {{- include "gpc.labels" . | nindent 4 }}
+  annotations:
+    "helm.sh/hook": test
+spec:
+  containers:
+    - name: wgetBackEnd
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "gpc.fullname" . }}-be:{{ .Values.service.backEnd.port }}']
+    - name: wgetFrontEnd
+      image: busybox
+      command: ['wget']
+      args: ['{{ include "gpc.fullname" . }}-fe:{{ .Values.service.frontEnd.port }}']  
+  restartPolicy: Never

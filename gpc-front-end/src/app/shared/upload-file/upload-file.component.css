@@ -1,0 +1,44 @@
+.upload-file-toolbar,
+.upload-single-file-toolbar {
+    float: left;
+    line-height: 35px;
+    font-weight: 600;
+    text-align: left;
+    max-width: 40%;
+}
+
+.upload-file-toolbar {
+    font-size: 1.4rem;
+}
+
+.upload-single-file-toolbar {
+    font-size: 1rem;
+}
+
+:host ::ng-deep .p-fileupload-buttonbar {
+    text-align: right;
+    display: inline-block;
+    width: 100%;
+}
+
+:host ::ng-deep .dropdown-type-doc .p-dropdown{
+    width: 100%;
+}
+
+.btn-function-style {
+    width: 38px !important;
+    height: 38px !important;
+}
+
+.icon-question {
+    margin-left: 5px;
+    font-size: 25px;
+}
+
+.center-span {
+    line-height: 46px;
+}
+
+.center-img {
+    margin: 7px 0px;
+}
