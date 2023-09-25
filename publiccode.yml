@@ -56,7 +56,7 @@ dependsOn:
 description:
   it:
     documentation: |-
-      https://raw.githubusercontent.com/comunedibari/gestionale-passi-carrabili/master/Documentazione/SPCL3-PonMetroBari-CittàConnessa-GestionalePassiCarrabili-ManualeInstallazione-v.1.0
+      https://raw.githubusercontent.com/comunedibari/gestionale-passi-carrabili/master/Documentazione
     features:
       - workflow
     genericName: Gestionale Passi Carrabili
