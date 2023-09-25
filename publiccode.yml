@@ -56,7 +56,7 @@ dependsOn:
 description:
   it:
     documentation: |-
-      https://raw.githubusercontent.com/comunedibari/gestionale-passi-carrabili/master/Documentazione
+      https://github.com/comunedibari/gestionale-passi-carrabili/tree/25519cca9a7a54cfcc353b11c2ea05c023b5b9d3/Documentazione
     features:
       - workflow
     genericName: Gestionale Passi Carrabili
